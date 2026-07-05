@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: sky-sms
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: pnpm install --frozen-lockfile && pnpm run build:render
+    startCommand: pnpm run start:render
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: SESSION_SECRET
+        sync: false
+      - key: ALLOWED_ORIGINS
+        sync: false
+      - key: HERO_SMS_API_KEY
+        sync: false
+      - key: OXAPAY_MERCHANT_API_KEY
+        sync: false
+    autoDeploy: true
