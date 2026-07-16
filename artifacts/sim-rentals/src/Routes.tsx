@@ -1,5 +1,6 @@
 import { Layout } from "@/components/Layout";
 import Dashboard from "@/pages/Dashboard";
+import Activity from "@/pages/Activity";
 import Rent from "@/pages/Rent";
 import Rentals from "@/pages/Rentals";
 import Payments from "@/pages/Payments";
@@ -99,6 +100,7 @@ export function AppRoutes() {
   return (
     <Switch>
       <Route path="/dashboard"><ProtectedRoute component={Dashboard} /></Route>
+      <Route path="/activity"><ProtectedRoute component={Activity} /></Route>
       <Route path="/rent"><ProtectedRoute component={Rent} /></Route>
       <Route path="/rentals"><ProtectedRoute component={Rentals} /></Route>
       <Route path="/payments"><ProtectedRoute component={Payments} /></Route>

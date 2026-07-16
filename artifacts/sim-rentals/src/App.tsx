@@ -7,13 +7,14 @@ import Landing from "@/pages/Landing";
 import { lazy, Suspense } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState } from "react";
+import { ThemeProvider } from "@/hooks/useTheme";
 
 // Route-level code splitting — only Landing is eagerly loaded (above-fold critical path)
-const Terms       = lazy(() => import("@/pages/Terms"));
+const Terms        = lazy(() => import("@/pages/Terms"));
 const RefundPolicy = lazy(() => import("@/pages/RefundPolicy"));
-const StatusPage  = lazy(() => import("@/pages/Status"));
-const AppRoutes   = lazy(() => import("./Routes").then(m => ({ default: m.AppRoutes })));
-import { Mail, Lock, Eye, EyeOff, User, ChevronLeft, Loader2, X } from "lucide-react";
+const StatusPage   = lazy(() => import("@/pages/Status"));
+const AppRoutes    = lazy(() => import("./Routes").then(m => ({ default: m.AppRoutes })));
+import { Mail, Lock, Eye, EyeOff, User, ChevronLeft, Loader2, X, Shield } from "lucide-react";
 import { SkySmsLogo, SkySmsLogoMark } from "@/components/SkySmsLogo";
 import { CookieBanner } from "@/components/CookieBanner";
 
@@ -26,18 +27,18 @@ function LoadingSpinner() {
   return (
     <div className="min-h-screen premium-shell flex items-center justify-center">
       <div className="flex flex-col items-center gap-5">
-        <div className="h-12 w-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shadow-[0_0_24px_rgba(56,189,248,0.18)]">
+        <div className="h-12 w-12 rounded-2xl bg-white/20 border border-white/40 flex items-center justify-center shadow-lg backdrop-blur-sm">
           <SkySmsLogoMark className="h-7 w-7" />
         </div>
-        <div className="h-0.5 w-32 rounded-full bg-white/[0.06] overflow-hidden">
-          <div className="h-full bg-gradient-to-r from-amber-500 to-amber-600 rounded-full" style={{ width: "60%", animation: "loading-bar 1.4s ease-in-out infinite" }} />
+        <div className="h-0.5 w-32 rounded-full bg-white/20 overflow-hidden">
+          <div className="h-full bg-[#0a1628] rounded-full" style={{ width: "60%", animation: "loading-bar 1.4s ease-in-out infinite" }} />
         </div>
       </div>
     </div>
   );
 }
 
-type AuthMode = "choose" | "email-login" | "email-register";
+type AuthMode = "choose" | "email-login" | "email-register" | "2fa";
 
 function AuthPage() {
   const { login } = useAuth();
@@ -49,6 +50,8 @@ function AuthPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [form, setForm] = useState({ name: "", email: "", password: "", confirmPassword: "" });
+  const [twoFaCode, setTwoFaCode] = useState("");
+  const [twoFaSubmitting, setTwoFaSubmitting] = useState(false);
 
   if (isLoading) return <LoadingSpinner />;
   if (isAuthenticated) {
@@ -88,7 +91,13 @@ function AuthPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      const data = await res.json().catch(() => ({})) as { error?: string; success?: boolean };
+      const data = await res.json().catch(() => ({})) as { error?: string; success?: boolean; requires2fa?: boolean };
+
+      if (data.requires2fa) {
+        setMode("2fa");
+        setTwoFaCode("");
+        return;
+      }
       if (!res.ok) {
         setError(data.error || "Something went wrong. Please try again.");
         return;
@@ -102,37 +111,61 @@ function AuthPage() {
     }
   };
 
+  const handle2FA = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    if (twoFaCode.length !== 6) { setError("Enter the 6-digit code from your authenticator app."); return; }
+    setTwoFaSubmitting(true);
+    try {
+      const res = await fetch(`${API_URL}/api/2fa/verify`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: twoFaCode }),
+      });
+      const data = await res.json().catch(() => ({})) as { error?: string; success?: boolean };
+      if (!res.ok) { setError(data.error || "Invalid code. Please try again."); return; }
+      queryClient.invalidateQueries();
+      setLocation("/dashboard", { replace: true });
+    } catch {
+      setError("Network error. Please try again.");
+    } finally {
+      setTwoFaSubmitting(false);
+    }
+  };
+
+  const inputCls = "w-full h-11 rounded-xl border border-white/[0.14] bg-white/[0.06] text-[14px] text-slate-900 dark:text-white placeholder:text-slate-500 outline-none focus:border-[#4574FF]/60 focus:bg-white/[0.09] focus:ring-2 focus:ring-[#4574FF]/15 transition-all";
+
   return (
     <div className="min-h-screen premium-shell flex items-center justify-center px-5 py-10">
       {/* Ambient */}
       <div className="pointer-events-none fixed inset-0 z-0" aria-hidden>
         <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full"
-          style={{ background: "radial-gradient(ellipse at center, rgba(212,168,67,0.09) 0%, transparent 70%)", filter: "blur(80px)" }} />
+          style={{ background: "radial-gradient(ellipse at center, rgba(69,116,255,0.12) 0%, transparent 70%)", filter: "blur(80px)" }} />
         <div className="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full"
-          style={{ background: "radial-gradient(ellipse at center, rgba(180,100,40,0.06) 0%, transparent 70%)", filter: "blur(80px)" }} />
-        <div className="absolute inset-0 grid-pattern opacity-30" />
+          style={{ background: "radial-gradient(ellipse at center, rgba(0,196,200,0.08) 0%, transparent 70%)", filter: "blur(80px)" }} />
+        <div className="absolute inset-0 hero-grid opacity-20" />
       </div>
 
       <div className="relative z-10 w-full max-w-md modal-content-enter">
-        {/* Top shimmer accent */}
-        <div className="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-amber-400/40 to-transparent rounded-t-3xl" />
+        {/* Shimmer accent */}
+        <div className="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-[#4574FF]/50 to-transparent rounded-t-3xl" />
 
-        <div className="rounded-3xl border border-amber-900/15 bg-gradient-to-br from-white/[0.04] to-white/[0.01] shadow-[0_0_0_1px_rgba(212,168,67,0.08),0_8px_60px_rgba(0,0,0,0.6)] p-8 backdrop-blur-xl">
+        <div className="rounded-3xl border border-white/[0.15] bg-white/[0.07] shadow-[0_0_0_1px_rgba(69,116,255,0.12),0_8px_60px_rgba(0,0,0,0.25)] p-8 backdrop-blur-xl">
 
           {/* Logo */}
           <div className="text-center mb-8">
-            <a href={`${basePath}/`} className="mx-auto inline-flex items-center gap-2.5 rounded-full border border-blue-500/20 bg-blue-500/[0.05] px-5 py-2.5 hover:bg-blue-500/[0.08] transition-colors">
+            <a href={`${basePath}/`} className="mx-auto inline-flex items-center gap-2.5 rounded-full border border-white/30 bg-white/15 px-5 py-2.5 hover:bg-white/25 transition-colors backdrop-blur-sm">
               <SkySmsLogo size="sm" />
             </a>
           </div>
 
-          {/* Mode: Choose (default) */}
+          {/* ── Choose ── */}
           {mode === "choose" && (
             <>
               <div className="text-center mb-7">
-                <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-amber-400 mb-2">Welcome</p>
-                <h1 className="text-[1.75rem] font-black tracking-tight text-white leading-tight">Sign in to SKY SMS</h1>
-                <p className="mt-2.5 text-[13.5px] text-slate-400 max-w-xs mx-auto leading-relaxed">
+                <h1 className="text-[1.75rem] font-black tracking-tight text-[#0a1628] leading-tight">Sign in to SKY SMS</h1>
+                <p className="mt-2.5 text-[13.5px] text-[#0a1628]/60 max-w-xs mx-auto leading-relaxed">
                   Rent real phone numbers and receive SMS codes instantly.
                 </p>
               </div>
@@ -141,7 +174,7 @@ function AuthPage() {
                 {/* Google */}
                 <button
                   onClick={login}
-                  className="group h-12 w-full rounded-xl bg-white px-6 text-[14px] font-bold text-slate-900 shadow-[0_2px_12px_rgba(0,0,0,0.25)] transition-all hover:bg-slate-50 hover:shadow-[0_4px_20px_rgba(0,0,0,0.3)] flex items-center justify-center gap-3 active:scale-[0.98]"
+                  className="group h-12 w-full rounded-xl bg-white px-6 text-[14px] font-bold text-slate-900 shadow-md transition-all hover:bg-slate-50 hover:shadow-lg flex items-center justify-center gap-3 active:scale-[0.98]"
                 >
                   <svg className="h-5 w-5 shrink-0" viewBox="0 0 24 24">
                     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -152,26 +185,39 @@ function AuthPage() {
                   Continue with Google
                 </button>
 
-                {/* Divider */}
-                <div className="flex items-center gap-3 py-1">
-                  <div className="flex-1 h-px bg-white/[0.06]" />
-                  <span className="text-[11px] text-slate-600 font-medium">or</span>
-                  <div className="flex-1 h-px bg-white/[0.06]" />
-                </div>
-
-                {/* Email login */}
+                {/* Microsoft */}
                 <button
-                  onClick={() => setMode("email-login")}
-                  className="h-12 w-full rounded-xl border border-white/[0.08] bg-white/[0.03] px-6 text-[14px] font-semibold text-white hover:bg-white/[0.06] hover:border-white/[0.12] flex items-center justify-center gap-3 transition-all active:scale-[0.98]"
+                  onClick={login}
+                  className="group h-12 w-full rounded-xl bg-white px-6 text-[14px] font-bold text-slate-900 shadow-md transition-all hover:bg-slate-50 hover:shadow-lg flex items-center justify-center gap-3 active:scale-[0.98]"
                 >
-                  <Mail className="h-4.5 w-4.5 text-amber-400 shrink-0" />
-                  Sign in with Email
+                  <svg className="h-5 w-5 shrink-0" viewBox="0 0 23 23" fill="none">
+                    <rect x="1" y="1" width="10" height="10" fill="#F25022" />
+                    <rect x="12" y="1" width="10" height="10" fill="#7FBA00" />
+                    <rect x="1" y="12" width="10" height="10" fill="#00A4EF" />
+                    <rect x="12" y="12" width="10" height="10" fill="#FFB900" />
+                  </svg>
+                  Continue with Microsoft
                 </button>
 
-                {/* Create account */}
-                <p className="text-center text-[12px] text-slate-500 pt-1">
+                {/* Divider */}
+                <div className="flex items-center gap-3 py-1">
+                  <div className="flex-1 h-px bg-[#0a1628]/15" />
+                  <span className="text-[11px] text-[#0a1628]/50 font-medium">or</span>
+                  <div className="flex-1 h-px bg-[#0a1628]/15" />
+                </div>
+
+                {/* Email */}
+                <button
+                  onClick={() => setMode("email-login")}
+                  className="h-12 w-full rounded-xl border border-[#0a1628]/15 bg-white/20 px-6 text-[14px] font-semibold text-[#0a1628] hover:bg-white/35 hover:border-[#0a1628]/25 flex items-center justify-center gap-3 transition-all active:scale-[0.98] backdrop-blur-sm"
+                >
+                  <Mail className="h-4.5 w-4.5 shrink-0" />
+                  Continue with email
+                </button>
+
+                <p className="text-center text-[12px] text-[#0a1628]/60 pt-1">
                   Don't have an account?{" "}
-                  <button onClick={() => setMode("email-register")} className="text-amber-400 hover:text-amber-300 font-semibold transition-colors">
+                  <button onClick={() => setMode("email-register")} className="text-[#0a1628] hover:text-[#4574FF] font-bold transition-colors">
                     Create one
                   </button>
                 </p>
@@ -179,71 +225,52 @@ function AuthPage() {
             </>
           )}
 
-          {/* Mode: Email login */}
+          {/* ── Email login ── */}
           {mode === "email-login" && (
             <>
               <div className="flex items-center gap-3 mb-6">
-                <button onClick={() => { setMode("choose"); setError(""); setForm({ name: "", email: "", password: "", confirmPassword: "" }); }} className="h-8 w-8 flex items-center justify-center rounded-xl border border-white/[0.08] text-slate-500 hover:text-white hover:bg-white/[0.05] transition-all">
+                <button onClick={() => { setMode("choose"); setError(""); setForm({ name: "", email: "", password: "", confirmPassword: "" }); }}
+                  className="h-8 w-8 flex items-center justify-center rounded-xl border border-[#0a1628]/15 bg-white/15 text-[#0a1628]/60 hover:text-[#0a1628] hover:bg-white/25 transition-all">
                   <ChevronLeft className="h-4 w-4" />
                 </button>
                 <div>
-                  <h1 className="text-[17px] font-bold text-white leading-none">Sign in with email</h1>
-                  <p className="text-[12px] text-slate-500 mt-0.5">Enter your credentials to continue</p>
+                  <h1 className="text-[17px] font-bold text-[#0a1628] leading-none">Continue with email</h1>
+                  <p className="text-[12px] text-[#0a1628]/55 mt-0.5">Enter your credentials to continue</p>
                 </div>
               </div>
 
               <form onSubmit={handleEmailAuth} className="space-y-3">
                 <div>
-                  <label className="block text-[12px] font-semibold text-slate-400 mb-1.5">Email address</label>
+                  <label className="block text-[12px] font-bold text-[#0a1628]/60 mb-1.5">Email address</label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-600" />
-                    <input
-                      type="email"
-                      required
-                      placeholder="you@example.com"
-                      value={form.email}
-                      onChange={setField("email")}
-                      className="w-full h-11 pl-10 pr-4 rounded-xl border border-white/[0.08] bg-white/[0.03] text-[14px] text-white placeholder:text-slate-600 outline-none focus:border-amber-500/40 focus:bg-amber-500/[0.03] focus:ring-2 focus:ring-amber-500/[0.08] transition-all"
-                    />
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#0a1628]/40" />
+                    <input type="email" required placeholder="you@example.com" value={form.email} onChange={setField("email")}
+                      className={`${inputCls} pl-10 pr-4`} />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-[12px] font-semibold text-slate-400 mb-1.5">Password</label>
+                  <label className="block text-[12px] font-bold text-[#0a1628]/60 mb-1.5">Password</label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-600" />
-                    <input
-                      type={showPass ? "text" : "password"}
-                      required
-                      placeholder="Your password"
-                      value={form.password}
-                      onChange={setField("password")}
-                      className="w-full h-11 pl-10 pr-11 rounded-xl border border-white/[0.08] bg-white/[0.03] text-[14px] text-white placeholder:text-slate-600 outline-none focus:border-amber-500/40 focus:bg-amber-500/[0.03] focus:ring-2 focus:ring-amber-500/[0.08] transition-all"
-                    />
-                    <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-600 hover:text-slate-400 transition-colors">
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#0a1628]/40" />
+                    <input type={showPass ? "text" : "password"} required placeholder="Your password" value={form.password} onChange={setField("password")}
+                      className={`${inputCls} pl-10 pr-11`} />
+                    <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#0a1628]/40 hover:text-[#0a1628]/70 transition-colors">
                       {showPass ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
                   </div>
                 </div>
 
-                {error && (
-                  <div className="flex items-center gap-2 rounded-xl border border-red-500/20 bg-red-500/[0.07] px-3 py-2.5">
-                    <X className="h-3.5 w-3.5 text-red-400 shrink-0" />
-                    <span className="text-[12.5px] text-red-300">{error}</span>
-                  </div>
-                )}
+                {error && <ErrorBanner message={error} />}
 
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="h-12 w-full rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-[14px] font-bold text-slate-900 hover:from-amber-400 hover:to-amber-500 transition-all active:scale-[0.98] shadow-[0_2px_16px_rgba(212,168,67,0.3)] flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed mt-1"
-                >
+                <button type="submit" disabled={submitting}
+                  className="h-12 w-full rounded-xl bg-[#0a1628] text-[14px] font-bold text-white hover:bg-[#162844] transition-all active:scale-[0.98] shadow-lg flex items-center justify-center gap-2 disabled:opacity-60 mt-1">
                   {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
                   {submitting ? "Signing in…" : "Sign in"}
                 </button>
 
-                <p className="text-center text-[12px] text-slate-500">
-                  No account yet?{" "}
-                  <button type="button" onClick={() => { setMode("email-register"); setError(""); }} className="text-amber-400 hover:text-amber-300 font-semibold transition-colors">
+                <p className="text-center text-[12px] text-[#0a1628]/55">
+                  No account?{" "}
+                  <button type="button" onClick={() => { setMode("email-register"); setError(""); }} className="text-[#0a1628] font-bold hover:text-[#4574FF] transition-colors">
                     Create one
                   </button>
                 </p>
@@ -251,110 +278,68 @@ function AuthPage() {
             </>
           )}
 
-          {/* Mode: Email register */}
+          {/* ── Email register ── */}
           {mode === "email-register" && (
             <>
               <div className="flex items-center gap-3 mb-6">
-                <button onClick={() => { setMode("choose"); setError(""); setForm({ name: "", email: "", password: "", confirmPassword: "" }); }} className="h-8 w-8 flex items-center justify-center rounded-xl border border-white/[0.08] text-slate-500 hover:text-white hover:bg-white/[0.05] transition-all">
+                <button onClick={() => { setMode("choose"); setError(""); setForm({ name: "", email: "", password: "", confirmPassword: "" }); }}
+                  className="h-8 w-8 flex items-center justify-center rounded-xl border border-[#0a1628]/15 bg-white/15 text-[#0a1628]/60 hover:text-[#0a1628] hover:bg-white/25 transition-all">
                   <ChevronLeft className="h-4 w-4" />
                 </button>
                 <div>
-                  <h1 className="text-[17px] font-bold text-white leading-none">Create an account</h1>
-                  <p className="text-[12px] text-slate-500 mt-0.5">Join SKY SMS in under a minute</p>
+                  <h1 className="text-[17px] font-bold text-[#0a1628] leading-none">Create an account</h1>
+                  <p className="text-[12px] text-[#0a1628]/55 mt-0.5">Join SKY SMS in under a minute</p>
                 </div>
               </div>
 
               <form onSubmit={handleEmailAuth} className="space-y-3">
-                <div>
-                  <label className="block text-[12px] font-semibold text-slate-400 mb-1.5">Full name</label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-600" />
-                    <input
-                      type="text"
-                      required
-                      placeholder="Your name"
-                      value={form.name}
-                      onChange={setField("name")}
-                      className="w-full h-11 pl-10 pr-4 rounded-xl border border-white/[0.08] bg-white/[0.03] text-[14px] text-white placeholder:text-slate-600 outline-none focus:border-amber-500/40 focus:bg-amber-500/[0.03] focus:ring-2 focus:ring-amber-500/[0.08] transition-all"
-                    />
+                {[
+                  { label: "Full name", key: "name" as const, icon: User, type: "text", ph: "Your name", extra: "" },
+                  { label: "Email address", key: "email" as const, icon: Mail, type: "email", ph: "you@example.com", extra: "" },
+                ].map(({ label, key, icon: Icon, type, ph }) => (
+                  <div key={key}>
+                    <label className="block text-[12px] font-bold text-[#0a1628]/60 mb-1.5">{label}</label>
+                    <div className="relative">
+                      <Icon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#0a1628]/40" />
+                      <input type={type} required placeholder={ph} value={form[key]} onChange={setField(key)}
+                        className={`${inputCls} pl-10 pr-4`} />
+                    </div>
                   </div>
-                </div>
-                <div>
-                  <label className="block text-[12px] font-semibold text-slate-400 mb-1.5">Email address</label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-600" />
-                    <input
-                      type="email"
-                      required
-                      placeholder="you@example.com"
-                      value={form.email}
-                      onChange={setField("email")}
-                      className="w-full h-11 pl-10 pr-4 rounded-xl border border-white/[0.08] bg-white/[0.03] text-[14px] text-white placeholder:text-slate-600 outline-none focus:border-amber-500/40 focus:bg-amber-500/[0.03] focus:ring-2 focus:ring-amber-500/[0.08] transition-all"
-                    />
+                ))}
+                {[
+                  { label: "Password", key: "password" as const, show: showPass, toggle: () => setShowPass(v => !v), ph: "Min. 8 characters", min: 8 },
+                  { label: "Confirm password", key: "confirmPassword" as const, show: showConfirmPass, toggle: () => setShowConfirmPass(v => !v), ph: "Repeat password", min: undefined },
+                ].map(({ label, key, show, toggle, ph, min }) => (
+                  <div key={key}>
+                    <label className="block text-[12px] font-bold text-[#0a1628]/60 mb-1.5">{label}</label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#0a1628]/40" />
+                      <input type={show ? "text" : "password"} required minLength={min} placeholder={ph} value={form[key]} onChange={setField(key)}
+                        className={`${inputCls} pl-10 pr-11`} />
+                      <button type="button" onClick={toggle} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#0a1628]/40 hover:text-[#0a1628]/70 transition-colors">
+                        {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </button>
+                    </div>
                   </div>
-                </div>
-                <div>
-                  <label className="block text-[12px] font-semibold text-slate-400 mb-1.5">Password</label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-600" />
-                    <input
-                      type={showPass ? "text" : "password"}
-                      required
-                      minLength={8}
-                      placeholder="Min. 8 characters"
-                      value={form.password}
-                      onChange={setField("password")}
-                      className="w-full h-11 pl-10 pr-11 rounded-xl border border-white/[0.08] bg-white/[0.03] text-[14px] text-white placeholder:text-slate-600 outline-none focus:border-amber-500/40 focus:bg-amber-500/[0.03] focus:ring-2 focus:ring-amber-500/[0.08] transition-all"
-                    />
-                    <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-600 hover:text-slate-400 transition-colors">
-                      {showPass ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                    </button>
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-[12px] font-semibold text-slate-400 mb-1.5">Confirm password</label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-600" />
-                    <input
-                      type={showConfirmPass ? "text" : "password"}
-                      required
-                      placeholder="Repeat password"
-                      value={form.confirmPassword}
-                      onChange={setField("confirmPassword")}
-                      className="w-full h-11 pl-10 pr-11 rounded-xl border border-white/[0.08] bg-white/[0.03] text-[14px] text-white placeholder:text-slate-600 outline-none focus:border-amber-500/40 focus:bg-amber-500/[0.03] focus:ring-2 focus:ring-amber-500/[0.08] transition-all"
-                    />
-                    <button type="button" onClick={() => setShowConfirmPass(!showConfirmPass)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-600 hover:text-slate-400 transition-colors">
-                      {showConfirmPass ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                    </button>
-                  </div>
-                </div>
+                ))}
 
-                {error && (
-                  <div className="flex items-center gap-2 rounded-xl border border-red-500/20 bg-red-500/[0.07] px-3 py-2.5">
-                    <X className="h-3.5 w-3.5 text-red-400 shrink-0" />
-                    <span className="text-[12.5px] text-red-300">{error}</span>
-                  </div>
-                )}
+                {error && <ErrorBanner message={error} />}
 
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="h-12 w-full rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-[14px] font-bold text-slate-900 hover:from-amber-400 hover:to-amber-500 transition-all active:scale-[0.98] shadow-[0_2px_16px_rgba(212,168,67,0.3)] flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed mt-1"
-                >
+                <button type="submit" disabled={submitting}
+                  className="h-12 w-full rounded-xl bg-[#0a1628] text-[14px] font-bold text-white hover:bg-[#162844] transition-all active:scale-[0.98] shadow-lg flex items-center justify-center gap-2 disabled:opacity-60 mt-1">
                   {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
                   {submitting ? "Creating account…" : "Create account"}
                 </button>
 
-                <p className="text-center text-[11.5px] text-slate-600 leading-relaxed">
+                <p className="text-center text-[11.5px] text-[#0a1628]/50 leading-relaxed">
                   By creating an account you agree to our{" "}
-                  <a href={`${basePath}/terms`} className="text-amber-400/80 hover:text-amber-300 transition-colors">Terms</a>{" "}
+                  <a href={`${basePath}/terms`} className="text-[#0a1628]/70 hover:text-[#4574FF] transition-colors font-medium">Terms</a>{" "}
                   and{" "}
-                  <a href={`${basePath}/refund-policy`} className="text-amber-400/80 hover:text-amber-300 transition-colors">Refund Policy</a>.
+                  <a href={`${basePath}/refund-policy`} className="text-[#0a1628]/70 hover:text-[#4574FF] transition-colors font-medium">Refund Policy</a>.
                 </p>
-
-                <p className="text-center text-[12px] text-slate-500">
+                <p className="text-center text-[12px] text-[#0a1628]/55">
                   Already have an account?{" "}
-                  <button type="button" onClick={() => { setMode("email-login"); setError(""); }} className="text-amber-400 hover:text-amber-300 font-semibold transition-colors">
+                  <button type="button" onClick={() => { setMode("email-login"); setError(""); }} className="text-[#0a1628] font-bold hover:text-[#4574FF] transition-colors">
                     Sign in
                   </button>
                 </p>
@@ -362,8 +347,61 @@ function AuthPage() {
             </>
           )}
 
+          {/* ── 2FA verification ── */}
+          {mode === "2fa" && (
+            <>
+              <div className="text-center mb-7">
+                <div className="h-14 w-14 rounded-2xl bg-[#4574FF]/15 border border-[#4574FF]/30 flex items-center justify-center mx-auto mb-4">
+                  <Shield className="h-7 w-7 text-[#0a1628]" />
+                </div>
+                <h1 className="text-[1.5rem] font-black tracking-tight text-[#0a1628] leading-tight">Two-Factor Auth</h1>
+                <p className="mt-2 text-[13px] text-[#0a1628]/60 max-w-xs mx-auto leading-relaxed">
+                  Open your authenticator app and enter the 6-digit code.
+                </p>
+              </div>
+
+              <form onSubmit={handle2FA} className="space-y-4">
+                <div>
+                  <label className="block text-[12px] font-bold text-[#0a1628]/60 mb-2 text-center">Verification code</label>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={6}
+                    value={twoFaCode}
+                    onChange={e => { setTwoFaCode(e.target.value.replace(/\D/g, "")); setError(""); }}
+                    placeholder="000000"
+                    autoFocus
+                    className="w-full h-14 rounded-xl border border-white/[0.14] bg-white/[0.06] text-center font-mono text-[28px] font-bold text-[#0a1628] tracking-[0.25em] outline-none focus:border-[#4574FF]/60 focus:ring-2 focus:ring-[#4574FF]/15 transition-all backdrop-blur-sm placeholder:text-[#0a1628]/25"
+                  />
+                </div>
+
+                {error && <ErrorBanner message={error} />}
+
+                <button type="submit" disabled={twoFaSubmitting || twoFaCode.length !== 6}
+                  className="h-12 w-full rounded-xl bg-[#0a1628] text-[14px] font-bold text-white hover:bg-[#162844] transition-all active:scale-[0.98] shadow-lg flex items-center justify-center gap-2 disabled:opacity-60">
+                  {twoFaSubmitting && <Loader2 className="h-4 w-4 animate-spin" />}
+                  {twoFaSubmitting ? "Verifying…" : "Verify"}
+                </button>
+
+                <button type="button" onClick={() => { setMode("choose"); setError(""); setTwoFaCode(""); }}
+                  className="w-full text-center text-[12px] text-[#0a1628]/50 hover:text-[#0a1628]/80 transition-colors">
+                  ← Back to sign in
+                </button>
+              </form>
+            </>
+          )}
+
         </div>
       </div>
+    </div>
+  );
+}
+
+function ErrorBanner({ message }: { message: string }) {
+  return (
+    <div className="flex items-center gap-2 rounded-xl border border-red-300/50 bg-red-100/60 px-3 py-2.5">
+      <X className="h-3.5 w-3.5 text-red-600 shrink-0" />
+      <span className="text-[12.5px] text-red-700 font-medium">{message}</span>
     </div>
   );
 }
@@ -393,6 +431,7 @@ function AppWithRoutes() {
         <Route path="/status" component={StatusPage} />
 
         <Route path="/dashboard" component={AppRoutes} />
+        <Route path="/activity" component={AppRoutes} />
         <Route path="/rent" component={AppRoutes} />
         <Route path="/rentals" component={AppRoutes} />
         <Route path="/payments" component={AppRoutes} />
@@ -422,16 +461,18 @@ function AppWithRoutes() {
 
 function App() {
   return (
-    <TooltipProvider>
-      <WouterRouter base={basePath}>
-        <QueryClientProvider client={queryClient}>
-          <ScrollToTop />
-          <AppWithRoutes />
-          <CookieBanner />
-        </QueryClientProvider>
-      </WouterRouter>
-      <Toaster />
-    </TooltipProvider>
+    <ThemeProvider>
+      <TooltipProvider>
+        <WouterRouter base={basePath}>
+          <QueryClientProvider client={queryClient}>
+            <ScrollToTop />
+            <AppWithRoutes />
+            <CookieBanner />
+          </QueryClientProvider>
+        </WouterRouter>
+        <Toaster />
+      </TooltipProvider>
+    </ThemeProvider>
   );
 }
 
