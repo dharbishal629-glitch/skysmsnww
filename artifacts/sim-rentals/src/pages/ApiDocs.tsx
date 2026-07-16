@@ -1,36 +1,27 @@
 import { useState } from "react";
-import { Copy, Check } from "lucide-react";
+import { Copy, Check, BookOpen, Globe, ShoppingCart, History, User, AlertTriangle, ChevronRight, Terminal, Lock, Zap, Code2 } from "lucide-react";
 
 const BASE = typeof window !== "undefined"
   ? `${window.location.protocol}//${window.location.host}/api`
   : "/api";
 
-const C = {
-  bg:       "#050914",
-  bg2:      "#0d1120",
-  surface:  "#0a0e1a",
-  panel:    "#0d1120",
-  border:   "rgba(255,255,255,0.07)",
-  borderHi: "rgba(255,255,255,0.10)",
-  textMid:  "#6b7280",
-  text:     "#e2e8f0",
-  code:     "#d1d5db",
-  preBg:    "#060a18",
-  sky:      "#38bdf8",
-  skyDim:   "rgba(14,165,233,0.10)",
-  skyBorder:"rgba(14,165,233,0.20)",
-};
-
 const NAV = [
-  { id: "overview",  label: "Overview" },
-  { id: "services",  label: "Services" },
-  { id: "countries", label: "Countries" },
-  { id: "rentals",   label: "Rentals" },
-  { id: "account",   label: "Account" },
-  { id: "errors",    label: "Error Codes" },
+  { id: "overview",  label: "Overview",    icon: BookOpen },
+  { id: "services",  label: "Services",    icon: ShoppingCart },
+  { id: "countries", label: "Countries",   icon: Globe },
+  { id: "rentals",   label: "Rentals",     icon: History },
+  { id: "account",   label: "Account",     icon: User },
+  { id: "errors",    label: "Error Codes", icon: AlertTriangle },
 ];
 
-function CopyBtn({ text }: { text: string }) {
+const METHOD_COLORS: Record<string, { text: string; bg: string; border: string }> = {
+  GET:    { text: "#2563eb", bg: "#eff6ff", border: "#bfdbfe" },
+  POST:   { text: "#16a34a", bg: "#f0fdf4", border: "#bbf7d0" },
+  DELETE: { text: "#dc2626", bg: "#fef2f2", border: "#fecaca" },
+  PATCH:  { text: "#d97706", bg: "#fffbeb", border: "#fde68a" },
+};
+
+function CopyBtn({ text, small }: { text: string; small?: boolean }) {
   const [ok, setOk] = useState(false);
   return (
     <button
@@ -39,95 +30,63 @@ function CopyBtn({ text }: { text: string }) {
         setOk(true);
         setTimeout(() => setOk(false), 2000);
       }}
-      style={{
-        marginLeft: "auto",
-        flexShrink: 0,
-        display: "flex",
-        alignItems: "center",
-        gap: 4,
-        fontSize: ".72rem",
-        fontWeight: 700,
-        color: ok ? "#34d399" : C.textMid,
-        background: ok ? "rgba(52,211,153,0.1)" : "rgba(255,255,255,0.04)",
-        border: `1px solid ${ok ? "rgba(52,211,153,0.25)" : C.borderHi}`,
-        cursor: "pointer",
-        padding: "3px 9px",
-        borderRadius: 7,
-        transition: "all .15s",
-      }}
+      className={`inline-flex items-center gap-1 rounded-lg border font-semibold transition-all ${
+        small ? "text-[10px] px-2 py-1" : "text-[11px] px-2.5 py-1.5"
+      } ${
+        ok
+          ? "bg-emerald-50 border-emerald-200 text-emerald-700"
+          : "bg-white border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-700"
+      }`}
     >
-      {ok ? <Check size={11} /> : <Copy size={11} />}
+      {ok ? <Check size={10} /> : <Copy size={10} />}
       {ok ? "Copied" : "Copy"}
     </button>
   );
 }
 
-function Block({ label, children, copyText }: { label: string; children: React.ReactNode; copyText?: string }) {
+function CodeBlock({ label, children, copyText }: { label: string; children: React.ReactNode; copyText?: string }) {
   return (
-    <div style={{ marginTop: 10 }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
-        <span style={{
-          fontSize: ".65rem", fontWeight: 800, color: C.textMid,
-          textTransform: "uppercase" as const, letterSpacing: "0.12em",
-        }}>
-          {label}
-        </span>
-        {copyText !== undefined && <CopyBtn text={copyText} />}
+    <div className="mt-3">
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.14em]">{label}</span>
+        {copyText !== undefined && <CopyBtn text={copyText} small />}
       </div>
-      <pre style={{
-        background: C.preBg,
-        padding: "14px 18px",
-        borderRadius: 12,
-        border: `1px solid ${C.borderHi}`,
-        marginBottom: 10,
-        overflowX: "auto",
-        WebkitOverflowScrolling: "touch" as const,
-        fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
-        fontSize: ".82rem",
-        lineHeight: 1.6,
-        color: C.code,
-        whiteSpace: "pre" as const,
-      }}>
-        {children}
-      </pre>
+      <div className="relative rounded-xl border border-slate-800 bg-[#0f172a] overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-[#4574FF]/40 via-[#4574FF]/20 to-transparent" />
+        <pre
+          style={{
+            padding: "14px 18px",
+            overflowX: "auto",
+            WebkitOverflowScrolling: "touch",
+            fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+            fontSize: ".8rem",
+            lineHeight: 1.65,
+            color: "#cbd5e1",
+            whiteSpace: "pre",
+            margin: 0,
+          }}
+        >
+          {children}
+        </pre>
+      </div>
     </div>
   );
 }
 
-const METHOD_STYLES: Record<string, { color: string; bg: string; shadow: string; border: string }> = {
-  GET:    { color: "#38bdf8", bg: "linear-gradient(180deg,#0ea5e9 0%,#0284c7 100%)",   shadow: "0 3px 0 0 #075985, 0 4px 12px rgba(14,165,233,0.4), inset 0 1px 0 rgba(255,255,255,0.25)", border: "rgba(56,189,248,0.3)" },
-  POST:   { color: "#34d399", bg: "linear-gradient(180deg,#10b981 0%,#059669 100%)",   shadow: "0 3px 0 0 #047857, 0 4px 12px rgba(16,185,129,0.35), inset 0 1px 0 rgba(255,255,255,0.2)",  border: "rgba(52,211,153,0.3)" },
-  DELETE: { color: "#f87171", bg: "linear-gradient(180deg,#ef4444 0%,#dc2626 100%)",   shadow: "0 3px 0 0 #991b1b, 0 4px 12px rgba(248,113,113,0.35), inset 0 1px 0 rgba(255,255,255,0.2)",  border: "rgba(248,113,113,0.3)" },
-  PATCH:  { color: "#fb923c", bg: "linear-gradient(180deg,#f97316 0%,#ea580c 100%)",   shadow: "0 3px 0 0 #9a3412, 0 4px 12px rgba(251,146,60,0.35),  inset 0 1px 0 rgba(255,255,255,0.2)",  border: "rgba(251,146,60,0.3)" },
-};
-
-function Method({ m }: { m: "GET"|"POST"|"DELETE"|"PATCH" }) {
-  const s = METHOD_STYLES[m];
+function MethodBadge({ m }: { m: "GET" | "POST" | "DELETE" | "PATCH" }) {
+  const c = METHOD_COLORS[m];
   return (
-    <span style={{
-      display: "inline-flex",
-      alignItems: "center",
-      justifyContent: "center",
-      padding: "4px 12px",
-      borderRadius: 8,
-      fontSize: ".75rem",
-      fontWeight: 800,
-      fontFamily: "monospace",
-      letterSpacing: ".06em",
-      color: "#fff",
-      background: s.bg,
-      boxShadow: s.shadow,
-      border: `1px solid ${s.border}`,
-      flexShrink: 0,
-      userSelect: "none" as const,
-    }}>{m}</span>
+    <span
+      className="inline-flex items-center justify-center px-3 py-1 rounded-lg text-[11px] font-black font-mono tracking-widest border flex-shrink-0"
+      style={{ color: c.text, background: c.bg, borderColor: c.border }}
+    >
+      {m}
+    </span>
   );
 }
 
-function Endpoint({
-  method, path, note, payload, response, curl,
-}: {
-  method: "GET"|"POST"|"DELETE"|"PATCH";
+function Endpoint({ method, path, note, payload, response, curl }: {
+  method: "GET" | "POST" | "DELETE" | "PATCH";
   path: string;
   note: string;
   payload?: string;
@@ -135,29 +94,20 @@ function Endpoint({
   curl: string;
 }) {
   return (
-    <>
-      <div style={{
-        display: "flex",
-        gap: 12,
-        alignItems: "center",
-        background: C.bg2,
-        border: `1px solid ${C.borderHi}`,
-        borderRadius: 12,
-        padding: 14,
-        margin: "12px 0",
-        fontFamily: "'JetBrains Mono', monospace",
-        overflowX: "auto",
-        WebkitOverflowScrolling: "touch",
-        whiteSpace: "nowrap",
-      }}>
-        <Method m={method} />
-        <span style={{ fontSize: ".84rem", color: C.sky, fontFamily: "monospace" }}>{path}</span>
+    <div className="space-y-1">
+      {/* Endpoint row */}
+      <div className="flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 overflow-x-auto">
+        <MethodBadge m={method} />
+        <code className="text-[13px] font-mono text-[#4574FF] whitespace-nowrap">{path}</code>
       </div>
-      <div style={{ fontSize: ".88rem", color: C.textMid, margin: "8px 0 14px", lineHeight: 1.6 }}>{note}</div>
-      <Block label="Payload" copyText={payload ?? "No request body."}>{payload ?? "No request body."}</Block>
-      <Block label="Response" copyText={response}>{response}</Block>
-      <Block label="cURL" copyText={curl}>{curl}</Block>
-    </>
+      <p className="text-[13px] text-slate-600 leading-relaxed px-1 py-1">{note}</p>
+
+      {payload && (
+        <CodeBlock label="Payload" copyText={payload}>{payload}</CodeBlock>
+      )}
+      <CodeBlock label="Response" copyText={response}>{response}</CodeBlock>
+      <CodeBlock label="cURL" copyText={curl}>{curl}</CodeBlock>
+    </div>
   );
 }
 
@@ -249,193 +199,175 @@ const SECTIONS = [
 ];
 
 const ERROR_ROWS = [
-  { code: "200", label: "OK",               color: "#34d399", desc: "Success." },
-  { code: "400", label: "Bad Request",      color: "#fb923c", desc: "Missing or invalid parameters." },
-  { code: "401", label: "Unauthorized",     color: "#f87171", desc: "Invalid or missing API key." },
-  { code: "402", label: "Payment Required", color: "#fb923c", desc: "Insufficient balance." },
-  { code: "404", label: "Not Found",        color: "#f87171", desc: "Resource does not exist." },
-  { code: "409", label: "Conflict",         color: "#fb923c", desc: "No numbers available right now." },
-  { code: "429", label: "Rate Limited",     color: "#fb923c", desc: "60 requests per minute limit exceeded." },
-  { code: "500", label: "Server Error",     color: "#f87171", desc: "Internal error — contact support." },
+  { code: "200", label: "OK",               type: "success", desc: "Request succeeded." },
+  { code: "400", label: "Bad Request",      type: "warning", desc: "Missing or invalid parameters." },
+  { code: "401", label: "Unauthorized",     type: "error",   desc: "Invalid or missing API key." },
+  { code: "402", label: "Payment Required", type: "warning", desc: "Insufficient balance." },
+  { code: "404", label: "Not Found",        type: "error",   desc: "Resource does not exist." },
+  { code: "409", label: "Conflict",         type: "warning", desc: "No numbers available right now." },
+  { code: "429", label: "Rate Limited",     type: "warning", desc: "60 requests per minute limit exceeded." },
+  { code: "500", label: "Server Error",     type: "error",   desc: "Internal error — contact support." },
 ];
+
+const TYPE_COLORS: Record<string, { text: string; bg: string; border: string }> = {
+  success: { text: "#16a34a", bg: "#f0fdf4", border: "#bbf7d0" },
+  warning: { text: "#d97706", bg: "#fffbeb", border: "#fde68a" },
+  error:   { text: "#dc2626", bg: "#fef2f2", border: "#fecaca" },
+};
 
 export default function ApiDocs() {
   const [active, setActive] = useState("overview");
 
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "200px 1fr", minHeight: "calc(100vh - 56px)", gap: 0 }}
-      className="docs-app-grid"
-    >
+    <div className="flex gap-0" style={{ minHeight: "calc(100vh - 56px)" }}>
+
       {/* Sidebar */}
-      <aside style={{
-        background: C.bg,
-        borderRight: `1px solid ${C.border}`,
-        padding: "20px 14px",
-        position: "sticky",
-        top: 56,
-        height: "calc(100vh - 56px)",
-        overflowY: "auto",
-      }}
-        className="docs-sidebar"
-      >
-        <div style={{ fontSize: ".62rem", fontWeight: 800, color: C.textMid, textTransform: "uppercase", letterSpacing: ".18em", marginBottom: 12, paddingLeft: 10 }}>
-          Navigation
+      <aside className="hidden lg:flex w-52 flex-col flex-shrink-0 sticky top-0 h-screen overflow-y-auto">
+        <div className="p-4 pt-6">
+          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.18em] mb-3 px-2">
+            Navigation
+          </div>
+          <nav className="space-y-0.5">
+            {NAV.map(n => {
+              const isActive = active === n.id;
+              return (
+                <a
+                  key={n.id}
+                  href={`#${n.id}`}
+                  onClick={() => setActive(n.id)}
+                  className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-[13px] font-medium transition-all ${
+                    isActive
+                      ? "bg-[#4574FF]/10 text-[#4574FF] border border-[#4574FF]/15"
+                      : "text-slate-500 hover:text-slate-800 hover:bg-slate-100"
+                  }`}
+                >
+                  <n.icon className={`h-3.5 w-3.5 shrink-0 ${isActive ? "text-[#4574FF]" : "text-slate-400"}`} />
+                  {n.label}
+                  {isActive && <ChevronRight className="h-3 w-3 ml-auto" />}
+                </a>
+              );
+            })}
+          </nav>
+
+          {/* Quick note */}
+          <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-3">
+            <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Rate Limit</div>
+            <p className="text-[11px] text-slate-600 leading-relaxed">60 requests / minute per API key.</p>
+          </div>
         </div>
-        {NAV.map(n => (
-          <a
-            key={n.id}
-            href={`#${n.id}`}
-            onClick={() => setActive(n.id)}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-              padding: "8px 10px",
-              borderRadius: 8,
-              color: active === n.id ? C.sky : C.textMid,
-              background: active === n.id ? C.skyDim : "none",
-              border: active === n.id ? `1px solid ${C.skyBorder}` : "1px solid transparent",
-              textDecoration: "none",
-              fontSize: ".84rem",
-              fontWeight: active === n.id ? 700 : 400,
-              marginBottom: 2,
-              transition: "all .15s",
-            }}
-          >
-            {active === n.id && (
-              <span style={{ width: 4, height: 4, borderRadius: "50%", background: C.sky, flexShrink: 0 }} />
-            )}
-            {n.label}
-          </a>
-        ))}
       </aside>
 
       {/* Main content */}
-      <main style={{ padding: 34, overflowX: "hidden" }} className="docs-viewer">
+      <main className="flex-1 min-w-0 p-6 space-y-6 overflow-x-hidden">
 
         {/* Overview */}
-        <section id="overview" style={{
-          background: C.panel,
-          border: `1px solid ${C.skyBorder}`,
-          borderRadius: 16,
-          padding: 24,
-          marginBottom: 20,
-          boxShadow: "0 0 40px rgba(14,165,233,0.06), inset 0 1px 0 rgba(255,255,255,0.03)",
-          position: "relative",
-          overflow: "hidden",
-        }}>
-          <div style={{
-            position: "absolute", inset: 0, pointerEvents: "none",
-            background: "radial-gradient(ellipse at 50% -20%, rgba(14,165,233,0.08) 0%, transparent 65%)",
-          }} />
-          <div style={{ position: "relative" }}>
-            <div style={{ fontSize: ".65rem", fontWeight: 800, color: C.sky, textTransform: "uppercase", letterSpacing: ".18em", marginBottom: 10 }}>
-              Public API
-            </div>
-            <h1 style={{ fontSize: "2.2rem", fontWeight: 900, color: C.text, margin: "0 0 10px", lineHeight: 1.15,
-              background: "linear-gradient(135deg, #fff 0%, #94a3b8 100%)",
-              WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
-            }}>
-              SKY SMS API
-            </h1>
-            <p style={{ fontSize: ".9rem", color: C.textMid, margin: "0 0 16px" }}>
-              Full REST API for renting numbers, polling SMS, and managing your account. All responses are JSON.
-            </p>
-            <ul style={{ margin: "0 0 16px", padding: 0, listStyle: "none" }}>
-              {[
-                ["Number rental", "allocate temporary phone numbers instantly."],
-                ["SMS polling", "receive verification codes in real time."],
-                ["Service catalog", "list all supported apps and countries."],
-                ["Account management", "balance and API key operations."],
-              ].map(([bold, rest]) => (
-                <li key={bold} style={{ fontSize: ".88rem", color: C.textMid, marginBottom: 6, display: "flex", gap: 8, alignItems: "baseline" }}>
-                  <span style={{ width: 5, height: 5, borderRadius: "50%", background: C.sky, flexShrink: 0, marginTop: 6 }} />
-                  <span><span style={{ color: "#e2e8f0", fontWeight: 600 }}>{bold}</span>{" "}{rest}</span>
-                </li>
-              ))}
-            </ul>
-            <div style={{
-              background: C.bg2,
-              border: `1px solid ${C.borderHi}`,
-              borderRadius: 12,
-              padding: "14px 18px",
-              fontSize: ".84rem",
-              color: C.textMid,
-              lineHeight: 1.7,
-            }}>
-              <strong style={{ color: C.text }}>Authentication:</strong> Every request requires an{" "}
-              <code style={{ background: C.preBg, padding: "2px 7px", borderRadius: 5, fontFamily: "monospace", fontSize: ".8rem", color: C.sky }}>X-API-Key</code>{" "}
-              header. Generate yours in <strong style={{ color: C.text }}>Settings → API Keys</strong>.
-              <br />
-              <strong style={{ color: C.text }}>Rate limit:</strong> 60 requests / minute. Exceeding returns{" "}
-              <code style={{ background: C.preBg, padding: "2px 7px", borderRadius: 5, fontFamily: "monospace", fontSize: ".8rem", color: "#fb923c" }}>429</code>.
-              <br />
-              <strong style={{ color: C.text }}>Base URL:</strong>{" "}
-              <code style={{ background: C.preBg, padding: "2px 7px", borderRadius: 5, fontFamily: "monospace", fontSize: ".8rem", color: C.sky }}>{BASE}</code>
+        <section id="overview">
+          <div className="rounded-2xl border border-[#4574FF]/15 bg-gradient-to-br from-[#4574FF]/5 to-transparent overflow-hidden relative shadow-sm">
+            <div className="absolute inset-0 pointer-events-none" style={{
+              backgroundImage: "linear-gradient(rgba(69,116,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(69,116,255,0.04) 1px, transparent 1px)",
+              backgroundSize: "40px 40px",
+            }} />
+            <div className="relative p-7">
+              {/* Header */}
+              <div className="flex items-start gap-4 mb-6">
+                <div className="h-12 w-12 rounded-2xl bg-[#4574FF] flex items-center justify-center shadow-lg flex-shrink-0">
+                  <Terminal className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <div className="text-[10px] font-bold text-[#4574FF] uppercase tracking-[0.18em] mb-1">Public API · v1</div>
+                  <h1 className="font-display text-[1.9rem] font-extrabold text-slate-900 leading-tight">SKY SMS API</h1>
+                  <p className="text-[14px] text-slate-500 mt-1">Full REST API for renting numbers, polling SMS, and managing your account.</p>
+                </div>
+              </div>
+
+              {/* Feature pills */}
+              <div className="flex flex-wrap gap-2 mb-6">
+                {[
+                  { icon: Zap,      label: "Instant allocation" },
+                  { icon: Code2,    label: "JSON responses" },
+                  { icon: Lock,     label: "API key auth" },
+                  { icon: Globe,    label: "REST endpoints" },
+                ].map(({ icon: Icon, label }) => (
+                  <div key={label} className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-600 shadow-sm">
+                    <Icon className="h-3 w-3 text-[#4574FF]" />
+                    {label}
+                  </div>
+                ))}
+              </div>
+
+              {/* Auth box */}
+              <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+                <div className="flex items-start gap-3">
+                  <div className="h-8 w-8 rounded-lg bg-[#4574FF]/10 border border-[#4574FF]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Lock className="h-4 w-4 text-[#4574FF]" />
+                  </div>
+                  <div className="text-[13px] text-slate-700 leading-relaxed">
+                    <p className="mb-1">
+                      <strong className="text-slate-900">Authentication:</strong> Every request requires an{" "}
+                      <code className="bg-slate-100 text-[#4574FF] px-1.5 py-0.5 rounded text-[12px] font-mono">X-API-Key</code>{" "}
+                      header. Generate yours in{" "}
+                      <strong className="text-slate-900">Settings → API Keys</strong>.
+                    </p>
+                    <p>
+                      <strong className="text-slate-900">Base URL:</strong>{" "}
+                      <code className="bg-slate-100 text-[#4574FF] px-1.5 py-0.5 rounded text-[12px] font-mono">{BASE}</code>
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
         {/* Endpoint sections */}
         {SECTIONS.map(sec => (
-          <section key={sec.id} id={sec.id} style={{
-            background: C.panel,
-            border: `1px solid ${C.border}`,
-            borderRadius: 16,
-            padding: 22,
-            marginBottom: 20,
-            boxShadow: "0 2px 16px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.02)",
-          }}>
-            <h2 style={{ fontSize: "1.2rem", fontWeight: 800, color: C.text, margin: "0 0 4px", display: "flex", alignItems: "center", gap: 10 }}>
-              <span style={{ width: 3, height: 18, borderRadius: 2, background: "linear-gradient(180deg, #38bdf8, #2563eb)", display: "inline-block", flexShrink: 0 }} />
-              {sec.title}
-            </h2>
-            {sec.endpoints.map((ep, i) => (
-              <div key={i} style={{ borderTop: i > 0 ? `1px solid ${C.border}` : "none", paddingTop: i > 0 ? 20 : 0, marginTop: i > 0 ? 20 : 0 }}>
-                <Endpoint {...ep} />
+          <section key={sec.id} id={sec.id}>
+            <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+              {/* Section header */}
+              <div className="flex items-center gap-3 px-6 py-4 border-b border-slate-100 bg-slate-50/50">
+                <div className="w-1 h-5 rounded-full bg-gradient-to-b from-[#4574FF] to-[#00c4c8] flex-shrink-0" />
+                <h2 className="font-display text-[15px] font-bold text-slate-900">{sec.title}</h2>
+                <span className="ml-auto text-[11px] font-semibold text-slate-400 bg-slate-100 rounded-lg px-2 py-0.5">
+                  {sec.endpoints.length} endpoint{sec.endpoints.length !== 1 ? "s" : ""}
+                </span>
               </div>
-            ))}
+
+              <div className="divide-y divide-slate-100">
+                {sec.endpoints.map((ep, i) => (
+                  <div key={i} className="p-5">
+                    <Endpoint {...ep} />
+                  </div>
+                ))}
+              </div>
+            </div>
           </section>
         ))}
 
-        {/* Error codes */}
-        <section id="errors" style={{
-          background: C.panel,
-          border: `1px solid ${C.border}`,
-          borderRadius: 16,
-          padding: 22,
-          marginBottom: 20,
-          boxShadow: "0 2px 16px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.02)",
-        }}>
-          <h2 style={{ fontSize: "1.2rem", fontWeight: 800, color: C.text, margin: "0 0 16px", display: "flex", alignItems: "center", gap: 10 }}>
-            <span style={{ width: 3, height: 18, borderRadius: 2, background: "linear-gradient(180deg, #38bdf8, #2563eb)", display: "inline-block", flexShrink: 0 }} />
-            Error Codes
-          </h2>
-          <div style={{ borderRadius: 12, border: `1px solid ${C.borderHi}`, overflow: "hidden" }}>
-            {ERROR_ROWS.map((row, i) => (
-              <div key={row.code} style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 16,
-                padding: "11px 16px",
-                borderTop: i > 0 ? `1px solid ${C.border}` : "none",
-                background: i % 2 === 0 ? C.bg2 : C.surface,
-              }}>
-                <span style={{
-                  fontFamily: "monospace", fontWeight: 800, fontSize: ".84rem",
-                  color: "#fff",
-                  background: `${row.color}22`,
-                  border: `1px solid ${row.color}44`,
-                  padding: "2px 8px",
-                  borderRadius: 6,
-                  minWidth: 44,
-                  textAlign: "center" as const,
-                  flexShrink: 0,
-                }}>{row.code}</span>
-                <span style={{ fontSize: ".84rem", fontWeight: 600, color: C.text, width: 130, flexShrink: 0 }}>{row.label}</span>
-                <span style={{ fontSize: ".82rem", color: C.textMid }}>{row.desc}</span>
-              </div>
-            ))}
+        {/* Error Codes */}
+        <section id="errors">
+          <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+            <div className="flex items-center gap-3 px-6 py-4 border-b border-slate-100 bg-slate-50/50">
+              <div className="w-1 h-5 rounded-full bg-gradient-to-b from-[#4574FF] to-[#00c4c8] flex-shrink-0" />
+              <h2 className="font-display text-[15px] font-bold text-slate-900">Error Codes</h2>
+            </div>
+
+            <div className="divide-y divide-slate-100">
+              {ERROR_ROWS.map((row) => {
+                const c = TYPE_COLORS[row.type];
+                return (
+                  <div key={row.code} className="flex items-center gap-4 px-5 py-3.5 hover:bg-slate-50 transition-colors">
+                    <span
+                      className="font-mono font-black text-[12px] rounded-lg px-2.5 py-1 border flex-shrink-0 w-12 text-center"
+                      style={{ color: c.text, background: c.bg, borderColor: c.border }}
+                    >
+                      {row.code}
+                    </span>
+                    <span className="text-[13px] font-semibold text-slate-700 w-36 flex-shrink-0">{row.label}</span>
+                    <span className="text-[13px] text-slate-500">{row.desc}</span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </section>
 
@@ -443,9 +375,7 @@ export default function ApiDocs() {
 
       <style>{`
         @media (max-width: 900px) {
-          .docs-app-grid { grid-template-columns: 1fr !important; }
           .docs-sidebar { display: none !important; }
-          .docs-viewer { padding: 16px !important; }
         }
       `}</style>
     </div>

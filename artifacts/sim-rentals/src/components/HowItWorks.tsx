@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { UserPlus, Wallet, Smartphone, MessageSquare, Check } from "lucide-react";
 
-const PALETTE: Record<string, { accent: string; bg: string; text: string; border: string }> = {
-  blue:    { accent: "bg-blue-500",    bg: "bg-blue-500/10",    text: "text-blue-400",    border: "border-blue-500/20" },
-  violet:  { accent: "bg-violet-500",  bg: "bg-violet-500/10",  text: "text-violet-400",  border: "border-violet-500/20" },
-  sky:     { accent: "bg-sky-400",     bg: "bg-sky-400/10",     text: "text-sky-400",     border: "border-sky-400/20" },
-  emerald: { accent: "bg-emerald-500", bg: "bg-emerald-500/10", text: "text-emerald-400", border: "border-emerald-500/20" },
+const PALETTE: Record<string, { accent: string; bg: string; text: string; border: string; darkBg: string; darkBorder: string }> = {
+  blue:    { accent: "bg-blue-500",    bg: "bg-blue-50",    text: "text-blue-600",    border: "border-blue-200", darkBg: "bg-blue-500/10",    darkBorder: "border-blue-400/25" },
+  violet:  { accent: "bg-violet-500",  bg: "bg-violet-50",  text: "text-violet-600",  border: "border-violet-200", darkBg: "bg-violet-500/10",  darkBorder: "border-violet-400/25" },
+  sky:     { accent: "bg-sky-400",     bg: "bg-sky-50",     text: "text-sky-600",     border: "border-sky-200", darkBg: "bg-sky-400/10",     darkBorder: "border-sky-400/25" },
+  emerald: { accent: "bg-emerald-500", bg: "bg-emerald-50", text: "text-emerald-600", border: "border-emerald-200", darkBg: "bg-emerald-500/10", darkBorder: "border-emerald-400/25" },
 };
 
+/* Dark mockup backgrounds for the mini UI previews */
 function SignUpMockup() {
   const [typed, setTyped] = useState("");
   const [done, setDone] = useState(false);
@@ -23,9 +24,9 @@ function SignUpMockup() {
     return () => clearInterval(t);
   }, []);
   return (
-    <div className="rounded-2xl border border-white/[0.08] bg-[#070c1a] p-4 w-full select-none">
+    <div className="rounded-2xl border border-slate-700 bg-[#0f172a] p-4 w-full select-none">
       <div className="text-[10px] font-bold text-white mb-3 text-center">Sign in to SKY SMS</div>
-      <div className="h-8 rounded-xl border border-white/[0.1] bg-white/[0.03] flex items-center px-3 mb-2.5">
+      <div className="h-8 rounded-xl border border-white/[0.1] bg-white/[0.04] flex items-center px-3 mb-2.5">
         <span className="text-[10.5px] text-slate-400 font-mono">{typed}<span className={`inline-block w-0.5 h-2.5 bg-blue-400 ml-0.5 ${done ? "opacity-0" : "animate-pulse"}`} /></span>
       </div>
       <div className={`h-7 rounded-xl text-[10.5px] font-bold flex items-center justify-center transition-all duration-500 ${done ? "bg-blue-600 text-white" : "bg-white/[0.05] text-slate-600"}`}>
@@ -55,7 +56,7 @@ function WalletMockup() {
   }, []);
   const pct = Math.min(100, (amount / target) * 100);
   return (
-    <div className="rounded-2xl border border-white/[0.08] bg-[#070c1a] p-4 w-full select-none">
+    <div className="rounded-2xl border border-slate-700 bg-[#0f172a] p-4 w-full select-none">
       <div className="text-[9.5px] text-slate-500 mb-1">Current Balance</div>
       <div className="text-[22px] font-black text-white mb-3 font-mono tabular-nums">${amount.toFixed(2)}</div>
       <div className="h-1.5 rounded-full bg-white/[0.06] mb-3 overflow-hidden">
@@ -83,15 +84,15 @@ function RentMockup() {
     return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
   }, []);
   return (
-    <div className="rounded-2xl border border-white/[0.08] bg-[#070c1a] p-4 w-full select-none">
+    <div className="rounded-2xl border border-slate-700 bg-[#0f172a] p-4 w-full select-none">
       <div className="text-[9.5px] text-slate-500 mb-2.5">Pick your setup</div>
       <div className={`h-7 rounded-xl border mb-2 flex items-center px-3 transition-all duration-300 ${step >= 1 ? "border-sky-500/30 bg-sky-500/10" : "border-white/[0.06] bg-white/[0.03]"}`}>
-        <span className="text-[10.5px] font-semibold">{step >= 1 ? "📱 Telegram" : <span className="text-slate-600">Select service…</span>}</span>
+        <span className="text-[10.5px] font-semibold text-white">{step >= 1 ? "📱 Telegram" : <span className="text-slate-600">Select service…</span>}</span>
       </div>
       <div className={`h-7 rounded-xl border mb-3 flex items-center px-3 transition-all duration-300 ${step >= 2 ? "border-sky-500/30 bg-sky-500/10" : "border-white/[0.06] bg-white/[0.03]"}`}>
-        <span className="text-[10.5px] font-semibold">{step >= 2 ? countries[country] : <span className="text-slate-600">Select country…</span>}</span>
+        <span className="text-[10.5px] font-semibold text-white">{step >= 2 ? countries[country] : <span className="text-slate-600">Select country…</span>}</span>
       </div>
-      <div className={`h-8 rounded-xl text-[10.5px] font-bold flex items-center justify-center transition-all duration-500 ${step >= 2 ? "bg-sky-500 text-white shadow-[0_0_16px_rgba(56,189,248,0.3)]" : "bg-white/[0.05] text-slate-600"}`}>
+      <div className={`h-8 rounded-xl text-[10.5px] font-bold flex items-center justify-center transition-all duration-500 ${step >= 2 ? "bg-[#4574FF] text-white" : "bg-white/[0.05] text-slate-600"}`}>
         {step >= 3 ? "✓ Number rented!" : "Rent number →"}
       </div>
     </div>
@@ -108,7 +109,7 @@ function SmsMockup() {
   }, []);
   const handleCopy = () => { setCopied(true); setTimeout(() => setCopied(false), 2000); };
   return (
-    <div className="rounded-2xl border border-white/[0.08] bg-[#070c1a] p-4 w-full select-none">
+    <div className="rounded-2xl border border-slate-700 bg-[#0f172a] p-4 w-full select-none">
       <div className="text-[9.5px] text-slate-500 mb-2.5">Incoming SMS</div>
       <div className="rounded-xl bg-white/[0.04] border border-white/[0.06] p-2.5 mb-3">
         <div className="text-[9px] text-slate-600 mb-1">+1 234 567 8901</div>
@@ -128,30 +129,26 @@ function SmsMockup() {
 }
 
 const STEPS = [
-  { number: "01", icon: UserPlus,     title: "Create account",   desc: "Sign in with Google — no verification required.", color: "blue",    mockup: <SignUpMockup /> },
-  { number: "02", icon: Wallet,       title: "Add credits",      desc: "Top up with Bitcoin, USDT, ETH, or 30+ other coins.", color: "violet", mockup: <WalletMockup /> },
-  { number: "03", icon: Smartphone,   title: "Rent a number",    desc: "Pick a service and country. Get a real number instantly.", color: "sky",   mockup: <RentMockup /> },
+  { number: "01", icon: UserPlus,      title: "Create account",    desc: "Sign in with Google — no verification required.", color: "blue",    mockup: <SignUpMockup /> },
+  { number: "02", icon: Wallet,        title: "Add credits",       desc: "Top up with Bitcoin, USDT, ETH, or 30+ other coins.", color: "violet", mockup: <WalletMockup /> },
+  { number: "03", icon: Smartphone,    title: "Rent a number",     desc: "Pick a service and country. Get a real number instantly.", color: "sky",   mockup: <RentMockup /> },
   { number: "04", icon: MessageSquare, title: "Receive your code", desc: "SMS code appears on the dashboard. Copy and verify.", color: "emerald", mockup: <SmsMockup /> },
 ];
 
 export default function HowItWorks() {
   return (
-    <section id="how-it-works" className="py-24 relative overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full opacity-20"
-          style={{ background: "radial-gradient(ellipse, rgba(56,189,248,0.12) 0%, transparent 70%)", filter: "blur(80px)" }} />
-      </div>
-
+    <section id="how-it-works" className="py-10 relative overflow-hidden">
       <div className="mx-auto max-w-6xl px-6 relative z-10">
-        <div className="text-center mb-14">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.07] bg-white/[0.03] px-4 py-2 text-[11px] font-bold uppercase tracking-widest text-slate-500 mb-4">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/50 bg-white/35 backdrop-blur-sm px-4 py-2 text-[11px] font-bold uppercase tracking-widest text-[#0a1628]/70 mb-4 shadow-sm">
             How It Works
           </div>
-          <h2 className="text-[2.2rem] sm:text-[2.8rem] font-black text-white tracking-tight leading-tight">
+          <h2 className="text-[2.2rem] sm:text-[2.8rem] font-black text-[#0a1628] tracking-tight leading-tight">
             Up and running in{" "}
-            <span className="bg-gradient-to-r from-sky-400 to-blue-500 bg-clip-text text-transparent">minutes</span>
+            <span className="text-[#4574FF]">minutes</span>
           </h2>
-          <p className="mt-4 text-[15px] text-slate-400 max-w-md mx-auto">
+          <p className="mt-4 text-[15px] text-slate-700 max-w-md mx-auto">
             No apps to install, no contracts to sign. Four simple steps and you're done.
           </p>
         </div>
@@ -160,17 +157,20 @@ export default function HowItWorks() {
           {STEPS.map((step) => {
             const p = PALETTE[step.color];
             return (
-              <div key={step.number} className={`rounded-2xl border ${p.border} bg-white/[0.02] p-5 flex flex-col gap-4`}>
+              <div
+                key={step.number}
+                className="rounded-2xl bg-white/55 backdrop-blur-sm border border-white/70 p-5 flex flex-col gap-4 shadow-sm hover:shadow-md hover:bg-white/70 transition-all duration-200"
+              >
                 <div className="flex items-center gap-3">
                   <div className={`h-9 w-9 rounded-xl border flex items-center justify-center shrink-0 ${p.bg} ${p.border}`}>
                     <step.icon className={`h-4 w-4 ${p.text}`} />
                   </div>
                   <div>
                     <div className={`text-[10px] font-black tracking-widest uppercase mb-0.5 ${p.text}`}>{step.number}</div>
-                    <div className="text-[13.5px] font-bold text-white">{step.title}</div>
+                    <div className="text-[13.5px] font-bold text-slate-900">{step.title}</div>
                   </div>
                 </div>
-                <p className="text-[12.5px] text-slate-400 leading-relaxed">{step.desc}</p>
+                <p className="text-[12.5px] text-slate-600 leading-relaxed">{step.desc}</p>
                 <div className="rounded-xl overflow-hidden">
                   {step.mockup}
                 </div>
