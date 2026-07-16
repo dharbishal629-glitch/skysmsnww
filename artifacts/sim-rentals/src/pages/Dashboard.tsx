@@ -99,8 +99,11 @@ export default function Dashboard() {
 
       {/* Header */}
       <div>
-        <h1 className="font-display text-[22px] font-bold text-white tracking-tight">
-          {t("welcomeBack")}{user?.name ? `, ${user.name.split(" ")[0]}` : ""}
+        <h1 className="font-display text-[22px] font-bold tracking-tight">
+          <span className="text-white">{t("welcomeBack")}</span>
+          {user?.name ? (
+            <span className="bg-gradient-to-r from-sky-300 to-blue-400 bg-clip-text text-transparent">{`, ${user.name.split(" ")[0]}`}</span>
+          ) : ""}
         </h1>
         <p className="text-[13px] text-slate-500 mt-0.5">{t("recentActivity")}</p>
       </div>
@@ -109,9 +112,10 @@ export default function Dashboard() {
       <div className="grid grid-cols-2 gap-3">
         {stats.map(({ label, value, sub, link }) => (
           <Link key={label} href={link}>
-            <div className="group rounded-2xl border border-white/[0.06] bg-white/[0.02] p-5 cursor-pointer hover:border-white/[0.12] hover:bg-white/[0.04] transition-all duration-200">
+            <div className="group rounded-2xl border border-white/[0.06] bg-white/[0.02] p-5 cursor-pointer hover:border-sky-500/20 hover:bg-sky-500/[0.02] transition-all duration-200 relative overflow-hidden">
+              <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-sky-500/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-600 mb-2">{label}</p>
-              <p className="font-display text-[28px] font-black text-white leading-none tracking-tight">{value}</p>
+              <p className="font-display text-[28px] font-black leading-none tracking-tight bg-gradient-to-br from-white to-sky-300 bg-clip-text text-transparent">{value}</p>
               <p className="text-[11px] text-slate-600 mt-1.5">{sub}</p>
             </div>
           </Link>
@@ -193,7 +197,8 @@ export default function Dashboard() {
       {/* Quick Actions */}
       <div className="grid grid-cols-2 gap-3">
         <Link href="/rent">
-          <div className="flex items-center gap-3 p-4 rounded-2xl border border-white/[0.08] bg-white/[0.02] hover:bg-white/[0.05] hover:border-white/[0.14] transition-all duration-200 cursor-pointer group">
+          <div className="flex items-center gap-3 p-4 rounded-2xl border border-white/[0.08] bg-white/[0.02] hover:bg-sky-500/[0.05] hover:border-sky-500/25 transition-all duration-200 cursor-pointer group relative overflow-hidden">
+            <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-sky-500/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <div className="h-9 w-9 rounded-xl border border-white/[0.1] bg-white/[0.05] flex items-center justify-center shrink-0 group-hover:border-sky-500/30 group-hover:bg-sky-500/[0.1] transition-all">
               <Phone className="h-4 w-4 text-slate-400 group-hover:text-sky-400 transition-colors" />
             </div>
@@ -204,7 +209,8 @@ export default function Dashboard() {
           </div>
         </Link>
         <Link href="/payments">
-          <div className="flex items-center gap-3 p-4 rounded-2xl border border-white/[0.08] bg-white/[0.02] hover:bg-white/[0.05] hover:border-white/[0.14] transition-all duration-200 cursor-pointer group">
+          <div className="flex items-center gap-3 p-4 rounded-2xl border border-white/[0.08] bg-white/[0.02] hover:bg-sky-500/[0.05] hover:border-sky-500/25 transition-all duration-200 cursor-pointer group relative overflow-hidden">
+            <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-sky-500/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <div className="h-9 w-9 rounded-xl border border-white/[0.1] bg-white/[0.05] flex items-center justify-center shrink-0 group-hover:border-sky-500/30 group-hover:bg-sky-500/[0.1] transition-all">
               <Plus className="h-4 w-4 text-slate-400 group-hover:text-sky-400 transition-colors" />
             </div>

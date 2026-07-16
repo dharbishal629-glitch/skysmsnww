@@ -265,13 +265,17 @@ export default function Landing({ onLogin }: { onLogin?: () => void }) {
 
       {/* ── Ambient Background ── */}
       <div className="pointer-events-none fixed inset-0 z-0" aria-hidden>
-        <div className="absolute top-[-10%] left-[-8%] w-[800px] h-[800px] rounded-full"
-          style={{ background: "radial-gradient(ellipse at center, rgba(14,165,233,0.08) 0%, rgba(37,99,235,0.04) 45%, transparent 70%)", filter: "blur(100px)" }} />
-        <div className="absolute bottom-[-10%] right-[-8%] w-[600px] h-[600px] rounded-full"
-          style={{ background: "radial-gradient(ellipse at center, rgba(99,102,241,0.07) 0%, rgba(14,165,233,0.03) 45%, transparent 70%)", filter: "blur(90px)" }} />
-        <div className="absolute top-[55%] left-[35%] w-[400px] h-[400px] rounded-full"
-          style={{ background: "radial-gradient(ellipse at center, rgba(14,165,233,0.04) 0%, transparent 70%)", filter: "blur(80px)" }} />
-        <div className="absolute inset-0 grid-pattern opacity-50" />
+        {/* Grid lines (draxon-style dark version) */}
+        <div className="absolute inset-0 hero-grid" />
+        {/* Top gradient bloom */}
+        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 100% 55% at 50% -5%, rgba(14,165,233,0.15) 0%, rgba(37,99,235,0.07) 40%, transparent 70%)" }} />
+        {/* Side orbs */}
+        <div className="absolute top-[8%] left-[-8%] w-[700px] h-[700px] rounded-full"
+          style={{ background: "radial-gradient(ellipse at center, rgba(14,165,233,0.07) 0%, transparent 70%)", filter: "blur(90px)" }} />
+        <div className="absolute bottom-[-12%] right-[-8%] w-[600px] h-[600px] rounded-full"
+          style={{ background: "radial-gradient(ellipse at center, rgba(99,102,241,0.06) 0%, transparent 70%)", filter: "blur(80px)" }} />
+        <div className="absolute top-[45%] right-[20%] w-[350px] h-[350px] rounded-full"
+          style={{ background: "radial-gradient(ellipse at center, rgba(14,165,233,0.04) 0%, transparent 70%)", filter: "blur(70px)" }} />
       </div>
 
       {/* ── Navigation ── */}
@@ -319,17 +323,18 @@ export default function Landing({ onLogin }: { onLogin?: () => void }) {
             {/* Left: Text */}
             <div>
               <Reveal variant="up" delay={0}>
-                <div className="inline-flex items-center gap-2 rounded-full border border-sky-500/25 bg-sky-500/[0.07] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-sky-400 mb-7">
-                  <span className="h-1.5 w-1.5 rounded-full bg-sky-400 animate-pulse" />
+                <div className="inline-flex items-center gap-2 rounded-full border border-sky-500/30 bg-sky-500/[0.08] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-sky-300 mb-7 shimmer-border">
+                  <span className="h-1.5 w-1.5 rounded-full bg-sky-400 status-pulse" />
                   Live numbers · 50+ platforms
                 </div>
               </Reveal>
 
               <Reveal variant="up" delay={80}>
                 <h1 className="font-display text-[clamp(2.4rem,5vw,4rem)] font-extrabold leading-[1.06] tracking-[-0.03em] text-white mb-6">
-                  Receive SMS codes{" "}
-                  <span className="bg-gradient-to-r from-sky-400 via-sky-300 to-blue-400 bg-clip-text text-transparent">
-                    in under 10 seconds
+                  Instant Virtual Numbers{" "}
+                  <br className="hidden sm:block" />
+                  <span className="bg-gradient-to-r from-sky-300 via-blue-300 to-sky-400 bg-clip-text text-transparent">
+                    for Any Service
                   </span>
                 </h1>
               </Reveal>
@@ -380,9 +385,35 @@ export default function Landing({ onLogin }: { onLogin?: () => void }) {
               </Reveal>
             </div>
 
-            {/* Right: Live Dashboard Mockup */}
+            {/* Right: Live Dashboard Mockup + floating badges */}
             <Reveal variant="up" delay={120}>
-              <LiveDashboardMockup />
+              <div className="relative pt-10 pb-8 sm:pt-6 sm:pb-6">
+                {/* Floating badge — SMS received */}
+                <div className="absolute top-0 -left-2 sm:-left-6 z-20 float-badge hidden sm:flex">
+                  <div className="flex items-center gap-2.5 rounded-2xl border border-white/[0.12] bg-[#080e1c]/92 backdrop-blur-md px-3.5 py-2.5 shadow-2xl">
+                    <div className="h-7 w-7 rounded-full bg-emerald-500/15 border border-emerald-500/25 flex items-center justify-center shrink-0">
+                      <MessageSquare className="h-3.5 w-3.5 text-emerald-400" />
+                    </div>
+                    <div>
+                      <div className="text-[11px] font-bold text-white leading-tight">SMS received</div>
+                      <div className="text-[10px] text-slate-500">Telegram · just now</div>
+                    </div>
+                  </div>
+                </div>
+                {/* Floating badge — Code delivered */}
+                <div className="absolute bottom-0 -right-2 sm:-right-6 z-20 float-badge-2 hidden sm:flex">
+                  <div className="flex items-center gap-2.5 rounded-2xl border border-white/[0.12] bg-[#080e1c]/92 backdrop-blur-md px-3.5 py-2.5 shadow-2xl">
+                    <div className="h-7 w-7 rounded-full bg-sky-500/15 border border-sky-500/25 flex items-center justify-center shrink-0">
+                      <CheckCircle2 className="h-3.5 w-3.5 text-sky-400" />
+                    </div>
+                    <div>
+                      <div className="text-[10px] text-slate-500 leading-tight">Code delivered</div>
+                      <div className="text-[13px] font-bold font-mono text-sky-300 leading-tight">481 293</div>
+                    </div>
+                  </div>
+                </div>
+                <LiveDashboardMockup />
+              </div>
             </Reveal>
           </div>
 
@@ -438,7 +469,10 @@ export default function Landing({ onLogin }: { onLogin?: () => void }) {
             <Reveal variant="up">
               <div className="text-center mb-16">
                 <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-sky-500 mb-3">Platform Features</p>
-                <h2 className="font-display text-[clamp(1.8rem,4vw,2.8rem)] font-bold text-white mb-3">Built for speed & privacy</h2>
+                <h2 className="font-display text-[clamp(1.8rem,4vw,2.8rem)] font-bold mb-3">
+                  <span className="text-white">Built for </span>
+                  <span className="bg-gradient-to-r from-sky-400 to-blue-400 bg-clip-text text-transparent">speed & privacy</span>
+                </h2>
                 <p className="text-[15px] text-slate-400 max-w-md mx-auto">Everything you need, nothing you don't. SKY SMS is built to be fast, reliable, and completely private.</p>
               </div>
             </Reveal>
@@ -469,7 +503,10 @@ export default function Landing({ onLogin }: { onLogin?: () => void }) {
             <Reveal variant="up">
               <div className="text-center mb-14">
                 <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-sky-500 mb-3">Pricing</p>
-                <h2 className="font-display text-[clamp(1.8rem,4vw,2.8rem)] font-bold text-white mb-3">Pay only for what you use</h2>
+                <h2 className="font-display text-[clamp(1.8rem,4vw,2.8rem)] font-bold mb-3">
+                  <span className="text-white">Pay only for </span>
+                  <span className="bg-gradient-to-r from-sky-400 to-blue-400 bg-clip-text text-transparent">what you use</span>
+                </h2>
                 <p className="text-[15px] text-slate-400">No subscriptions. No hidden fees. Top up any amount and spend it when you need it.</p>
               </div>
             </Reveal>
@@ -527,7 +564,10 @@ export default function Landing({ onLogin }: { onLogin?: () => void }) {
             <Reveal variant="up">
               <div className="text-center mb-14">
                 <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-sky-500 mb-3">FAQ</p>
-                <h2 className="font-display text-[clamp(1.8rem,4vw,2.8rem)] font-bold text-white">Common questions</h2>
+                <h2 className="font-display text-[clamp(1.8rem,4vw,2.8rem)] font-bold">
+                  <span className="text-white">Common </span>
+                  <span className="bg-gradient-to-r from-sky-400 to-blue-400 bg-clip-text text-transparent">questions</span>
+                </h2>
               </div>
             </Reveal>
 
@@ -569,9 +609,9 @@ export default function Landing({ onLogin }: { onLogin?: () => void }) {
                 <div className="absolute inset-0 grid-pattern opacity-30" />
                 <div className="relative z-10">
                   <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-sky-500 mb-5">Get started today</p>
-                  <h2 className="font-display text-[clamp(2rem,4vw,3.2rem)] font-black text-white mb-5 leading-tight">
-                    Your first number takes{" "}
-                    <span className="bg-gradient-to-r from-sky-400 to-blue-400 bg-clip-text text-transparent">10 seconds.</span>
+                  <h2 className="font-display text-[clamp(2rem,4vw,3.2rem)] font-black mb-5 leading-tight">
+                    <span className="text-white">Your first number takes </span>
+                    <span className="bg-gradient-to-r from-sky-300 via-sky-400 to-blue-400 bg-clip-text text-transparent">10 seconds.</span>
                   </h2>
                   <p className="text-[15px] text-slate-400 mb-8 max-w-md mx-auto">
                     No account approvals. No identity checks. Sign in and rent your first number right away.

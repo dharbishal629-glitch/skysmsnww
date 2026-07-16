@@ -163,8 +163,8 @@ export default function Support() {
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-sky-500 mb-1">Help Center</p>
-          <h1 className="text-xl font-bold text-white flex items-center gap-2.5">
-            {t("supportTitle")}
+          <h1 className="font-display text-[22px] font-bold tracking-tight flex items-center gap-2.5">
+            <span className="bg-gradient-to-r from-white to-sky-300 bg-clip-text text-transparent">{t("supportTitle")}</span>
             {unreadCount > 0 && (
               <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-400">
                 {unreadCount} new

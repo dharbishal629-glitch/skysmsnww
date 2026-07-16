@@ -175,10 +175,10 @@ function NavItem({ href, label, icon: Icon, active, onClick, badge }: {
       <span
         onClick={onClick}
         className={`group flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-150 cursor-pointer select-none ${
-          active ? "bg-white/[0.08] text-white" : "text-slate-400 hover:bg-white/[0.04] hover:text-white"
+          active ? "bg-sky-500/[0.1] text-white" : "text-slate-400 hover:bg-white/[0.04] hover:text-white"
         }`}
       >
-        <Icon className={`h-[15px] w-[15px] shrink-0 transition-colors ${active ? "text-white" : "text-slate-500 group-hover:text-slate-300"}`} />
+        <Icon className={`h-[15px] w-[15px] shrink-0 transition-colors ${active ? "text-sky-400" : "text-slate-500 group-hover:text-slate-300"}`} />
         <span className="flex-1 leading-none">{label}</span>
         {badge && (
           <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-2 py-0.5">
@@ -279,7 +279,7 @@ function SidebarContent({ onNav, onSearch }: { onNav?: () => void; onSearch?: ()
       {/* Add funds button */}
       <div className="px-3 pb-3 shrink-0">
         <Link href="/payments">
-          <span onClick={onNav} className="flex items-center gap-2 w-full h-11 px-4 rounded-xl bg-white/[0.07] hover:bg-white/[0.11] border border-white/[0.08] text-[13px] font-bold text-white transition-all cursor-pointer" data-testid="link-buy-credits">
+          <span onClick={onNav} className="flex items-center gap-2 w-full h-11 px-4 rounded-xl bg-sky-500/[0.09] hover:bg-sky-500/[0.15] border border-sky-500/25 text-[13px] font-bold text-white transition-all cursor-pointer" data-testid="link-buy-credits">
             <Plus className="h-4 w-4 shrink-0" />
             <span className="flex-1">{t("addFunds")}</span>
             {isLoading ? (
@@ -352,7 +352,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <SearchPalette open={searchOpen} onClose={() => setSearchOpen(false)} />
 
       {/* Desktop sidebar */}
-      <aside className="hidden md:flex w-[240px] flex-col fixed inset-y-0 left-0 z-30 border-r border-white/[0.05] bg-[#0d1117]">
+      <aside className="hidden md:flex w-[240px] flex-col fixed inset-y-0 left-0 z-30 border-r border-white/[0.06] bg-[#0d1117] sidebar-sky">
         <SidebarContent onSearch={() => setSearchOpen(true)} />
       </aside>
 
@@ -360,7 +360,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       {mobileOpen && (
         <div className="fixed inset-0 z-40 flex md:hidden">
           <div className={`absolute inset-0 bg-black/70 backdrop-blur-sm ${closing ? "overlay-fade-out" : "overlay-fade-in"}`} onClick={closeSidebar} />
-          <aside className={`relative z-50 w-[260px] flex flex-col h-full bg-[#0d1117] border-r border-white/[0.06] shadow-2xl ${closing ? "sidebar-slide-out" : "sidebar-slide-in"}`}>
+          <aside className={`relative z-50 w-[260px] flex flex-col h-full bg-[#0d1117] border-r border-white/[0.06] shadow-2xl sidebar-sky ${closing ? "sidebar-slide-out" : "sidebar-slide-in"}`}>
             <button onClick={closeSidebar} className="absolute top-4 right-4 h-8 w-8 flex items-center justify-center rounded-xl text-slate-500 hover:text-white hover:bg-white/[0.06] transition-all duration-150 z-10">
               <X className="h-4 w-4" />
             </button>
@@ -370,7 +370,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       )}
 
       {/* Main content */}
-      <div className="relative z-10 flex-1 min-w-0 flex flex-col md:pl-[240px]">
+      <div className="relative z-10 flex-1 min-w-0 flex flex-col md:pl-[240px] page-grid">
 
         {/* Mobile header */}
         <header className="md:hidden sticky top-0 z-20 flex items-center gap-3 px-4 h-14 border-b border-white/[0.05] bg-[#0d1117]/95 backdrop-blur-sm">

@@ -163,7 +163,9 @@ export default function Payments() {
 
       {/* Header */}
       <div>
-        <h1 className="font-display text-[22px] font-bold text-white tracking-tight">{t("topUpBalance")}</h1>
+        <h1 className="font-display text-[22px] font-bold tracking-tight">
+          <span className="bg-gradient-to-r from-white to-sky-300 bg-clip-text text-transparent">{t("topUpBalance")}</span>
+        </h1>
         <p className="text-[13px] text-slate-500 mt-0.5">Add funds to your SKY SMS account.</p>
       </div>
 

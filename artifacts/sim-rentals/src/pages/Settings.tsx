@@ -224,7 +224,9 @@ export default function Settings() {
 
       <Reveal variant="up">
         <div>
-          <h1 className="text-[22px] font-bold text-white tracking-tight">Settings</h1>
+          <h1 className="font-display text-[22px] font-bold tracking-tight">
+            <span className="bg-gradient-to-r from-white to-sky-300 bg-clip-text text-transparent">Settings</span>
+          </h1>
           <p className="text-[13px] text-slate-500 mt-0.5">Manage your account and preferences.</p>
         </div>
       </Reveal>

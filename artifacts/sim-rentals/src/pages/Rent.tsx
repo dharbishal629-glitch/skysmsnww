@@ -161,7 +161,9 @@ export default function Rent() {
 
       {/* Header */}
       <div>
-        <h1 className="text-[17px] font-bold text-white">{t("rentANumber")}</h1>
+        <h1 className="font-display text-[22px] font-bold tracking-tight">
+          <span className="bg-gradient-to-r from-white to-sky-300 bg-clip-text text-transparent">{t("rentANumber")}</span>
+        </h1>
         <p className="text-slate-500 mt-0.5 text-[13px]">Pick a service and country. Prices refresh in real time.</p>
       </div>
 
