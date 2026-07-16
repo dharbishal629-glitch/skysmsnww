@@ -1,7 +1,7 @@
 import {
   Shield, Globe, Lock, MessageSquare, RefreshCw, Clock,
-  Phone, ArrowRight, Code2, Check, Users, ChevronDown,
-  Wifi, Copy, CheckCircle2, TrendingUp, Activity, Sparkles, Zap
+  Phone, ArrowRight, Code2, Check, ChevronDown,
+  Wifi, Activity, Sparkles, Zap
 } from "lucide-react";
 import { SkySmsLogo } from "@/components/SkySmsLogo";
 import HowItWorks from "@/components/HowItWorks";
@@ -113,91 +113,44 @@ const colorMap: Record<string, { bg: string; border: string; icon: string; glow:
 };
 
 function LiveDashboardMockup() {
-  const [codeVisible, setCodeVisible] = useState(false);
-  const [copied, setCopied] = useState(false);
-
-  useEffect(() => {
-    const t = setTimeout(() => setCodeVisible(true), 1600);
-    return () => clearTimeout(t);
-  }, []);
-
-  const handleCopy = () => {
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
   return (
-    <div className="rounded-2xl border border-white/[0.08] bg-[#080c18] shadow-[0_24px_80px_rgba(0,0,0,0.7),0_0_0_1px_rgba(14,165,233,0.06)] overflow-hidden text-left w-full max-w-lg mx-auto">
+    <div className="rounded-2xl border border-white/[0.1] bg-[#111c30] shadow-[0_24px_80px_rgba(0,0,0,0.5),0_0_0_1px_rgba(14,165,233,0.1)] overflow-hidden text-left w-full max-w-lg mx-auto">
       {/* Window chrome */}
-      <div className="flex items-center gap-2 px-4 py-3 border-b border-white/[0.05] bg-white/[0.012]">
+      <div className="flex items-center gap-2 px-4 py-3 border-b border-white/[0.07] bg-white/[0.02]">
         <div className="h-2.5 w-2.5 rounded-full bg-rose-500/60" />
-        <div className="h-2.5 w-2.5 rounded-full bg-sky-500/60" />
+        <div className="h-2.5 w-2.5 rounded-full bg-amber-500/60" />
         <div className="h-2.5 w-2.5 rounded-full bg-emerald-500/60" />
         <div className="ml-3 flex-1 flex items-center justify-center">
-          <div className="flex items-center gap-1.5 rounded-md bg-white/[0.04] px-3 py-1 border border-white/[0.06]">
+          <div className="flex items-center gap-1.5 rounded-md bg-white/[0.05] px-3 py-1 border border-white/[0.08]">
             <div className="h-1.5 w-1.5 rounded-full bg-emerald-400 status-pulse" />
-            <span className="text-[10px] text-slate-500 font-mono">sky-sms.xyz — dashboard</span>
+            <span className="text-[10px] text-slate-400 font-mono">sky-sms.xyz — dashboard</span>
           </div>
         </div>
       </div>
 
       <div className="p-5 space-y-3">
-        {/* Active rental */}
-        <div className={`rounded-xl border transition-all duration-700 overflow-hidden ${codeVisible ? "border-emerald-500/25 bg-emerald-500/[0.04]" : "border-sky-500/15 bg-sky-500/[0.03]"}`}>
+        {/* Active rental — static waiting state */}
+        <div className="rounded-xl border border-sky-500/20 bg-sky-500/[0.05]">
           <div className="p-4">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-3">
-                <div className="h-9 w-9 rounded-xl bg-white/[0.06] border border-white/[0.08] flex items-center justify-center overflow-hidden">
-                  <img
-                    src={svcIcon("telegram.org")}
-                    alt="Telegram"
-                    className="h-5 w-5"
-                    onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
-                  />
+                <div className="h-9 w-9 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center overflow-hidden">
+                  <Phone className="h-4 w-4 text-sky-400" />
                 </div>
                 <div>
-                  <div className="text-[13px] font-bold text-white">Telegram</div>
-                  <div className="text-[11px] text-slate-500 font-mono">+1 (415) 237-8841</div>
+                  <div className="text-[13px] font-bold text-white">Virtual Number</div>
+                  <div className="text-[11px] text-slate-500 font-mono">+1 (555) 012-3456</div>
                 </div>
               </div>
               <div className="text-right">
-                <div className={`text-[11px] font-bold font-mono ${codeVisible ? "text-emerald-400" : "text-sky-400"}`}>
-                  {codeVisible ? "Code received" : "14:22 left"}
-                </div>
+                <div className="text-[11px] font-bold font-mono text-sky-400">14:22 left</div>
                 <div className="text-[10px] text-slate-600 mt-0.5">United States</div>
               </div>
             </div>
-
-            {/* SMS code area */}
-            <div className={`rounded-lg transition-all duration-500 overflow-hidden ${codeVisible ? "max-h-20 opacity-100" : "max-h-0 opacity-0"}`}>
-              <div className="border border-emerald-500/20 bg-emerald-500/[0.06] p-3 flex items-center justify-between">
-                <div>
-                  <div className="text-[10px] text-slate-500 mb-1">Verification code</div>
-                  <div className="text-[22px] font-black text-white tracking-[0.15em] font-mono leading-none sms-pop">
-                    481 293
-                  </div>
-                </div>
-                <button
-                  onClick={handleCopy}
-                  className="flex items-center gap-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 px-3 py-2 transition-colors"
-                >
-                  {copied ? (
-                    <Check className="h-3.5 w-3.5 text-emerald-400" />
-                  ) : (
-                    <Copy className="h-3.5 w-3.5 text-emerald-400" />
-                  )}
-                  <span className="text-[11px] font-semibold text-emerald-400">{copied ? "Copied!" : "Copy"}</span>
-                </button>
-              </div>
+            <div className="flex items-center gap-2 text-[11px] text-slate-400">
+              <div className="h-1.5 w-1.5 rounded-full bg-sky-400 status-pulse" />
+              Waiting for verification SMS…
             </div>
-
-            {/* Waiting state */}
-            {!codeVisible && (
-              <div className="flex items-center gap-2 text-[11px] text-slate-500">
-                <div className="h-1.5 w-1.5 rounded-full bg-sky-400 status-pulse" />
-                Waiting for verification SMS…
-              </div>
-            )}
           </div>
         </div>
 
@@ -208,9 +161,9 @@ function LiveDashboardMockup() {
             { label: "Rentals",  val: "12",     color: "text-white" },
             { label: "Refunds",  val: "100%",   color: "text-emerald-400" },
           ].map((s) => (
-            <div key={s.label} className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-3 text-center">
+            <div key={s.label} className="rounded-lg border border-white/[0.08] bg-white/[0.04] p-3 text-center">
               <div className={`text-[15px] font-bold ${s.color}`}>{s.val}</div>
-              <div className="text-[10px] text-slate-600 mt-0.5">{s.label}</div>
+              <div className="text-[10px] text-slate-500 mt-0.5">{s.label}</div>
             </div>
           ))}
         </div>
@@ -219,33 +172,6 @@ function LiveDashboardMockup() {
   );
 }
 
-function CryptoLogos() {
-  const coins = [
-    { symbol: "BTC", color: "#f7931a", label: "Bitcoin" },
-    { symbol: "ETH", color: "#627eea", label: "Ethereum" },
-    { symbol: "USDT", color: "#26a17b", label: "Tether" },
-    { symbol: "LTC", color: "#bfbbbb", label: "Litecoin" },
-    { symbol: "DOGE", color: "#c2a633", label: "Dogecoin" },
-    { symbol: "SOL", color: "#9945ff", label: "Solana" },
-  ];
-  return (
-    <div className="flex items-center gap-2 flex-wrap">
-      {coins.map((c) => (
-        <div
-          key={c.symbol}
-          className="flex items-center gap-1.5 rounded-lg border border-white/[0.07] bg-white/[0.03] px-2.5 py-1.5"
-          title={c.label}
-        >
-          <div className="h-3.5 w-3.5 rounded-full flex items-center justify-center shrink-0" style={{ background: c.color }}>
-            <span className="text-[6px] font-black text-white">₿</span>
-          </div>
-          <span className="text-[11px] font-bold text-slate-400">{c.symbol}</span>
-        </div>
-      ))}
-      <span className="text-[11px] text-slate-600 ml-1">+30 more</span>
-    </div>
-  );
-}
 
 export default function Landing({ onLogin }: { onLogin?: () => void }) {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -302,11 +228,7 @@ export default function Landing({ onLogin }: { onLogin?: () => void }) {
             </button>
             <button
               onClick={goSignIn}
-              className="h-9 px-5 rounded-xl text-[13px] font-bold text-white transition-all duration-200 active:translate-y-[1px]"
-              style={{
-                background: "linear-gradient(180deg, #38bdf8 0%, #0ea5e9 60%, #0284c7 100%)",
-                boxShadow: "0 3px 0 0 #075985, 0 6px 16px rgba(14,165,233,0.35), inset 0 1px 0 rgba(255,255,255,0.2)"
-              }}
+              className="h-9 px-5 rounded-xl text-[13px] font-bold btn-flat"
             >
               Get started
             </button>
@@ -349,19 +271,14 @@ export default function Landing({ onLogin }: { onLogin?: () => void }) {
                 <div className="flex flex-wrap gap-3 mb-8">
                   <button
                     onClick={goSignIn}
-                    className="group h-13 px-8 rounded-2xl text-[15px] font-bold text-white flex items-center gap-2 transition-all duration-150 active:translate-y-[2px]"
-                    style={{
-                      background: "linear-gradient(180deg, #38bdf8 0%, #0ea5e9 55%, #0284c7 100%)",
-                      boxShadow: "0 5px 0 0 #075985, 0 10px 30px rgba(14,165,233,0.4), inset 0 1px 0 rgba(255,255,255,0.25)"
-                    }}
+                    className="group h-12 px-8 rounded-xl text-[15px] font-bold flex items-center gap-2 btn-flat"
                   >
                     Rent a number
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                   </button>
                   <a
                     href="#how-it-works"
-                    className="h-13 inline-flex items-center justify-center rounded-2xl border border-white/[0.12] px-7 text-[15px] font-semibold text-slate-300 hover:text-white hover:border-white/20 hover:bg-white/[0.04] transition-all duration-200"
-                    style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05)" }}
+                    className="h-12 inline-flex items-center justify-center rounded-xl border border-sky-500/30 bg-sky-500/[0.08] px-7 text-[15px] font-semibold text-sky-300 hover:text-white hover:border-sky-500/50 hover:bg-sky-500/[0.15] transition-all duration-200"
                   >
                     How it works
                   </a>
@@ -369,51 +286,24 @@ export default function Landing({ onLogin }: { onLogin?: () => void }) {
               </Reveal>
 
               <Reveal variant="up" delay={280}>
-                <div className="flex flex-wrap gap-5 mb-6">
+                <div className="flex flex-wrap gap-5">
                   {[
                     { icon: Shield,    text: "Private & secure" },
                     { icon: RefreshCw, text: "Auto-refunds" },
                     { icon: Wifi,      text: "Real-time SMS" },
                   ].map(({ icon: Icon, text }) => (
-                    <div key={text} className="flex items-center gap-2 text-[12px] text-slate-500">
-                      <Icon className="h-3.5 w-3.5 text-sky-500/70 shrink-0" />
+                    <div key={text} className="flex items-center gap-2 text-[12px] text-slate-400">
+                      <Icon className="h-3.5 w-3.5 text-sky-400 shrink-0" />
                       <span>{text}</span>
                     </div>
                   ))}
                 </div>
-                <CryptoLogos />
               </Reveal>
             </div>
 
-            {/* Right: Live Dashboard Mockup + floating badges */}
+            {/* Right: Live Dashboard Mockup */}
             <Reveal variant="up" delay={120}>
-              <div className="relative pt-10 pb-8 sm:pt-6 sm:pb-6">
-                {/* Floating badge — SMS received */}
-                <div className="absolute top-0 -left-2 sm:-left-6 z-20 float-badge hidden sm:flex">
-                  <div className="flex items-center gap-2.5 rounded-2xl border border-white/[0.12] bg-[#080e1c]/92 backdrop-blur-md px-3.5 py-2.5 shadow-2xl">
-                    <div className="h-7 w-7 rounded-full bg-emerald-500/15 border border-emerald-500/25 flex items-center justify-center shrink-0">
-                      <MessageSquare className="h-3.5 w-3.5 text-emerald-400" />
-                    </div>
-                    <div>
-                      <div className="text-[11px] font-bold text-white leading-tight">SMS received</div>
-                      <div className="text-[10px] text-slate-500">Telegram · just now</div>
-                    </div>
-                  </div>
-                </div>
-                {/* Floating badge — Code delivered */}
-                <div className="absolute bottom-0 -right-2 sm:-right-6 z-20 float-badge-2 hidden sm:flex">
-                  <div className="flex items-center gap-2.5 rounded-2xl border border-white/[0.12] bg-[#080e1c]/92 backdrop-blur-md px-3.5 py-2.5 shadow-2xl">
-                    <div className="h-7 w-7 rounded-full bg-sky-500/15 border border-sky-500/25 flex items-center justify-center shrink-0">
-                      <CheckCircle2 className="h-3.5 w-3.5 text-sky-400" />
-                    </div>
-                    <div>
-                      <div className="text-[10px] text-slate-500 leading-tight">Code delivered</div>
-                      <div className="text-[13px] font-bold font-mono text-sky-300 leading-tight">481 293</div>
-                    </div>
-                  </div>
-                </div>
-                <LiveDashboardMockup />
-              </div>
+              <LiveDashboardMockup />
             </Reveal>
           </div>
 
@@ -443,17 +333,18 @@ export default function Landing({ onLogin }: { onLogin?: () => void }) {
                 <button
                   key={`${svc.name}-${i}`}
                   onClick={goSignIn}
-                  className="flex items-center gap-2.5 rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-2.5 hover:border-sky-500/15 hover:bg-sky-500/[0.03] transition-all duration-200 shrink-0 group"
+                  className="flex items-center gap-2.5 rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-2.5 hover:border-sky-500/30 hover:bg-sky-500/[0.08] transition-all duration-200 shrink-0 group"
                 >
-                  <div className="h-7 w-7 rounded-lg bg-white/[0.05] flex items-center justify-center overflow-hidden shrink-0">
+                  <div className="h-7 w-7 rounded-lg bg-white/[0.06] flex items-center justify-center overflow-hidden shrink-0">
                     <img
                       src={svcIcon(svc.domain)}
                       alt={svc.name}
                       className="h-5 w-5 object-contain"
+                      loading="lazy"
                       onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
                     />
                   </div>
-                  <span className="text-[13px] font-medium text-slate-400 group-hover:text-white transition-colors whitespace-nowrap">{svc.name}</span>
+                  <span className="text-[13px] font-medium text-slate-300 group-hover:text-white transition-colors whitespace-nowrap">{svc.name}</span>
                 </button>
               ))}
             </div>
@@ -543,11 +434,7 @@ export default function Landing({ onLogin }: { onLogin?: () => void }) {
                   </ul>
                   <button
                     onClick={goSignIn}
-                    className="h-13 px-10 rounded-2xl text-[15px] font-bold text-white transition-all active:translate-y-[2px]"
-                    style={{
-                      background: "linear-gradient(180deg, #38bdf8 0%, #0ea5e9 55%, #0284c7 100%)",
-                      boxShadow: "0 5px 0 0 #075985, 0 10px 30px rgba(14,165,233,0.4), inset 0 1px 0 rgba(255,255,255,0.25)"
-                    }}
+                    className="h-12 px-10 rounded-xl text-[15px] font-bold btn-flat"
                   >
                     Start for free
                   </button>
@@ -618,11 +505,7 @@ export default function Landing({ onLogin }: { onLogin?: () => void }) {
                   </p>
                   <button
                     onClick={goSignIn}
-                    className="group h-14 px-10 rounded-2xl text-[16px] font-bold text-white inline-flex items-center gap-2.5 transition-all duration-150 active:translate-y-[2px]"
-                    style={{
-                      background: "linear-gradient(180deg, #38bdf8 0%, #0ea5e9 55%, #0284c7 100%)",
-                      boxShadow: "0 6px 0 0 #075985, 0 12px 36px rgba(14,165,233,0.45), inset 0 1px 0 rgba(255,255,255,0.25)"
-                    }}
+                    className="group h-13 px-10 rounded-xl text-[16px] inline-flex items-center gap-2.5 btn-flat"
                   >
                     Start renting now
                     <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />

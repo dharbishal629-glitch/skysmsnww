@@ -3,12 +3,12 @@
 @import "tw-animate-css";
 
 html {
-  background-color: #03060f;
+  background-color: #0c1525;
   overscroll-behavior: none;
 }
 
 body {
-  background-color: #03060f;
+  background-color: #0c1525;
   overflow-x: clip;
   overscroll-behavior: none;
 }
@@ -53,27 +53,27 @@ body {
 }
 
 :root {
-  --background: 222 47% 4%;
-  --foreground: 210 20% 94%;
-  --border: 220 20% 11%;
-  --card: 222 40% 5%;
-  --card-foreground: 210 20% 94%;
-  --card-border: 220 25% 10%;
-  --popover: 222 40% 5%;
-  --popover-foreground: 210 20% 94%;
-  --popover-border: 220 25% 10%;
-  --primary: 217 91% 60%;
+  --background: 218 44% 11%;
+  --foreground: 210 20% 96%;
+  --border: 220 22% 18%;
+  --card: 220 40% 12%;
+  --card-foreground: 210 20% 96%;
+  --card-border: 220 28% 17%;
+  --popover: 220 40% 12%;
+  --popover-foreground: 210 20% 96%;
+  --popover-border: 220 28% 17%;
+  --primary: 199 89% 48%;
   --primary-foreground: 222 47% 6%;
-  --secondary: 222 35% 8%;
-  --secondary-foreground: 210 20% 86%;
-  --muted: 222 35% 7%;
-  --muted-foreground: 220 10% 46%;
-  --accent: 217 30% 10%;
-  --accent-foreground: 217 80% 72%;
+  --secondary: 220 35% 15%;
+  --secondary-foreground: 210 20% 88%;
+  --muted: 220 35% 14%;
+  --muted-foreground: 220 12% 52%;
+  --accent: 199 60% 16%;
+  --accent-foreground: 199 80% 76%;
   --destructive: 0 72% 55%;
   --destructive-foreground: 210 20% 98%;
-  --input: 220 22% 11%;
-  --ring: 217 91% 60%;
+  --input: 220 24% 16%;
+  --ring: 199 89% 48%;
   --app-font-sans: 'Inter', 'Plus Jakarta Sans', system-ui, sans-serif;
   --app-font-display: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
   --app-font-mono: 'JetBrains Mono', 'Fira Code', Menlo, monospace;
@@ -88,7 +88,7 @@ body {
   body {
     @apply antialiased bg-background text-foreground;
     font-family: var(--app-font-sans);
-    background: #03060f;
+    background: #0c1525;
     overscroll-behavior-y: none;
     font-feature-settings: "cv02","cv03","cv04","cv11";
     text-rendering: optimizeLegibility;
@@ -112,16 +112,26 @@ body {
 
   /* ── Shell backgrounds ── */
   .premium-shell {
-    background: #03060f;
+    background: #0c1525;
     position: relative;
     overflow-x: clip;
   }
   .app-shell {
-    background: #03060f;
+    background: #0c1525;
     position: relative;
     overflow-x: clip;
     max-width: 100vw;
   }
+
+  /* ── Flat accent button ── */
+  .btn-flat {
+    background: #0ea5e9;
+    color: #fff;
+    font-weight: 700;
+    transition: background 0.15s ease, transform 0.1s ease;
+  }
+  .btn-flat:hover  { background: #38bdf8; }
+  .btn-flat:active { transform: translateY(1px); background: #0284c7; }
 
   /* ── Font ── */
   .font-display { font-family: var(--app-font-display); }
@@ -643,18 +653,18 @@ body {
     to   { opacity: 1; transform: translateY(0) scale(1); }
   }
 
-  /* ── Hero grid bg (draxon-style dark version) ── */
+  /* ── Hero grid bg (draxon-style) ── */
   .hero-grid {
     background-image:
-      linear-gradient(rgba(56,189,248,0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(56,189,248,0.05) 1px, transparent 1px);
+      linear-gradient(rgba(56,189,248,0.09) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(56,189,248,0.09) 1px, transparent 1px);
     background-size: 64px 64px;
   }
   /* Subtle inner-page grid */
   .page-grid {
     background-image:
-      linear-gradient(rgba(56,189,248,0.022) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(56,189,248,0.022) 1px, transparent 1px);
+      linear-gradient(rgba(56,189,248,0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(56,189,248,0.045) 1px, transparent 1px);
     background-size: 48px 48px;
   }
 

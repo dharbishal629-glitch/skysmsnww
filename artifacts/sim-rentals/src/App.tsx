@@ -4,12 +4,15 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import Landing from "@/pages/Landing";
-import Terms from "@/pages/Terms";
-import RefundPolicy from "@/pages/RefundPolicy";
-import StatusPage from "@/pages/Status";
-import { AppRoutes } from "./Routes";
+import { lazy, Suspense } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState } from "react";
+
+// Route-level code splitting — only Landing is eagerly loaded (above-fold critical path)
+const Terms       = lazy(() => import("@/pages/Terms"));
+const RefundPolicy = lazy(() => import("@/pages/RefundPolicy"));
+const StatusPage  = lazy(() => import("@/pages/Status"));
+const AppRoutes   = lazy(() => import("./Routes").then(m => ({ default: m.AppRoutes })));
 import { Mail, Lock, Eye, EyeOff, User, ChevronLeft, Loader2, X } from "lucide-react";
 import { SkySmsLogo, SkySmsLogoMark } from "@/components/SkySmsLogo";
 import { CookieBanner } from "@/components/CookieBanner";
@@ -380,38 +383,40 @@ function ScrollToTop() {
 
 function AppWithRoutes() {
   return (
-    <Switch>
-      <Route path="/" component={HomeRedirect} />
-      <Route path="/sign-in/*?" component={AuthPage} />
-      <Route path="/sign-up/*?" component={AuthPage} />
-      <Route path="/terms" component={Terms} />
-      <Route path="/refund-policy" component={RefundPolicy} />
-      <Route path="/status" component={StatusPage} />
+    <Suspense fallback={<LoadingSpinner />}>
+      <Switch>
+        <Route path="/" component={HomeRedirect} />
+        <Route path="/sign-in/*?" component={AuthPage} />
+        <Route path="/sign-up/*?" component={AuthPage} />
+        <Route path="/terms" component={Terms} />
+        <Route path="/refund-policy" component={RefundPolicy} />
+        <Route path="/status" component={StatusPage} />
 
-      <Route path="/dashboard" component={AppRoutes} />
-      <Route path="/rent" component={AppRoutes} />
-      <Route path="/rentals" component={AppRoutes} />
-      <Route path="/payments" component={AppRoutes} />
-      <Route path="/checkout/:id" component={AppRoutes} />
-      <Route path="/settings" component={AppRoutes} />
-      <Route path="/support" component={AppRoutes} />
-      <Route path="/support/conversation/:id" component={AppRoutes} />
-      <Route path="/api-docs" component={AppRoutes} />
-      <Route path="/referral" component={AppRoutes} />
-      <Route path="/admin" component={AppRoutes} />
-      <Route path="/admin/users/:id" component={AppRoutes} />
-      <Route path="/admin/users" component={AppRoutes} />
-      <Route path="/admin/services" component={AppRoutes} />
-      <Route path="/admin/transactions" component={AppRoutes} />
-      <Route path="/admin/support/conversation/:id" component={AppRoutes} />
-      <Route path="/admin/support" component={AppRoutes} />
-      <Route path="/admin/coupons" component={AppRoutes} />
-      <Route path="/admin/notifications" component={AppRoutes} />
-      <Route path="/admin/gateways" component={AppRoutes} />
-      <Route path="/admin/status" component={AppRoutes} />
+        <Route path="/dashboard" component={AppRoutes} />
+        <Route path="/rent" component={AppRoutes} />
+        <Route path="/rentals" component={AppRoutes} />
+        <Route path="/payments" component={AppRoutes} />
+        <Route path="/checkout/:id" component={AppRoutes} />
+        <Route path="/settings" component={AppRoutes} />
+        <Route path="/support" component={AppRoutes} />
+        <Route path="/support/conversation/:id" component={AppRoutes} />
+        <Route path="/api-docs" component={AppRoutes} />
+        <Route path="/referral" component={AppRoutes} />
+        <Route path="/admin" component={AppRoutes} />
+        <Route path="/admin/users/:id" component={AppRoutes} />
+        <Route path="/admin/users" component={AppRoutes} />
+        <Route path="/admin/services" component={AppRoutes} />
+        <Route path="/admin/transactions" component={AppRoutes} />
+        <Route path="/admin/support/conversation/:id" component={AppRoutes} />
+        <Route path="/admin/support" component={AppRoutes} />
+        <Route path="/admin/coupons" component={AppRoutes} />
+        <Route path="/admin/notifications" component={AppRoutes} />
+        <Route path="/admin/gateways" component={AppRoutes} />
+        <Route path="/admin/status" component={AppRoutes} />
 
-      <Route component={NotFound} />
-    </Switch>
+        <Route component={NotFound} />
+      </Switch>
+    </Suspense>
   );
 }
 
