@@ -72,7 +72,7 @@ export default function Terms() {
         <div className="glass-card flex h-14 w-full items-center justify-between rounded-full px-5 neon-border">
           <Link href="/">
             <span className="flex items-center gap-2 font-black text-base cursor-pointer">
-              <Phone className="h-4 w-4 text-amber-400" />
+              <Phone className="h-4 w-4 text-sky-400" />
               <span className="gradient-text">SKY SMS</span>
             </span>
           </Link>
@@ -87,7 +87,7 @@ export default function Terms() {
       <main className="relative z-10 mx-auto max-w-4xl px-4 pb-24 pt-16 sm:px-6 lg:px-8">
         <Reveal variant="up">
           <div className="mb-12 text-center">
-            <div className="mx-auto mb-5 w-fit rounded-full border border-amber-400/20 bg-amber-400/[0.08] px-4 py-2 text-xs font-bold uppercase tracking-[0.22em] text-amber-300">
+            <div className="mx-auto mb-5 w-fit rounded-full border border-[#4574FF]/20 bg-[#4574FF]/[0.08] px-4 py-2 text-xs font-bold uppercase tracking-[0.22em] text-sky-300">
               Legal
             </div>
             <h1 className="text-5xl font-black tracking-tight text-white mb-4">Terms of Service</h1>
@@ -96,8 +96,8 @@ export default function Terms() {
         </Reveal>
 
         <Reveal variant="up" delay={60}>
-          <div className="glass-card rounded-2xl p-6 mb-8 flex items-start gap-4 border-l-4 border-l-amber-400">
-            <Scale className="h-5 w-5 text-amber-400 shrink-0 mt-0.5" />
+          <div className="glass-card rounded-2xl p-6 mb-8 flex items-start gap-4 border-l-4 border-l-[#4574FF]">
+            <Scale className="h-5 w-5 text-sky-400 shrink-0 mt-0.5" />
             <div>
               <div className="font-bold text-white mb-1">Please read these terms carefully</div>
               <p className="text-sm text-slate-400 leading-relaxed">
@@ -124,7 +124,7 @@ export default function Terms() {
               By using SKY SMS, you acknowledge that you have read and agree to these Terms of Service.
             </p>
             <Link href="/refund-policy">
-              <span className="inline-flex items-center gap-2 text-amber-400 text-sm font-semibold hover:text-amber-300 transition-colors cursor-pointer">
+              <span className="inline-flex items-center gap-2 text-sky-400 text-sm font-semibold hover:text-sky-300 transition-colors cursor-pointer">
                 View Refund Policy <ChevronRight className="h-4 w-4" />
               </span>
             </Link>

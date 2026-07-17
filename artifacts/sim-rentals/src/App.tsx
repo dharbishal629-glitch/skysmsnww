@@ -153,13 +153,6 @@ function AuthPage() {
 
         <div className="rounded-3xl border border-white/[0.15] bg-white/[0.07] shadow-[0_0_0_1px_rgba(69,116,255,0.12),0_8px_60px_rgba(0,0,0,0.25)] p-8 backdrop-blur-xl">
 
-          {/* Logo */}
-          <div className="text-center mb-8">
-            <a href={`${basePath}/`} className="mx-auto inline-flex items-center gap-2.5 rounded-full border border-white/30 bg-white/15 px-5 py-2.5 hover:bg-white/25 transition-colors backdrop-blur-sm">
-              <SkySmsLogo size="sm" />
-            </a>
-          </div>
-
           {/* ── Choose ── */}
           {mode === "choose" && (
             <>
@@ -183,20 +176,6 @@ function AuthPage() {
                     <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                   </svg>
                   Continue with Google
-                </button>
-
-                {/* Microsoft */}
-                <button
-                  onClick={login}
-                  className="group h-12 w-full rounded-xl bg-white px-6 text-[14px] font-bold text-slate-900 shadow-md transition-all hover:bg-slate-50 hover:shadow-lg flex items-center justify-center gap-3 active:scale-[0.98]"
-                >
-                  <svg className="h-5 w-5 shrink-0" viewBox="0 0 23 23" fill="none">
-                    <rect x="1" y="1" width="10" height="10" fill="#F25022" />
-                    <rect x="12" y="1" width="10" height="10" fill="#7FBA00" />
-                    <rect x="1" y="12" width="10" height="10" fill="#00A4EF" />
-                    <rect x="12" y="12" width="10" height="10" fill="#FFB900" />
-                  </svg>
-                  Continue with Microsoft
                 </button>
 
                 {/* Divider */}
@@ -441,6 +420,8 @@ function AppWithRoutes() {
         <Route path="/support/conversation/:id" component={AppRoutes} />
         <Route path="/api-docs" component={AppRoutes} />
         <Route path="/referral" component={AppRoutes} />
+        <Route path="/rankings" component={AppRoutes} />
+        <Route path="/notifications" component={AppRoutes} />
         <Route path="/admin" component={AppRoutes} />
         <Route path="/admin/users/:id" component={AppRoutes} />
         <Route path="/admin/users" component={AppRoutes} />

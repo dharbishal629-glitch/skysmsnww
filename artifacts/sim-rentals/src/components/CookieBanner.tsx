@@ -1,73 +1,45 @@
-import { useState, useEffect } from "react";
-import { Cookie, X } from "lucide-react";
-
-const STORAGE_KEY = "sky-sms-cookies-accepted";
+import { useState } from "react";
+import { Cookie } from "lucide-react";
 
 export function CookieBanner() {
-  const [visible, setVisible] = useState(false);
+  const [dismissed, setDismissed] = useState(() => {
+    try { return localStorage.getItem("cookie-consent") !== null; } catch { return false; }
+  });
 
-  useEffect(() => {
-    const accepted = localStorage.getItem(STORAGE_KEY);
-    if (!accepted) {
-      const t = setTimeout(() => setVisible(true), 1200);
-      return () => clearTimeout(t);
-    }
-  }, []);
+  if (dismissed) return null;
 
-  const accept = () => {
-    localStorage.setItem(STORAGE_KEY, "1");
-    setVisible(false);
-  };
-
-  const decline = () => {
-    localStorage.setItem(STORAGE_KEY, "0");
-    setVisible(false);
-  };
-
-  if (!visible) return null;
+  const accept = () => { try { localStorage.setItem("cookie-consent", "accepted"); } catch {} setDismissed(true); };
+  const decline = () => { try { localStorage.setItem("cookie-consent", "declined"); } catch {} setDismissed(true); };
 
   return (
-    <div
-      className="fixed bottom-4 left-4 right-4 z-[9998] md:left-auto md:right-5 md:bottom-5 md:w-[360px]"
-      style={{ animation: "cookie-enter 0.35s cubic-bezier(0.16,1,0.3,1) both" }}
-    >
-      <div className="rounded-2xl border border-amber-900/20 bg-[#0d1117] shadow-[0_8px_40px_rgba(0,0,0,0.7),0_0_0_1px_rgba(212,168,67,0.06)] overflow-hidden">
-        <div className="inset-x-0 h-px bg-gradient-to-r from-transparent via-amber-400/30 to-transparent" />
-
-        <div className="p-4">
-          <div className="flex items-start gap-3 mb-3.5">
-            <div className="h-8 w-8 rounded-xl bg-amber-500/12 border border-amber-500/20 flex items-center justify-center shrink-0 mt-0.5">
-              <Cookie className="h-4 w-4 text-amber-400" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="font-bold text-white text-[14px]">We use cookies</div>
-              <p className="text-[12px] text-slate-500 mt-1 leading-relaxed">
-                We use essential cookies to keep you logged in and improve your experience.
-                No tracking or advertising cookies.
-              </p>
-            </div>
-            <button
-              onClick={decline}
-              className="h-7 w-7 shrink-0 flex items-center justify-center rounded-lg text-slate-600 hover:text-slate-400 hover:bg-white/[0.05] transition-all"
-            >
-              <X className="h-3.5 w-3.5" />
-            </button>
+    <div className="fixed bottom-4 right-4 z-50 max-w-sm w-full px-4 sm:px-0">
+      <div className="rounded-2xl border border-slate-800/60 bg-[#0d1117] shadow-[0_8px_40px_rgba(0,0,0,0.7),0_0_0_1px_rgba(69,116,255,0.06)] overflow-hidden">
+        <div className="inset-x-0 h-px bg-gradient-to-r from-transparent via-[#4574FF]/30 to-transparent" />
+        <div className="p-4 flex gap-3">
+          <div className="h-8 w-8 rounded-xl bg-[#4574FF]/12 border border-[#4574FF]/20 flex items-center justify-center shrink-0 mt-0.5">
+            <Cookie className="h-4 w-4 text-[#4574FF]" />
           </div>
-
-          <div className="flex gap-2">
-            <button
-              onClick={decline}
-              className="flex-1 h-8 rounded-xl border border-white/[0.08] text-[12.5px] font-semibold text-slate-500 hover:text-slate-300 hover:border-white/[0.14] transition-all"
-            >
-              Decline
-            </button>
-            <button
-              onClick={accept}
-              className="flex-1 h-8 rounded-xl bg-amber-500 text-[12.5px] font-bold text-slate-900 hover:bg-amber-400 transition-all active:scale-[0.98]"
-            >
-              Accept All
-            </button>
+          <div className="flex-1 min-w-0">
+            <p className="text-[12.5px] font-bold text-white mb-0.5">We use cookies</p>
+            <p className="text-[11.5px] text-slate-400 leading-relaxed">
+              We use essential cookies to keep you logged in and improve your experience. No tracking or advertising cookies.
+            </p>
           </div>
+          <button onClick={() => setDismissed(true)} className="text-slate-500 hover:text-slate-300 transition-colors text-lg leading-none mt-0.5 shrink-0">×</button>
+        </div>
+        <div className="px-4 pb-4 flex gap-2">
+          <button
+            onClick={decline}
+            className="flex-1 h-8 rounded-xl border border-slate-700 bg-transparent text-[12.5px] font-semibold text-slate-300 hover:bg-slate-800 hover:text-white transition-all active:scale-[0.98]"
+          >
+            Decline
+          </button>
+          <button
+            onClick={accept}
+            className="flex-1 h-8 rounded-xl bg-[#4574FF] text-[12.5px] font-bold text-white hover:bg-[#3a68f5] transition-all active:scale-[0.98]"
+          >
+            Accept All
+          </button>
         </div>
       </div>
     </div>

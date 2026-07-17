@@ -333,6 +333,44 @@ router.post("/auth/login-email", async (req: Request, res: Response) => {
     profileImageUrl: null,
   };
 
+  const loginIpEmail = (req.headers["x-forwarded-for"] as string | undefined)?.split(",")[0]?.trim() || req.socket.remoteAddress || null;
+  if (loginIpEmail) {
+    await pool.query("UPDATE sim_users SET last_seen_ip = $1 WHERE id = $2", [loginIpEmail, user.id]).catch(() => {});
+  }
+
+  // Check if 2FA is required
+  const totpRow = await pool.query(
+    "SELECT totp_enabled FROM sim_users WHERE id = $1",
+    [user.id],
+  );
+  const totpEnabled = totpRow.rows[0]?.totp_enabled ?? false;
+
+  if (totpEnabled) {
+    // Store session data temporarily until 2FA is verified
+    const pendingSession: SessionData = {
+      user,
+      access_token: "",
+      refresh_token: undefined,
+      expires_at: undefined,
+    };
+    await pool.query(
+      `INSERT INTO sim_pending_2fa (user_id, session_data)
+       VALUES ($1, $2)
+       ON CONFLICT (user_id) DO UPDATE SET session_data = EXCLUDED.session_data`,
+      [user.id, JSON.stringify(pendingSession)],
+    );
+    const isProduction = process.env.NODE_ENV === "production";
+    res.cookie("pending_2fa_user", user.id, {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
+      path: "/",
+      maxAge: 10 * 60 * 1000,
+    });
+    res.json({ requires2fa: true });
+    return;
+  }
+
   const sessionData: SessionData = {
     user,
     access_token: "",
@@ -340,13 +378,15 @@ router.post("/auth/login-email", async (req: Request, res: Response) => {
     expires_at: undefined,
   };
 
-  const loginIpEmail = (req.headers["x-forwarded-for"] as string | undefined)?.split(",")[0]?.trim() || req.socket.remoteAddress || null;
-  if (loginIpEmail) {
-    await pool.query("UPDATE sim_users SET last_seen_ip = $1 WHERE id = $2", [loginIpEmail, user.id]).catch(() => {});
-  }
-
   const sid = await createSession(sessionData);
   setSessionCookie(res, sid);
+
+  // Log login event to activity
+  pool.query(
+    "INSERT INTO sim_activity_log (user_id, type, description) VALUES ($1, $2, $3)",
+    [user.id, "login", "Signed in to account"],
+  ).catch(() => {});
+
   res.json({ success: true, user: { id: user.id, email, name: row.name, role: row.role } });
 });
 

@@ -3,8 +3,8 @@ import {
   ArrowRight, Code2, Check, ChevronDown,
   Wifi, Activity, Sparkles, Zap, MessageCircle, Bolt,
 } from "lucide-react";
-import HowItWorks from "@/components/HowItWorks";
 import { Reveal } from "@/components/Reveal";
+import { SkySmsLogoMark } from "@/components/SkySmsLogo";
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 
@@ -107,17 +107,10 @@ function FloatingBadge({ children, className = "" }: { children: React.ReactNode
   );
 }
 
-/** Inline SKY SMS wordmark for the landing (dark version) */
+/** Inline SKY SMS wordmark for the landing */
 function LandingLogo() {
   return (
-    <div className="flex items-center gap-2">
-      <div className="h-8 w-8 rounded-xl bg-[#0a1628] flex items-center justify-center shadow-md">
-        <span className="text-white font-black text-[13px] tracking-tighter">S</span>
-      </div>
-      <span className="font-display text-[17px] font-extrabold tracking-tight text-[#0a1628]">
-        SKY<span className="text-[#4574FF] ml-1">SMS</span>
-      </span>
-    </div>
+    <img src="/brand-logo.jpg" alt="SKY SMS" className="h-9 w-auto rounded-lg" />
   );
 }
 
@@ -149,10 +142,9 @@ export default function Landing({ onLogin }: { onLogin?: () => void }) {
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <LandingLogo />
 
-          <nav className="hidden items-center gap-7 text-[13px] font-semibold text-slate-700 md:flex">
+          <nav className="hidden items-center gap-7 text-[13px] font-semibold text-[#0a1628] md:flex">
             <a className="hover:text-[#0a1628] transition-colors duration-150" href="#services">Services</a>
             <a className="hover:text-[#0a1628] transition-colors duration-150" href="#features">Features</a>
-            <a className="hover:text-[#0a1628] transition-colors duration-150" href="#how-it-works">How It Works</a>
             <a className="hover:text-[#0a1628] transition-colors duration-150" href="#pricing">Pricing</a>
             <a className="hover:text-[#0a1628] transition-colors duration-150" href="#faq">FAQ</a>
           </nav>
@@ -160,7 +152,7 @@ export default function Landing({ onLogin }: { onLogin?: () => void }) {
           <div className="flex items-center gap-3">
             <button
               onClick={goSignIn}
-              className="hidden text-[13px] font-semibold text-slate-700 hover:text-[#0a1628] transition-colors sm:inline"
+              className="hidden text-[13px] font-semibold text-[#0a1628] hover:text-[#0a1628] transition-colors sm:inline"
             >
               Sign in
             </button>
@@ -218,7 +210,7 @@ export default function Landing({ onLogin }: { onLogin?: () => void }) {
           </Reveal>
 
           <Reveal variant="up" delay={170}>
-            <p className="text-[16px] leading-relaxed text-slate-700 mb-10 max-w-[520px] mx-auto">
+            <p className="text-[16px] leading-relaxed text-[#0a1628] mb-10 max-w-[520px] mx-auto">
               Instant temporary phone numbers to receive one-time codes for Telegram, WhatsApp, Google, Discord and 1000+ services. Pay per number from your balance. Full API — drop-in compatible.
             </p>
           </Reveal>
@@ -249,7 +241,7 @@ export default function Landing({ onLogin }: { onLogin?: () => void }) {
                 { icon: RefreshCw, text: "Auto-refunds" },
                 { icon: Wifi,      text: "Real-time SMS" },
               ].map(({ icon: Icon, text }) => (
-                <div key={text} className="flex items-center gap-2 text-[12px] text-slate-700 font-medium">
+                <div key={text} className="flex items-center gap-2 text-[12px] text-[#0a1628] font-medium">
                   <Icon className="h-3.5 w-3.5 text-[#4574FF] shrink-0" />
                   <span>{text}</span>
                 </div>
@@ -265,7 +257,7 @@ export default function Landing({ onLogin }: { onLogin?: () => void }) {
               {stats.map((stat) => (
                 <div key={stat.label} className="rounded-2xl bg-white/50 backdrop-blur-sm border border-white/70 p-5 text-center shadow-sm hover:shadow-md hover:bg-white/65 transition-all duration-300">
                   <div className="font-display text-[2rem] font-black text-[#0a1628] mb-1">{stat.value}</div>
-                  <div className="text-[12px] text-slate-600 font-medium">{stat.label}</div>
+                  <div className="text-[12px] text-[#0a1628]/75 font-medium">{stat.label}</div>
                 </div>
               ))}
             </div>
@@ -275,7 +267,7 @@ export default function Landing({ onLogin }: { onLogin?: () => void }) {
         {/* ── Services Marquee ── */}
         <section id="services" className="py-14 border-y border-white/40">
           <Reveal variant="up">
-            <p className="text-center text-[11px] font-bold uppercase tracking-[0.25em] text-[#0a1628]/50 mb-8">
+            <p className="text-center text-[11px] font-bold uppercase tracking-[0.25em] text-[#0a1628]/80 mb-8">
               Works with every major platform
             </p>
           </Reveal>
@@ -296,16 +288,11 @@ export default function Landing({ onLogin }: { onLogin?: () => void }) {
                       onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
                     />
                   </div>
-                  <span className="text-[13px] font-semibold text-slate-700 group-hover:text-[#0a1628] transition-colors whitespace-nowrap">{svc.name}</span>
+                  <span className="text-[13px] font-semibold text-[#0a1628] group-hover:text-[#0a1628] transition-colors whitespace-nowrap">{svc.name}</span>
                 </button>
               ))}
             </div>
           </div>
-        </section>
-
-        {/* ── How It Works ── */}
-        <section id="how-it-works" className="py-20">
-          <HowItWorks />
         </section>
 
         {/* ── Features ── */}
@@ -317,7 +304,7 @@ export default function Landing({ onLogin }: { onLogin?: () => void }) {
                 <h2 className="font-display text-[clamp(1.8rem,4vw,2.8rem)] font-bold text-[#0a1628] mb-3">
                   Built for speed & privacy
                 </h2>
-                <p className="text-[15px] text-slate-600 max-w-md mx-auto">
+                <p className="text-[15px] text-[#0a1628]/75 max-w-md mx-auto">
                   Everything you need, nothing you don't. SKY SMS is built to be fast, reliable, and completely private.
                 </p>
               </div>
@@ -331,7 +318,7 @@ export default function Landing({ onLogin }: { onLogin?: () => void }) {
                       <feat.icon className="h-5 w-5 text-[#4574FF]" />
                     </div>
                     <h3 className="font-display text-[15px] font-bold text-[#0a1628] mb-2">{feat.title}</h3>
-                    <p className="text-[13px] leading-relaxed text-slate-600">{feat.desc}</p>
+                    <p className="text-[13px] leading-relaxed text-[#0a1628]/75">{feat.desc}</p>
                   </div>
                 </Reveal>
               ))}
@@ -348,7 +335,7 @@ export default function Landing({ onLogin }: { onLogin?: () => void }) {
                 <h2 className="font-display text-[clamp(1.8rem,4vw,2.8rem)] font-bold text-[#0a1628] mb-3">
                   Pay only for what you use
                 </h2>
-                <p className="text-[15px] text-slate-600">No subscriptions. No hidden fees. Top up any amount and spend it when you need it.</p>
+                <p className="text-[15px] text-[#0a1628]/75">No subscriptions. No hidden fees. Top up any amount and spend it when you need it.</p>
               </div>
             </Reveal>
 
@@ -364,7 +351,7 @@ export default function Landing({ onLogin }: { onLogin?: () => void }) {
                     </div>
                     <div className="mb-6">
                       <span className="font-display text-[4.5rem] font-black text-[#0a1628] leading-none">$0.10</span>
-                      <span className="text-slate-500 text-[16px] ml-2">starting per SMS</span>
+                      <span className="text-[#0a1628]/60 text-[16px] ml-2">starting per SMS</span>
                     </div>
                     <ul className="space-y-3 mb-8 text-left max-w-sm mx-auto">
                       {[
@@ -374,7 +361,7 @@ export default function Landing({ onLogin }: { onLogin?: () => void }) {
                         "All 50+ platforms included",
                         "No monthly fees — ever",
                       ].map((item) => (
-                        <li key={item} className="flex items-center gap-3 text-[14px] text-slate-700">
+                        <li key={item} className="flex items-center gap-3 text-[14px] text-[#0a1628]">
                           <div className="h-5 w-5 rounded-full bg-[#4574FF]/12 border border-[#4574FF]/25 flex items-center justify-center shrink-0">
                             <Check className="h-3 w-3 text-[#4574FF]" />
                           </div>
@@ -388,7 +375,7 @@ export default function Landing({ onLogin }: { onLogin?: () => void }) {
                     >
                       Start for free
                     </button>
-                    <p className="text-[12px] text-slate-500 mt-4">Minimum top-up from $1 · Crypto only via OxaPay</p>
+                    <p className="text-[12px] text-[#0a1628]/60 mt-4">Minimum top-up from $1 · Crypto only via OxaPay</p>
                   </div>
                 </div>
               </div>
@@ -425,9 +412,15 @@ export default function Landing({ onLogin }: { onLogin?: () => void }) {
                       <span className="font-semibold text-[14px] text-[#0a1628] group-hover:text-[#4574FF] transition-colors">{faq.q}</span>
                       <ChevronDown className={`h-4 w-4 shrink-0 transition-all duration-300 ${openFaq === i ? "rotate-180 text-[#4574FF]" : "text-slate-400"}`} />
                     </button>
-                    <div className={`faq-body ${openFaq === i ? "faq-body-open" : ""}`}>
-                      <div className="faq-inner px-6 pb-5">
-                        <p className="text-[13.5px] leading-relaxed text-slate-600">{faq.a}</p>
+                    <div
+                      style={{
+                        maxHeight: openFaq === i ? "300px" : "0",
+                        overflow: "hidden",
+                        transition: "max-height 0.35s cubic-bezier(0.22,1,0.36,1)",
+                      }}
+                    >
+                      <div className="px-6 pb-5">
+                        <p className="text-[13.5px] leading-relaxed text-[#0a1628]/75">{faq.a}</p>
                       </div>
                     </div>
                   </div>
@@ -449,7 +442,7 @@ export default function Landing({ onLogin }: { onLogin?: () => void }) {
                     Your first number takes{" "}
                     <span className="text-[#4574FF]">10 seconds.</span>
                   </h2>
-                  <p className="text-[15px] text-slate-600 mb-8 max-w-md mx-auto">
+                  <p className="text-[15px] text-[#0a1628]/80 mb-8 max-w-md mx-auto">
                     No account approvals. No identity checks. Sign in and rent your first number right away.
                   </p>
                   <button
@@ -470,12 +463,12 @@ export default function Landing({ onLogin }: { onLogin?: () => void }) {
           <div className="mx-auto max-w-6xl px-6">
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
               <LandingLogo />
-              <div className="flex flex-wrap items-center justify-center gap-6 text-[13px] text-slate-600">
+              <div className="flex flex-wrap items-center justify-center gap-6 text-[13px] text-[#0a1628]/75">
                 <a href="/terms" className="hover:text-[#0a1628] transition-colors">Terms of Service</a>
                 <a href="/refund-policy" className="hover:text-[#0a1628] transition-colors">Refund Policy</a>
                 <a href="#faq" className="hover:text-[#0a1628] transition-colors">FAQ</a>
               </div>
-              <div className="text-[12px] text-slate-500">
+              <div className="text-[12px] text-[#0a1628]/60">
                 © {new Date().getFullYear()} SKY SMS. All rights reserved.
               </div>
             </div>

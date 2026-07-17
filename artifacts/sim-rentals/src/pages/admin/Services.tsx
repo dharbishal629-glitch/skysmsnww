@@ -348,7 +348,7 @@ export default function AdminServices() {
       <div className="text-center py-12">
         <h2 className="text-xl font-semibold text-destructive">Failed to load services</h2>
         <p className="text-muted-foreground mt-2">Please refresh the page and try again.</p>
-        <button onClick={() => loadServices()} className="mt-4 text-sm text-amber-400 hover:underline">Retry</button>
+        <button onClick={() => loadServices()} className="mt-4 text-sm text-sky-400 hover:underline">Retry</button>
       </div>
     );
   }
@@ -364,10 +364,10 @@ export default function AdminServices() {
         <CardHeader>
           <div className="flex items-start justify-between gap-3">
             <div>
-              <CardTitle className="flex items-center gap-2"><ShieldCheck className="h-5 w-5 text-amber-300" /> Enabled Services Portal</CardTitle>
+              <CardTitle className="flex items-center gap-2"><ShieldCheck className="h-5 w-5 text-sky-300" /> Enabled Services Portal</CardTitle>
               <CardDescription>Only checked services appear on the user Rent page, country dropdowns, and rental flow.</CardDescription>
             </div>
-            <Badge className="bg-amber-400/10 text-amber-200 border border-amber-300/20">{enabledCount} enabled</Badge>
+            <Badge className="bg-[#4574FF]/10 text-sky-200 border border-[#4574FF]/20">{enabledCount} enabled</Badge>
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -444,9 +444,9 @@ export default function AdminServices() {
                 </div>
                 <div className="flex gap-2 flex-wrap">
                   <Badge variant="outline" className="border-white/10 bg-white/[0.05] text-slate-300">Provider ${selectedService.basePrice.toFixed(2)}</Badge>
-                  <Badge className="bg-amber-400/10 text-amber-200 border border-amber-300/20">Current ${selectedService.price.toFixed(2)}</Badge>
+                  <Badge className="bg-[#4574FF]/10 text-sky-200 border border-[#4574FF]/20">Current ${selectedService.price.toFixed(2)}</Badge>
                   {selectedService.customPrice && (
-                    <Badge className="bg-amber-400/10 text-amber-200 border border-amber-300/20">Fixed override active</Badge>
+                    <Badge className="bg-[#4574FF]/10 text-sky-200 border border-[#4574FF]/20">Fixed override active</Badge>
                   )}
                 </div>
               </div>
@@ -517,7 +517,7 @@ export default function AdminServices() {
                   {marginService.countryMargin !== null && (
                     <Badge className="bg-purple-400/10 text-purple-200 border border-purple-300/20">Country: {marginService.countryMargin}%</Badge>
                   )}
-                  <Badge className="bg-amber-400/10 text-amber-200 border border-amber-300/20">
+                  <Badge className="bg-[#4574FF]/10 text-sky-200 border border-[#4574FF]/20">
                     Effective: {marginService.effectiveMargin}% → ${(marginService.basePrice * (1 + marginService.effectiveMargin / 100)).toFixed(2)}
                   </Badge>
                 </div>

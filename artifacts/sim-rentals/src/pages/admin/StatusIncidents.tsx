@@ -21,7 +21,7 @@ const STATUS_LABELS: Record<string, string> = {
   resolved:      "Resolved",
 };
 const STATUS_COLOR: Record<string, string> = {
-  investigating: "text-amber-400",
+  investigating: "text-sky-400",
   identified:    "text-red-400",
   monitoring:    "text-sky-400",
   resolved:      "text-emerald-400",

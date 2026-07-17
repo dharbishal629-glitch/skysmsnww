@@ -18,7 +18,7 @@ interface Notification {
 }
 
 const typeOptions = [
-  { value: "info",    label: "Info",    color: "text-amber-400",   bg: "bg-amber-500/10 border-amber-500/20" },
+  { value: "info",    label: "Info",    color: "text-sky-400",   bg: "bg-[#4574FF]/10 border-[#4574FF]/20" },
   { value: "success", label: "Success", color: "text-emerald-400", bg: "bg-emerald-500/10 border-emerald-500/20" },
   { value: "warning", label: "Warning", color: "text-orange-400",  bg: "bg-orange-500/10 border-orange-500/20" },
 ];
@@ -26,7 +26,7 @@ const typeOptions = [
 function typeIcon(type: string, className = "h-4 w-4") {
   if (type === "success") return <CheckCircle2 className={`${className} text-emerald-400`} />;
   if (type === "warning") return <AlertCircle className={`${className} text-orange-400`} />;
-  return <Info className={`${className} text-amber-400`} />;
+  return <Info className={`${className} text-sky-400`} />;
 }
 
 export default function AdminNotifications() {
@@ -101,7 +101,7 @@ export default function AdminNotifications() {
         </div>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="flex items-center gap-2 h-9 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-[13px] font-semibold text-slate-900 hover:from-amber-400 hover:to-amber-500 transition-all active:scale-95"
+          className="flex items-center gap-2 h-9 px-4 rounded-xl bg-[#4574FF] text-[13px] font-semibold text-slate-900 hover:bg-blue-500 transition-all active:scale-95"
         >
           {showForm ? <X className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
           {showForm ? "Cancel" : "New notification"}
@@ -110,7 +110,7 @@ export default function AdminNotifications() {
 
       {/* Compose form */}
       {showForm && (
-        <div className="rounded-2xl border border-amber-900/20 bg-amber-500/[0.03] p-6 space-y-4">
+        <div className="rounded-2xl border border-[#4574FF]/10 bg-[#4574FF]/[0.03] p-6 space-y-4">
           <h3 className="text-[14px] font-bold text-white">Compose notification</h3>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
@@ -119,7 +119,7 @@ export default function AdminNotifications() {
                 value={form.title}
                 onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
                 placeholder="Notification title..."
-                className="w-full h-10 rounded-xl border border-white/[0.08] bg-white/[0.03] px-3.5 text-[13px] text-white placeholder-slate-600 focus:outline-none focus:border-amber-500/40 focus:bg-amber-500/[0.03] transition-all"
+                className="w-full h-10 rounded-xl border border-white/[0.08] bg-white/[0.03] px-3.5 text-[13px] text-white placeholder-slate-600 focus:outline-none focus:border-[#4574FF]/40 focus:bg-[#4574FF]/[0.03] transition-all"
               />
             </div>
             <div>
@@ -147,7 +147,7 @@ export default function AdminNotifications() {
               onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
               placeholder="Notification message..."
               rows={3}
-              className="w-full rounded-xl border border-white/[0.08] bg-white/[0.03] px-3.5 py-2.5 text-[13px] text-white placeholder-slate-600 focus:outline-none focus:border-amber-500/40 focus:bg-amber-500/[0.03] transition-all resize-none"
+              className="w-full rounded-xl border border-white/[0.08] bg-white/[0.03] px-3.5 py-2.5 text-[13px] text-white placeholder-slate-600 focus:outline-none focus:border-[#4574FF]/40 focus:bg-[#4574FF]/[0.03] transition-all resize-none"
             />
           </div>
 
@@ -160,7 +160,7 @@ export default function AdminNotifications() {
                 value={form.userId}
                 onChange={(e) => setForm((f) => ({ ...f, userId: e.target.value }))}
                 placeholder="Leave blank to broadcast to all..."
-                className="w-full h-10 rounded-xl border border-white/[0.08] bg-white/[0.03] px-3.5 text-[13px] text-white placeholder-slate-600 focus:outline-none focus:border-amber-500/40 transition-all"
+                className="w-full h-10 rounded-xl border border-white/[0.08] bg-white/[0.03] px-3.5 text-[13px] text-white placeholder-slate-600 focus:outline-none focus:border-[#4574FF]/40 transition-all"
               />
             </div>
             <div>
@@ -169,7 +169,7 @@ export default function AdminNotifications() {
                 value={form.link}
                 onChange={(e) => setForm((f) => ({ ...f, link: e.target.value }))}
                 placeholder="/payments or https://..."
-                className="w-full h-10 rounded-xl border border-white/[0.08] bg-white/[0.03] px-3.5 text-[13px] text-white placeholder-slate-600 focus:outline-none focus:border-amber-500/40 transition-all"
+                className="w-full h-10 rounded-xl border border-white/[0.08] bg-white/[0.03] px-3.5 text-[13px] text-white placeholder-slate-600 focus:outline-none focus:border-[#4574FF]/40 transition-all"
               />
             </div>
           </div>
@@ -178,7 +178,7 @@ export default function AdminNotifications() {
             <button
               onClick={sendNotification}
               disabled={sending}
-              className="flex items-center gap-2 h-9 px-5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-[13px] font-semibold text-slate-900 hover:from-amber-400 hover:to-amber-500 transition-all active:scale-95 disabled:opacity-50"
+              className="flex items-center gap-2 h-9 px-5 rounded-xl bg-[#4574FF] text-[13px] font-semibold text-slate-900 hover:bg-blue-500 transition-all active:scale-95 disabled:opacity-50"
             >
               {sending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Send className="h-3.5 w-3.5" />}
               {sending ? "Sending…" : "Send notification"}
@@ -193,7 +193,7 @@ export default function AdminNotifications() {
       {/* History */}
       <div className="rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
         <div className="flex items-center gap-2.5 px-5 py-4 border-b border-white/[0.05]">
-          <Bell className="h-4 w-4 text-amber-400" />
+          <Bell className="h-4 w-4 text-sky-400" />
           <span className="text-[14px] font-bold text-white">Notification history</span>
           <span className="ml-auto text-[12px] text-slate-600">{notifications.length} total</span>
         </div>

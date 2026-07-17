@@ -31,7 +31,7 @@ const COIN_META: Record<string, { label: string; emoji: string; color: string }>
   ETH:  { label: "Ethereum", emoji: "Ξ", color: "text-blue-300" },
   USDC: { label: "USD Coin", emoji: "$", color: "text-emerald-300" },
   TRX:  { label: "TRON",     emoji: "T", color: "text-red-400" },
-  DOGE: { label: "Dogecoin", emoji: "Ð", color: "text-amber-400" },
+  DOGE: { label: "Dogecoin", emoji: "Ð", color: "text-sky-400" },
   XMR:  { label: "Monero",   emoji: "ɱ", color: "text-orange-300" },
 };
 const ALL_COINS = Object.keys(COIN_META);
@@ -172,7 +172,7 @@ export default function AdminPaymentGateways() {
     <div className="max-w-3xl mx-auto space-y-7 pb-10">
       {/* Header */}
       <div>
-        <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-amber-500 mb-1">Admin</p>
+        <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-sky-500 mb-1">Admin</p>
         <h1 className="text-xl font-bold text-white">Payment Gateways & Security</h1>
         <p className="text-[13px] text-slate-500 mt-0.5">Per-coin OxaPay API keys and IP bans</p>
       </div>
@@ -181,7 +181,7 @@ export default function AdminPaymentGateways() {
       <section>
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <Key className="h-4 w-4 text-amber-400" />
+            <Key className="h-4 w-4 text-sky-400" />
             <h2 className="text-[14px] font-bold text-white">Per-Coin API Keys</h2>
           </div>
           <button
@@ -189,7 +189,7 @@ export default function AdminPaymentGateways() {
             className={`flex items-center gap-1.5 h-8 px-3 rounded-xl text-[12px] font-bold transition-all ${
               showKeyForm
                 ? "bg-white/[0.05] border border-white/[0.08] text-slate-400"
-                : "bg-amber-500/15 border border-amber-500/25 text-amber-400 hover:bg-amber-500/20"
+                : "bg-[#4574FF]/15 border border-[#4574FF]/25 text-sky-400 hover:bg-[#4574FF]/20"
             }`}
           >
             {showKeyForm ? <><X className="h-3.5 w-3.5" /> Cancel</> : <><Plus className="h-3.5 w-3.5" /> Add Key</>}
@@ -201,14 +201,14 @@ export default function AdminPaymentGateways() {
         </p>
 
         {showKeyForm && (
-          <div className="rounded-2xl border border-amber-500/15 bg-amber-500/[0.03] p-5 mb-4 space-y-4">
+          <div className="rounded-2xl border border-[#4574FF]/15 bg-[#4574FF]/[0.03] p-5 mb-4 space-y-4">
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1.5">
                 <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Coin</label>
                 <select
                   value={keyForm.coin}
                   onChange={e => setKeyForm(f => ({ ...f, coin: e.target.value }))}
-                  className="w-full h-10 rounded-xl border border-white/[0.08] bg-white/[0.03] px-3 text-[13px] text-white outline-none focus:border-amber-500/40 appearance-none cursor-pointer"
+                  className="w-full h-10 rounded-xl border border-white/[0.08] bg-white/[0.03] px-3 text-[13px] text-white outline-none focus:border-[#4574FF]/40 appearance-none cursor-pointer"
                 >
                   {ALL_COINS.map(c => <option key={c} value={c} className="bg-[#0d1120]">{c} — {COIN_META[c]?.label}</option>)}
                 </select>
@@ -235,13 +235,13 @@ export default function AdminPaymentGateways() {
                 value={keyForm.merchantKey}
                 onChange={e => setKeyForm(f => ({ ...f, merchantKey: e.target.value }))}
                 placeholder="Paste your OxaPay merchant key…"
-                className="w-full h-10 rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 text-[13px] text-white placeholder:text-slate-700 outline-none focus:border-amber-500/40 transition-all font-mono"
+                className="w-full h-10 rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 text-[13px] text-white placeholder:text-slate-700 outline-none focus:border-[#4574FF]/40 transition-all font-mono"
               />
             </div>
             <button
               onClick={saveKey}
               disabled={savingKey || !keyForm.merchantKey.trim()}
-              className="h-10 px-6 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-[13px] font-bold text-slate-900 hover:from-amber-400 hover:to-amber-500 transition-all disabled:opacity-40 flex items-center gap-2"
+              className="h-10 px-6 rounded-xl bg-[#4574FF] text-[13px] font-bold text-white hover:bg-blue-500 transition-all disabled:opacity-40 flex items-center gap-2"
             >
               {savingKey ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
               Save {keyForm.coin} Key
@@ -252,7 +252,7 @@ export default function AdminPaymentGateways() {
         <div className="rounded-2xl border border-white/[0.07] overflow-hidden bg-white/[0.02]">
           {keysLoading ? (
             <div className="flex items-center justify-center py-10">
-              <Loader2 className="h-5 w-5 animate-spin text-amber-400" />
+              <Loader2 className="h-5 w-5 animate-spin text-sky-400" />
             </div>
           ) : coinKeys.length === 0 ? (
             <div className="py-12 text-center">
@@ -363,7 +363,7 @@ export default function AdminPaymentGateways() {
         <div className="rounded-2xl border border-white/[0.07] overflow-hidden bg-white/[0.02]">
           {bansLoading ? (
             <div className="flex items-center justify-center py-10">
-              <Loader2 className="h-5 w-5 animate-spin text-amber-400" />
+              <Loader2 className="h-5 w-5 animate-spin text-sky-400" />
             </div>
           ) : ipBans.length === 0 ? (
             <div className="py-12 text-center">

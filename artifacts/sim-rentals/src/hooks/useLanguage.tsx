@@ -21,6 +21,7 @@ const T: Record<LangCode, Record<string, string>> = {
   en: {
     // ─── Navigation ───────────────────────────────
     dashboard:      "Dashboard",
+    activity:       "Activity",
     rentNumber:     "Rent Number",
     myRentals:      "My Rentals",
     plansBilling:   "Plans & Billing",
@@ -146,6 +147,7 @@ const T: Record<LangCode, Record<string, string>> = {
   hi: {
     // ─── Navigation ───────────────────────────────
     dashboard:      "डैशबोर्ड",
+    activity:       "गतिविधि",
     rentNumber:     "नंबर किराए पर",
     myRentals:      "मेरे किराये",
     plansBilling:   "योजनाएं और बिलिंग",
@@ -271,6 +273,7 @@ const T: Record<LangCode, Record<string, string>> = {
   de: {
     // ─── Navigation ───────────────────────────────
     dashboard:      "Dashboard",
+    activity:       "Aktivität",
     rentNumber:     "Nummer mieten",
     myRentals:      "Meine Mieten",
     plansBilling:   "Pläne & Abrechnung",
@@ -396,6 +399,7 @@ const T: Record<LangCode, Record<string, string>> = {
   ru: {
     // ─── Navigation ───────────────────────────────
     dashboard:      "Панель",
+    activity:       "Активность",
     rentNumber:     "Арендовать номер",
     myRentals:      "Мои аренды",
     plansBilling:   "Тарифы и оплата",
@@ -521,6 +525,7 @@ const T: Record<LangCode, Record<string, string>> = {
   fr: {
     // ─── Navigation ───────────────────────────────
     dashboard:      "Tableau de bord",
+    activity:       "Activité",
     rentNumber:     "Louer un numéro",
     myRentals:      "Mes locations",
     plansBilling:   "Plans et facturation",

@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import {
   LogOut, FileText, RefreshCw, Shield,
   ExternalLink, Key, Plus, Trash2, Copy, Check, AlertTriangle,
-  Gift, ChevronRight, Mail, User, Lock, Eye, EyeOff, Loader2,
+  Gift, ChevronRight, Lock, Eye, EyeOff, Loader2,
   QrCode, X, Smartphone, Edit2
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -20,7 +20,7 @@ interface ApiKey { id: string; name: string; prefix: string; lastUsedAt: string 
 /* ─── Helpers ─────────────────────────────────────────────────────────────── */
 
 function SectionCard({ icon: Icon, title, subtitle, accent, children }: {
-  icon: React.ElementType; title: string; subtitle?: string; accent?: string; children: React.ReactNode;
+  icon: React.ElementType; title: string; subtitle?: string; accent?: boolean; children: React.ReactNode;
 }) {
   return (
     <section className={`rounded-2xl border overflow-hidden shadow-sm ${accent ? "border-[#4574FF]/15 bg-[#4574FF]/2" : "border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900"}`}>
@@ -121,19 +121,11 @@ function ProfileSection() {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="text-[16px] font-bold text-slate-900 dark:text-white truncate">{user.name}</span>
-                  {user.role === "admin" && (
-                    <span className="text-[9px] font-bold text-[#4574FF] border border-[#4574FF]/30 rounded-full px-2 py-0.5 uppercase">Admin</span>
-                  )}
                 </div>
                 <p className="text-[12.5px] text-slate-500 dark:text-slate-400 mt-0.5 truncate">{user.email}</p>
                 <div className="flex items-center gap-3 mt-2">
                   <span className="text-[13px] font-bold text-slate-900 dark:text-white">${user.credits.toFixed(2)}</span>
                   <span className="text-[12px] text-slate-500 dark:text-slate-400">balance</span>
-                  <Link href="/payments">
-                    <span className="text-[12px] text-[#4574FF] hover:text-blue-700 transition-colors cursor-pointer font-medium flex items-center gap-0.5">
-                      Add funds <ChevronRight className="h-3 w-3" />
-                    </span>
-                  </Link>
                 </div>
               </div>
             </div>

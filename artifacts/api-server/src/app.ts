@@ -10,6 +10,30 @@ import { logger } from "./lib/logger";
 
 const app: Express = express();
 
+// Security headers
+app.use((_req, res, next) => {
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("X-XSS-Protection", "0");
+  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+  res.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+  res.setHeader(
+    "Content-Security-Policy",
+    [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      "font-src 'self' https://fonts.gstatic.com",
+      "img-src 'self' data: https: blob:",
+      "connect-src 'self' wss: https:",
+      "frame-ancestors 'none'",
+    ].join("; ")
+  );
+  // Strip internal headers from responses
+  res.removeHeader("X-Powered-By");
+  next();
+});
+
 app.use(
   pinoHttp({
     logger,
@@ -88,5 +112,18 @@ if (frontendDir) {
 } else {
   logger.warn({ candidatePaths }, "Frontend build not found; API-only mode");
 }
+
+// Global error handler — never expose stack traces in production
+app.use((err: unknown, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+  const isProduction = process.env.NODE_ENV === "production";
+  const statusCode = (err as { status?: number; statusCode?: number })?.status
+    ?? (err as { statusCode?: number })?.statusCode
+    ?? 500;
+  const message = (err instanceof Error && !isProduction)
+    ? err.message
+    : "An unexpected error occurred";
+  logger.error({ err }, "Unhandled error");
+  res.status(statusCode).json({ error: message });
+});
 
 export default app;

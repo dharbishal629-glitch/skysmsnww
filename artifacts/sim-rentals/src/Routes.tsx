@@ -21,6 +21,8 @@ import Support from "@/pages/Support";
 import SupportConversation from "@/pages/SupportConversation";
 import ApiDocs from "@/pages/ApiDocs";
 import Referral from "@/pages/Referral";
+import Notifications from "@/pages/Notifications";
+import Rankings from "@/pages/Rankings";
 import { useAuth } from "@/hooks/useAuth";
 import { useGetMe } from "@workspace/api-client-react";
 import { Switch, Route, Redirect } from "wouter";
@@ -30,7 +32,7 @@ function LoadingScreen() {
   return (
     <div className="min-h-screen premium-shell flex items-center justify-center">
       <div className="flex flex-col items-center gap-4">
-        <div className="h-11 w-11 animate-spin rounded-full border-2 border-amber-500 border-t-transparent" />
+        <div className="h-11 w-11 animate-spin rounded-full border-2 border-[#4574FF] border-t-transparent" />
         <div className="text-[12px] text-slate-600 font-medium">Loading…</div>
       </div>
     </div>
@@ -55,8 +57,8 @@ function SuspensionScreen({ reason, isIpBan }: { reason?: string | null; isIpBan
           <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">What you can do</div>
           {["Contact support via email at support@skysms.io", "Open a support ticket from another account", "Wait for your appeal to be reviewed"].map((item, i) => (
             <div key={i} className="flex items-start gap-2.5">
-              <div className="h-5 w-5 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0 mt-0.5">
-                <span className="text-[9px] font-black text-amber-400">{i + 1}</span>
+              <div className="h-5 w-5 rounded-full bg-[#4574FF]/10 border border-[#4574FF]/20 flex items-center justify-center shrink-0 mt-0.5">
+                <span className="text-[9px] font-black text-[#4574FF]">{i + 1}</span>
               </div>
               <span className="text-[12px] text-slate-400 leading-relaxed">{item}</span>
             </div>
@@ -85,6 +87,14 @@ function ProtectedRoute({ component: Component }: { component: React.ComponentTy
   return <Layout><Component /></Layout>;
 }
 
+// Auth-protected but renders without the sidebar Layout (full-screen pages)
+function FullScreenRoute({ component: Component }: { component: React.ComponentType }) {
+  const { isLoading, isAuthenticated, login } = useAuth();
+  if (isLoading) return <LoadingScreen />;
+  if (!isAuthenticated) { login(); return null; }
+  return <Component />;
+}
+
 function AdminRoute({ component: Component }: { component: React.ComponentType }) {
   const { isLoading: authLoading, isAuthenticated, login } = useAuth();
   const { data: user, isLoading: userLoading } = useGetMe();
@@ -110,6 +120,8 @@ export function AppRoutes() {
       <Route path="/support/conversation/:id"><ProtectedRoute component={SupportConversation} /></Route>
       <Route path="/api-docs"><ProtectedRoute component={ApiDocs} /></Route>
       <Route path="/referral"><ProtectedRoute component={Referral} /></Route>
+      <Route path="/rankings"><ProtectedRoute component={Rankings} /></Route>
+      <Route path="/notifications"><FullScreenRoute component={Notifications} /></Route>
 
       <Route path="/admin"><AdminRoute component={AdminOverview} /></Route>
       <Route path="/admin/users/:id"><AdminRoute component={AdminUserDetail} /></Route>

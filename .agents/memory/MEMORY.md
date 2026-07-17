@@ -1,2 +1,5 @@
 - [Language System](language-system.md) — useLanguage.tsx has full inline translations (en/hi/de/ru/fr); exports LanguageProvider, LangCode, LANGUAGES (with code/flag/label/nativeName), useLanguage() returning {lang, setLang, current, t}.
 - [Git Push Restriction](git-push.md) — git push to external remotes is blocked in the main agent sandbox; must delegate to project_tasks or give user shell commands to run themselves.
+- [2FA Implementation](twofa-impl.md) — otplib named exports (generateSecret/generateURI) do not work reliably; twofa.ts uses pure Node crypto with custom base32Encode/totpToken/totpVerify. simSchema2fa.ts: done=true must be set AFTER the pool.query, not before.
+- [Theme Colors](theme-colors.md) — No amber/yellow anywhere; warnings use sky-400/sky-500. Accent is #4574FF (blue). Logo is SkySmsLogo in SkySmsLogo.tsx — flat blue rounded-rect with white signal bars, non-animated.
+- [Routes](routes.md) — /rankings and /notifications must be registered in BOTH Routes.tsx (Switch) and App.tsx (AppWithRoutes). Rankings uses monthly deposits from /api/account/monthly-deposits.

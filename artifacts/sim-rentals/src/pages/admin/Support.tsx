@@ -27,7 +27,7 @@ async function fetchAdminTickets(): Promise<AdminTicket[]> {
 }
 
 const statusMap: Record<string, { label: string; cls: string; icon: React.ElementType }> = {
-  open:        { label: "Open",        cls: "text-amber-400 border-amber-500/20 bg-amber-500/10",       icon: Clock },
+  open:        { label: "Open",        cls: "text-sky-400 border-sky-500/20 bg-sky-500/10",       icon: Clock },
   in_progress: { label: "In Progress", cls: "text-blue-400 border-blue-500/20 bg-blue-500/10",          icon: Clock },
   resolved:    { label: "Resolved",    cls: "text-emerald-400 border-emerald-500/20 bg-emerald-500/10", icon: CheckCircle2 },
   closed:      { label: "Closed",      cls: "text-slate-500 border-white/10 bg-white/[0.03]",           icon: XCircle },

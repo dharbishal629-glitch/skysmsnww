@@ -12,8 +12,7 @@ import { clearSession, getSessionId } from "../lib/auth";
 const router: IRouter = Router();
 
 function requireAuth(req: Request, res: Response): string | null {
-  const session = (req as any).sessionData;
-  const userId = session?.user?.id;
+  const userId = req.user?.id;
   if (!userId) {
     res.status(401).json({ error: "Not authenticated" });
     return null;

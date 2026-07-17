@@ -68,7 +68,7 @@ export default function RefundPolicy() {
       <main className="relative z-10 mx-auto max-w-4xl px-4 pb-24 pt-16 sm:px-6 lg:px-8">
         <Reveal variant="up">
           <div className="mb-12 text-center">
-            <div className="mx-auto mb-5 w-fit rounded-full border border-amber-400/20 bg-amber-400/[0.08] px-4 py-2 text-xs font-bold uppercase tracking-[0.22em] text-amber-300">
+            <div className="mx-auto mb-5 w-fit rounded-full border border-[#4574FF]/20 bg-[#4574FF]/[0.08] px-4 py-2 text-xs font-bold uppercase tracking-[0.22em] text-[#4574FF]">
               Legal
             </div>
             <h1 className="text-5xl font-black tracking-tight text-white mb-4">Refund Policy</h1>
@@ -151,7 +151,7 @@ export default function RefundPolicy() {
                 { step: "3", title: "Balance restored instantly", desc: "The exact amount you paid for that rental is returned to your account balance with no delay." },
               ].map((item) => (
                 <div key={item.step} className="flex items-start gap-4 p-4 rounded-xl bg-white/[0.03] border border-white/[0.06]">
-                  <div className="h-8 w-8 rounded-full bg-amber-400/15 border border-amber-300/20 flex items-center justify-center shrink-0 font-black text-amber-400 text-sm">
+                  <div className="h-8 w-8 rounded-full bg-[#4574FF]/15 border border-[#4574FF]/20 flex items-center justify-center shrink-0 font-black text-[#4574FF] text-sm">
                     {item.step}
                   </div>
                   <div>
@@ -185,7 +185,7 @@ export default function RefundPolicy() {
               Have a question not covered here? Contact our support team from your account dashboard.
             </p>
             <Link href="/terms">
-              <span className="inline-flex items-center gap-2 text-amber-400 text-sm font-semibold hover:text-amber-300 transition-colors cursor-pointer">
+              <span className="inline-flex items-center gap-2 text-[#4574FF] text-sm font-semibold hover:text-blue-400 transition-colors cursor-pointer">
                 View Terms of Service <ChevronRight className="h-4 w-4" />
               </span>
             </Link>

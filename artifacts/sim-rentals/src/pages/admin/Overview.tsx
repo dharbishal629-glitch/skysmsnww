@@ -58,8 +58,8 @@ function ReferralSettingsCard() {
   return (
     <div className="rounded-2xl border border-white/[0.07] bg-white/[0.02] overflow-hidden">
       <div className="px-5 py-4 border-b border-white/[0.06] flex items-center gap-3">
-        <div className="h-8 w-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
-          <Gift className="h-4 w-4 text-amber-400" />
+        <div className="h-8 w-8 rounded-lg bg-[#4574FF]/10 border border-[#4574FF]/20 flex items-center justify-center shrink-0">
+          <Gift className="h-4 w-4 text-[#4574FF]" />
         </div>
         <div>
           <div className="font-bold text-white text-[14px]">Referral Program</div>
@@ -68,7 +68,7 @@ function ReferralSettingsCard() {
         <div className="ml-auto">
           <button onClick={() => setEnabled(e => !e)} className="transition-colors">
             {enabled
-              ? <ToggleRight className="h-8 w-8 text-amber-400" />
+              ? <ToggleRight className="h-8 w-8 text-sky-400" />
               : <ToggleLeft className="h-8 w-8 text-slate-600" />}
           </button>
         </div>
@@ -109,14 +109,14 @@ function ReferralSettingsCard() {
                 </div>
               </div>
             </div>
-            <div className={`flex items-center gap-2 p-3 rounded-xl border text-[12px] ${enabled ? "border-amber-500/20 bg-amber-500/[0.05] text-amber-300" : "border-white/[0.06] bg-white/[0.02] text-slate-600"}`}>
+            <div className={`flex items-center gap-2 p-3 rounded-xl border text-[12px] ${enabled ? "border-sky-500/20 bg-sky-500/[0.05] text-sky-300" : "border-white/[0.06] bg-white/[0.02] text-slate-600"}`}>
               {enabled ? <CheckCircle2 className="h-3.5 w-3.5 shrink-0" /> : <Shield className="h-3.5 w-3.5 shrink-0" />}
               {enabled ? "Users can share codes and earn bonuses" : "Referral codes are currently disabled for all users"}
             </div>
             <button
               onClick={save}
               disabled={saving}
-              className="flex items-center gap-2 h-9 px-4 rounded-xl bg-amber-500/15 border border-amber-500/25 text-[12.5px] font-semibold text-amber-300 hover:bg-amber-500/25 transition-all disabled:opacity-60"
+              className="flex items-center gap-2 h-9 px-4 rounded-xl bg-sky-500/15 border border-sky-500/25 text-[12.5px] font-semibold text-sky-300 hover:bg-sky-500/25 transition-all disabled:opacity-60"
             >
               <Save className="h-3.5 w-3.5" />
               {saving ? "Saving…" : "Save Settings"}
@@ -216,10 +216,10 @@ export default function AdminOverview() {
       value: String(data.pendingPayments),
       sub: "Awaiting confirmation",
       icon: Activity,
-      iconCls: "bg-amber-400/10 border-amber-400/20 text-amber-400",
-      valueCls: data.pendingPayments > 0 ? "text-amber-400" : "text-white",
+      iconCls: "bg-sky-400/10 border-sky-400/20 text-sky-400",
+      valueCls: data.pendingPayments > 0 ? "text-sky-400" : "text-white",
       trend: data.pendingPayments > 0 ? TrendingUp : TrendingDown,
-      trendCls: data.pendingPayments > 0 ? "text-amber-500" : "text-slate-700",
+      trendCls: data.pendingPayments > 0 ? "text-sky-500" : "text-slate-700",
     },
   ];
 
@@ -274,14 +274,14 @@ export default function AdminOverview() {
                   {provider.mode === "live" ? (
                     <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
                   ) : (
-                    <AlertCircle className="h-4 w-4 text-amber-400 shrink-0 mt-0.5" />
+                    <AlertCircle className="h-4 w-4 text-sky-400 shrink-0 mt-0.5" />
                   )}
                   <div>
                     <div className="font-semibold text-[13px] text-white">{maskProviderName(provider.name)}</div>
                     <p className="text-[11.5px] text-slate-500 mt-0.5 leading-relaxed">{provider.message}</p>
                   </div>
                 </div>
-                <Badge variant="outline" className={`text-[10px] shrink-0 font-bold ${provider.mode === "live" ? "border-emerald-400/20 bg-emerald-400/10 text-emerald-300" : "border-amber-400/20 bg-amber-400/10 text-amber-300"}`}>
+                <Badge variant="outline" className={`text-[10px] shrink-0 font-bold ${provider.mode === "live" ? "border-emerald-400/20 bg-emerald-400/10 text-emerald-300" : "border-sky-400/20 bg-sky-400/10 text-sky-300"}`}>
                   {provider.mode}
                 </Badge>
               </div>

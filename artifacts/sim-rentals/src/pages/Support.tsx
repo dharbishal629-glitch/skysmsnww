@@ -3,8 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
 import {
   LifeBuoy, MessageSquare, Clock, CheckCircle2, XCircle, AlertCircle,
-  Loader2, Plus, X, Send, ChevronRight, Activity, CheckCheck,
-  Info, ShieldAlert, Zap, Server
+  Loader2, Plus, X, Send, ChevronRight
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
@@ -110,163 +109,6 @@ function TicketRow({ ticket }: { ticket: Ticket }) {
   );
 }
 
-/* ── System Activity Log ── */
-const ACTIVITY_LOG = [
-  {
-    id: 1,
-    type: "success",
-    title: "All systems operational",
-    description: "SMS delivery, number allocation, and payments are running normally.",
-    time: "Just now",
-    component: "All Services",
-  },
-  {
-    id: 2,
-    type: "info",
-    title: "Number pool refresh completed",
-    description: "Fresh virtual number inventory loaded for US, UK, and DE regions.",
-    time: "12 minutes ago",
-    component: "Number Pool",
-  },
-  {
-    id: 3,
-    type: "info",
-    title: "Payment gateway check",
-    description: "OxaPay gateway responding with normal latency (< 200ms).",
-    time: "1 hour ago",
-    component: "Payments",
-  },
-  {
-    id: 4,
-    type: "warning",
-    title: "Elevated SMS delivery times",
-    description: "Telegram verification codes from Russia region experiencing 15–30s delays. Auto-resolving.",
-    time: "3 hours ago",
-    component: "SMS Delivery",
-  },
-  {
-    id: 5,
-    type: "success",
-    title: "Scheduled maintenance completed",
-    description: "Database index optimization finished. Query performance improved by ~18%.",
-    time: "Yesterday, 02:30 UTC",
-    component: "Database",
-  },
-  {
-    id: 6,
-    type: "info",
-    title: "API rate limit reset",
-    description: "Per-minute rate limits reset for all API key holders as scheduled.",
-    time: "Yesterday, 00:00 UTC",
-    component: "API",
-  },
-];
-
-const ACTIVITY_TYPE_CONFIG = {
-  success: {
-    icon: CheckCheck,
-    iconCls: "text-emerald-600",
-    bgCls: "bg-emerald-50 border-emerald-200",
-    dotCls: "bg-emerald-500",
-  },
-  warning: {
-    icon: ShieldAlert,
-    iconCls: "text-amber-600",
-    bgCls: "bg-amber-50 border-amber-200",
-    dotCls: "bg-amber-500",
-  },
-  error: {
-    icon: AlertCircle,
-    iconCls: "text-red-600",
-    bgCls: "bg-red-50 border-red-200",
-    dotCls: "bg-red-500",
-  },
-  info: {
-    icon: Info,
-    iconCls: "text-[#4574FF]",
-    bgCls: "bg-blue-50 border-blue-200",
-    dotCls: "bg-[#4574FF]",
-  },
-};
-
-function SystemActivityLog() {
-  return (
-    <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm">
-      {/* Header */}
-      <div className="flex items-center gap-3 px-5 py-4 border-b border-slate-100 bg-slate-50/50">
-        <div className="h-8 w-8 rounded-xl bg-[#4574FF]/10 border border-[#4574FF]/15 flex items-center justify-center">
-          <Activity className="h-4 w-4 text-[#4574FF]" />
-        </div>
-        <div>
-          <div className="text-[13px] font-bold text-slate-900">System Activity Log</div>
-          <div className="text-[11px] text-slate-400">Real-time platform status and events</div>
-        </div>
-        <div className="ml-auto flex items-center gap-1.5">
-          <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span className="text-[11px] font-semibold text-emerald-700">Operational</span>
-        </div>
-      </div>
-
-      {/* Status tiles */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-slate-100 border-b border-slate-100">
-        {[
-          { icon: Server,        label: "API",      status: "Online",  color: "text-emerald-600" },
-          { icon: Zap,           label: "Numbers",  status: "Online",  color: "text-emerald-600" },
-          { icon: MessageSquare, label: "SMS",      status: "Online",  color: "text-emerald-600" },
-          { icon: CheckCheck,    label: "Payments", status: "Online",  color: "text-emerald-600" },
-        ].map(item => (
-          <div key={item.label} className="bg-white px-4 py-3 flex items-center gap-2.5">
-            <item.icon className="h-3.5 w-3.5 text-slate-400 shrink-0" />
-            <div>
-              <div className="text-[11px] font-semibold text-slate-700">{item.label}</div>
-              <div className={`text-[10px] font-bold ${item.color}`}>{item.status}</div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Activity feed */}
-      <div className="divide-y divide-slate-100">
-        {ACTIVITY_LOG.map((event, idx) => {
-          const cfg = ACTIVITY_TYPE_CONFIG[event.type as keyof typeof ACTIVITY_TYPE_CONFIG];
-          const Icon = cfg.icon;
-          return (
-            <div key={event.id} className="flex gap-4 px-5 py-4 hover:bg-slate-50/50 transition-colors">
-              {/* Icon */}
-              <div className={`h-8 w-8 rounded-xl border flex items-center justify-center shrink-0 mt-0.5 ${cfg.bgCls}`}>
-                <Icon className={`h-3.5 w-3.5 ${cfg.iconCls}`} />
-              </div>
-
-              {/* Content */}
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-[13px] font-semibold text-slate-800">{event.title}</span>
-                  <span className="text-[10px] font-medium text-slate-400 bg-slate-100 rounded-full px-2 py-0.5">
-                    {event.component}
-                  </span>
-                </div>
-                <p className="text-[12px] text-slate-500 leading-relaxed mt-0.5">{event.description}</p>
-                <span className="text-[10px] text-slate-400 mt-1 block">{event.time}</span>
-              </div>
-
-              {/* Dot indicator */}
-              <div className="flex items-center shrink-0">
-                <span className={`h-2 w-2 rounded-full ${cfg.dotCls} ${idx === 0 ? "animate-pulse" : "opacity-50"}`} />
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Footer */}
-      <div className="px-5 py-3 border-t border-slate-100 bg-slate-50/50">
-        <p className="text-[11px] text-slate-400 text-center">
-          Updated automatically · All times in UTC · <a href="#" className="text-[#4574FF] hover:underline">View full status page</a>
-        </p>
-      </div>
-    </div>
-  );
-}
 
 export default function Support() {
   const qc = useQueryClient();
@@ -276,7 +118,6 @@ export default function Support() {
   const [showForm, setShowForm] = useState(false);
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
-  const [activeTab, setActiveTab] = useState<"tickets" | "activity">("tickets");
 
   const { data: tickets = [], isLoading } = useQuery({
     queryKey: ["support-tickets"],
@@ -336,29 +177,8 @@ export default function Support() {
         </button>
       </div>
 
-      {/* Tabs */}
-      <div className="flex gap-1 p-1 rounded-xl bg-slate-100 border border-slate-200">
-        {[
-          { key: "tickets",  label: "Support Tickets", icon: MessageSquare },
-          { key: "activity", label: "System Activity",  icon: Activity },
-        ].map(tab => (
-          <button
-            key={tab.key}
-            onClick={() => { setActiveTab(tab.key as "tickets" | "activity"); setShowForm(false); }}
-            className={`flex-1 flex items-center justify-center gap-2 h-9 rounded-lg text-[12.5px] font-semibold transition-all ${
-              activeTab === tab.key
-                ? "bg-white text-slate-900 shadow-sm border border-slate-200"
-                : "text-slate-500 hover:text-slate-700"
-            }`}
-          >
-            <tab.icon className="h-3.5 w-3.5" />
-            {tab.label}
-          </button>
-        ))}
-      </div>
-
-      {/* ── Tickets Tab ── */}
-      {activeTab === "tickets" && (
+      {/* ── Tickets ── */}
+      {(
         <>
           {/* New Ticket Form */}
           {showForm && (
@@ -413,24 +233,6 @@ export default function Support() {
             </form>
           )}
 
-          {/* Info Cards (empty state) */}
-          {!showForm && tickets.length === 0 && !isLoading && (
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {[
-                { icon: Clock,        title: "Response time",  desc: "We reply within 24 hours on business days." },
-                { icon: MessageSquare,title: "Image support",  desc: "Attach screenshots to your messages for faster help." },
-                { icon: CheckCircle2, title: "Refund policy",  desc: "Rental credits are refunded automatically if no SMS is received." },
-              ].map(item => (
-                <div key={item.title} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-                  <div className="h-8 w-8 rounded-lg bg-[#4574FF]/8 border border-[#4574FF]/12 flex items-center justify-center mb-3">
-                    <item.icon className="h-4 w-4 text-[#4574FF]" />
-                  </div>
-                  <div className="text-[12px] font-bold text-slate-800 mb-1">{item.title}</div>
-                  <div className="text-[11px] text-slate-500 leading-relaxed">{item.desc}</div>
-                </div>
-              ))}
-            </div>
-          )}
 
           {/* Ticket list */}
           <div>
@@ -477,8 +279,6 @@ export default function Support() {
         </>
       )}
 
-      {/* ── System Activity Tab ── */}
-      {activeTab === "activity" && <SystemActivityLog />}
     </div>
   );
 }

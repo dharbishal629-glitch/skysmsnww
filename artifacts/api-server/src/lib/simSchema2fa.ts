@@ -8,7 +8,6 @@ let done = false;
 
 export async function ensure2FASchema(): Promise<void> {
   if (done) return;
-  done = true;
   await pool.query(`
     ALTER TABLE sim_users
       ADD COLUMN IF NOT EXISTS totp_secret TEXT,
@@ -21,4 +20,5 @@ export async function ensure2FASchema(): Promise<void> {
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
   `);
+  done = true;
 }

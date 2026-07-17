@@ -85,6 +85,62 @@ body {
   --accent-dim: rgba(69,116,255,0.1);
 }
 
+/* ── Dark mode CSS variables ─────────────────────────────────────────────── */
+.dark {
+  --background: 222 47% 9%;
+  --foreground: 213 31% 91%;
+  --border: 222 47% 16%;
+  --card: 222 47% 11%;
+  --card-foreground: 213 31% 91%;
+  --card-border: 222 47% 18%;
+  --popover: 222 47% 10%;
+  --popover-foreground: 213 31% 91%;
+  --popover-border: 222 47% 18%;
+  --primary: 228 100% 61%;
+  --primary-foreground: 0 0% 100%;
+  --primary-border: rgba(69,116,255,0.4);
+  --secondary: 222 47% 15%;
+  --secondary-foreground: 213 31% 80%;
+  --muted: 222 47% 14%;
+  --muted-foreground: 220 12% 55%;
+  --accent: 228 50% 20%;
+  --accent-foreground: 228 100% 70%;
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 100%;
+  --input: 222 47% 14%;
+  --ring: 228 100% 61%;
+}
+
+.dark html,
+.dark body {
+  background-color: #080c18;
+}
+
+.dark .app-shell {
+  background: #080c18;
+}
+
+.dark .page-grid {
+  background-color: #080c18;
+  background-image:
+    linear-gradient(rgba(69,116,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(69,116,255,0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.dark .app-card {
+  background: #0f1629;
+  border-color: rgba(69,116,255,0.1);
+}
+
+.dark .stat-card {
+  background: #0f1629;
+  border-color: rgba(69,116,255,0.08);
+}
+
+.dark ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); }
+.dark ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.14); }
+
 @layer base {
   * { @apply border-border; box-sizing: border-box; }
   body {
@@ -641,3 +697,140 @@ body {
     background-clip: text;
   }
 }
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   DARK MODE — comprehensive site-wide fallback overrides
+   Placed after all @imports / @layer blocks so these rules win by cascade order
+   for elements that have no explicit dark: Tailwind variants.
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* ── Base ────────────────────────────────────────────────────────────────── */
+.dark body      { background-color: #080c18; color: #f1f5f9; }
+html.dark       { background-color: #080c18; }
+.dark .app-shell { background: #080c18; }
+
+/* ── Card / surface backgrounds ─────────────────────────────────────────── */
+.dark .bg-white    { background-color: #0f1629; }
+.dark .bg-slate-50 { background-color: #141d3a; }
+.dark .bg-slate-100 { background-color: #1a2444; }
+.dark .bg-slate-200 { background-color: #1e2d52; }
+
+/* Opacity variants */
+.dark .bg-slate-50\/50  { background-color: rgba(20,29,58,0.5); }
+.dark .bg-slate-50\/40  { background-color: rgba(20,29,58,0.4); }
+.dark .bg-slate-100\/50 { background-color: rgba(26,36,68,0.5); }
+
+/* Tinted colour-chip backgrounds → dark translucent */
+.dark .bg-emerald-50 { background-color: rgba(16,185,129,0.10); }
+.dark .bg-blue-50    { background-color: rgba(69,116,255,0.10); }
+.dark .bg-red-50     { background-color: rgba(239,68,68,0.10); }
+.dark .bg-rose-50    { background-color: rgba(225,29,72,0.10); }
+.dark .bg-indigo-50  { background-color: rgba(99,102,241,0.10); }
+.dark .bg-sky-50     { background-color: rgba(14,165,233,0.10); }
+.dark .bg-purple-50  { background-color: rgba(168,85,247,0.10); }
+.dark .bg-cyan-50    { background-color: rgba(6,182,212,0.10); }
+.dark .bg-violet-50  { background-color: rgba(139,92,246,0.10); }
+.dark .bg-amber-50   { background-color: rgba(245,158,11,0.10); }
+.dark .bg-orange-50  { background-color: rgba(249,115,22,0.10); }
+.dark .bg-yellow-50  { background-color: rgba(234,179,8,0.10); }
+.dark .bg-pink-50    { background-color: rgba(236,72,153,0.10); }
+.dark .bg-teal-50    { background-color: rgba(20,184,166,0.10); }
+
+/* ── Text colors ─────────────────────────────────────────────────────────── */
+.dark .text-slate-900 { color: #f9fafb; }
+.dark .text-slate-800 { color: #f3f4f6; }
+.dark .text-slate-700 { color: #e5e7eb; }
+.dark .text-slate-600 { color: #d1d5db; }
+.dark .text-slate-500 { color: #9ca3af; }
+.dark .text-slate-400 { color: #6b7280; }
+.dark .text-slate-300 { color: #4b5563; }
+
+/* Status text — ensure legibility in dark */
+.dark .text-emerald-800 { color: #6ee7b7; }
+.dark .text-emerald-700 { color: #a7f3d0; }
+.dark .text-emerald-600 { color: #34d399; }
+.dark .text-emerald-500 { color: #10b981; }
+.dark .text-blue-800    { color: #bfdbfe; }
+.dark .text-blue-700    { color: #93c5fd; }
+.dark .text-blue-600    { color: #7cb9f8; }
+.dark .text-red-700     { color: #fca5a5; }
+.dark .text-red-600     { color: #f87171; }
+.dark .text-red-500     { color: #f87171; }
+.dark .text-violet-700  { color: #c4b5fd; }
+.dark .text-violet-600  { color: #a78bfa; }
+.dark .text-amber-700   { color: #fde68a; }
+.dark .text-amber-600   { color: #fcd34d; }
+.dark .text-indigo-700  { color: #a5b4fc; }
+.dark .text-indigo-600  { color: #818cf8; }
+.dark .text-sky-700     { color: #7dd3fc; }
+.dark .text-cyan-700    { color: #67e8f9; }
+.dark .text-purple-700  { color: #d8b4fe; }
+.dark .text-teal-700    { color: #5eead4; }
+.dark .text-rose-700    { color: #fda4af; }
+.dark .text-rose-600    { color: #fb7185; }
+.dark .text-pink-700    { color: #f9a8d4; }
+
+/* ── Borders ─────────────────────────────────────────────────────────────── */
+.dark .border-slate-100 { border-color: rgba(255,255,255,0.06); }
+.dark .border-slate-200 { border-color: rgba(255,255,255,0.10); }
+.dark .border-slate-300 { border-color: rgba(255,255,255,0.15); }
+.dark .border-dashed.border-slate-200, .dark .border-dashed.border-slate-300 {
+  border-color: rgba(255,255,255,0.12);
+}
+
+.dark .border-emerald-200 { border-color: rgba(16,185,129,0.30); }
+.dark .border-emerald-300 { border-color: rgba(16,185,129,0.45); }
+.dark .border-blue-200    { border-color: rgba(69,116,255,0.30); }
+.dark .border-red-200     { border-color: rgba(239,68,68,0.30); }
+.dark .border-red-300     { border-color: rgba(239,68,68,0.45); }
+.dark .border-rose-200    { border-color: rgba(225,29,72,0.30); }
+.dark .border-indigo-200  { border-color: rgba(99,102,241,0.30); }
+.dark .border-violet-200  { border-color: rgba(139,92,246,0.30); }
+.dark .border-amber-200   { border-color: rgba(245,158,11,0.30); }
+.dark .border-sky-200     { border-color: rgba(14,165,233,0.30); }
+
+/* ── Divide utilities ────────────────────────────────────────────────────── */
+.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]) { border-color: rgba(255,255,255,0.06); }
+.dark .divide-slate-200 > :not([hidden]) ~ :not([hidden]) { border-color: rgba(255,255,255,0.10); }
+
+/* ── Hover states ────────────────────────────────────────────────────────── */
+.dark .hover\:bg-slate-50:hover   { background-color: rgba(255,255,255,0.04); }
+.dark .hover\:bg-slate-100:hover  { background-color: rgba(255,255,255,0.07); }
+.dark .hover\:bg-slate-50\/50:hover { background-color: rgba(255,255,255,0.03); }
+.dark .hover\:bg-emerald-50:hover { background-color: rgba(16,185,129,0.12); }
+.dark .hover\:bg-red-50:hover     { background-color: rgba(239,68,68,0.10); }
+.dark .hover\:bg-red-100:hover    { background-color: rgba(239,68,68,0.15); }
+
+/* ── Form controls (catch-all for inputs without explicit dark: classes) ─── */
+.dark input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([class*="dark:"]) {
+  background-color: #0f1629;
+  border-color: rgba(255,255,255,0.12);
+  color: #f9fafb;
+}
+.dark input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"])::placeholder {
+  color: #6b7280;
+}
+.dark textarea:not([class*="dark:"]) {
+  background-color: #0f1629;
+  border-color: rgba(255,255,255,0.12);
+  color: #f9fafb;
+}
+.dark textarea::placeholder { color: #6b7280; }
+.dark select:not([class*="dark:"]) {
+  background-color: #0f1629;
+  border-color: rgba(255,255,255,0.12);
+  color: #f9fafb;
+}
+
+/* ── Table ───────────────────────────────────────────────────────────────── */
+.dark td, .dark th { border-color: rgba(255,255,255,0.08); }
+
+/* ── Inline code snippets ────────────────────────────────────────────────── */
+.dark code:not([class]) {
+  background-color: rgba(255,255,255,0.08);
+  color: #93c5fd;
+}
+
+/* ── Stripe / grid gap separator used in Support status tiles ──────────── */
+.dark .gap-px { --tw-bg-opacity: 1; }
+.dark .bg-slate-100.gap-px { background-color: rgba(255,255,255,0.06); }

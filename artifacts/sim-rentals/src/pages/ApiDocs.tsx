@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Copy, Check, BookOpen, Globe, ShoppingCart, History, User, AlertTriangle, ChevronRight, Terminal, Lock, Zap, Code2 } from "lucide-react";
+import { useTheme } from "@/hooks/useTheme";
 
 const BASE = typeof window !== "undefined"
   ? `${window.location.protocol}//${window.location.host}/api`
@@ -14,12 +15,36 @@ const NAV = [
   { id: "errors",    label: "Error Codes", icon: AlertTriangle },
 ];
 
-const METHOD_COLORS: Record<string, { text: string; bg: string; border: string }> = {
-  GET:    { text: "#2563eb", bg: "#eff6ff", border: "#bfdbfe" },
-  POST:   { text: "#16a34a", bg: "#f0fdf4", border: "#bbf7d0" },
-  DELETE: { text: "#dc2626", bg: "#fef2f2", border: "#fecaca" },
-  PATCH:  { text: "#d97706", bg: "#fffbeb", border: "#fde68a" },
-};
+function useMethodColors(isDark: boolean) {
+  return {
+    GET:    isDark
+      ? { text: "#93c5fd", bg: "rgba(59,130,246,0.1)", border: "rgba(59,130,246,0.25)" }
+      : { text: "#2563eb", bg: "#eff6ff", border: "#bfdbfe" },
+    POST:   isDark
+      ? { text: "#6ee7b7", bg: "rgba(16,185,129,0.1)", border: "rgba(16,185,129,0.25)" }
+      : { text: "#16a34a", bg: "#f0fdf4", border: "#bbf7d0" },
+    DELETE: isDark
+      ? { text: "#fca5a5", bg: "rgba(239,68,68,0.1)", border: "rgba(239,68,68,0.25)" }
+      : { text: "#dc2626", bg: "#fef2f2", border: "#fecaca" },
+    PATCH:  isDark
+      ? { text: "#fcd34d", bg: "rgba(245,158,11,0.1)", border: "rgba(245,158,11,0.25)" }
+      : { text: "#d97706", bg: "#fffbeb", border: "#fde68a" },
+  };
+}
+
+function useTypeColors(isDark: boolean) {
+  return {
+    success: isDark
+      ? { text: "#6ee7b7", bg: "rgba(16,185,129,0.1)", border: "rgba(16,185,129,0.25)" }
+      : { text: "#16a34a", bg: "#f0fdf4", border: "#bbf7d0" },
+    warning: isDark
+      ? { text: "#fcd34d", bg: "rgba(245,158,11,0.1)", border: "rgba(245,158,11,0.25)" }
+      : { text: "#d97706", bg: "#fffbeb", border: "#fde68a" },
+    error:   isDark
+      ? { text: "#fca5a5", bg: "rgba(239,68,68,0.1)", border: "rgba(239,68,68,0.25)" }
+      : { text: "#dc2626", bg: "#fef2f2", border: "#fecaca" },
+  };
+}
 
 function CopyBtn({ text, small }: { text: string; small?: boolean }) {
   const [ok, setOk] = useState(false);
@@ -34,8 +59,8 @@ function CopyBtn({ text, small }: { text: string; small?: boolean }) {
         small ? "text-[10px] px-2 py-1" : "text-[11px] px-2.5 py-1.5"
       } ${
         ok
-          ? "bg-emerald-50 border-emerald-200 text-emerald-700"
-          : "bg-white border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-700"
+          ? "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-700/40 text-emerald-700 dark:text-emerald-400"
+          : "bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-600 hover:text-slate-700 dark:hover:text-white"
       }`}
     >
       {ok ? <Check size={10} /> : <Copy size={10} />}
@@ -48,10 +73,10 @@ function CodeBlock({ label, children, copyText }: { label: string; children: Rea
   return (
     <div className="mt-3">
       <div className="flex items-center justify-between mb-2">
-        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.14em]">{label}</span>
+        <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.14em]">{label}</span>
         {copyText !== undefined && <CopyBtn text={copyText} small />}
       </div>
-      <div className="relative rounded-xl border border-slate-800 bg-[#0f172a] overflow-hidden">
+      <div className="relative rounded-xl border border-slate-800 dark:border-slate-700 bg-[#0d1117] dark:bg-[#080c18] overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-[#4574FF]/40 via-[#4574FF]/20 to-transparent" />
         <pre
           style={{
@@ -73,8 +98,9 @@ function CodeBlock({ label, children, copyText }: { label: string; children: Rea
   );
 }
 
-function MethodBadge({ m }: { m: "GET" | "POST" | "DELETE" | "PATCH" }) {
-  const c = METHOD_COLORS[m];
+function MethodBadge({ m, isDark }: { m: "GET" | "POST" | "DELETE" | "PATCH"; isDark: boolean }) {
+  const colors = useMethodColors(isDark);
+  const c = colors[m];
   return (
     <span
       className="inline-flex items-center justify-center px-3 py-1 rounded-lg text-[11px] font-black font-mono tracking-widest border flex-shrink-0"
@@ -93,14 +119,14 @@ function Endpoint({ method, path, note, payload, response, curl }: {
   response: string;
   curl: string;
 }) {
+  const { isDark } = useTheme();
   return (
     <div className="space-y-1">
-      {/* Endpoint row */}
-      <div className="flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 overflow-x-auto">
-        <MethodBadge m={method} />
-        <code className="text-[13px] font-mono text-[#4574FF] whitespace-nowrap">{path}</code>
+      <div className="flex items-center gap-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 px-4 py-3 overflow-x-auto">
+        <MethodBadge m={method} isDark={isDark} />
+        <code className="text-[13px] font-mono text-[#4574FF] dark:text-[#7b9eff] whitespace-nowrap">{path}</code>
       </div>
-      <p className="text-[13px] text-slate-600 leading-relaxed px-1 py-1">{note}</p>
+      <p className="text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed px-1 py-1">{note}</p>
 
       {payload && (
         <CodeBlock label="Payload" copyText={payload}>{payload}</CodeBlock>
@@ -199,24 +225,20 @@ const SECTIONS = [
 ];
 
 const ERROR_ROWS = [
-  { code: "200", label: "OK",               type: "success", desc: "Request succeeded." },
-  { code: "400", label: "Bad Request",      type: "warning", desc: "Missing or invalid parameters." },
-  { code: "401", label: "Unauthorized",     type: "error",   desc: "Invalid or missing API key." },
-  { code: "402", label: "Payment Required", type: "warning", desc: "Insufficient balance." },
-  { code: "404", label: "Not Found",        type: "error",   desc: "Resource does not exist." },
-  { code: "409", label: "Conflict",         type: "warning", desc: "No numbers available right now." },
-  { code: "429", label: "Rate Limited",     type: "warning", desc: "60 requests per minute limit exceeded." },
-  { code: "500", label: "Server Error",     type: "error",   desc: "Internal error — contact support." },
+  { code: "200", label: "OK",               type: "success" as const, desc: "Request succeeded." },
+  { code: "400", label: "Bad Request",      type: "warning" as const, desc: "Missing or invalid parameters." },
+  { code: "401", label: "Unauthorized",     type: "error" as const,   desc: "Invalid or missing API key." },
+  { code: "402", label: "Payment Required", type: "warning" as const, desc: "Insufficient balance." },
+  { code: "404", label: "Not Found",        type: "error" as const,   desc: "Resource does not exist." },
+  { code: "409", label: "Conflict",         type: "warning" as const, desc: "No numbers available right now." },
+  { code: "429", label: "Rate Limited",     type: "warning" as const, desc: "60 requests per minute limit exceeded." },
+  { code: "500", label: "Server Error",     type: "error" as const,   desc: "Internal error — contact support." },
 ];
-
-const TYPE_COLORS: Record<string, { text: string; bg: string; border: string }> = {
-  success: { text: "#16a34a", bg: "#f0fdf4", border: "#bbf7d0" },
-  warning: { text: "#d97706", bg: "#fffbeb", border: "#fde68a" },
-  error:   { text: "#dc2626", bg: "#fef2f2", border: "#fecaca" },
-};
 
 export default function ApiDocs() {
   const [active, setActive] = useState("overview");
+  const { isDark } = useTheme();
+  const typeColors = useTypeColors(isDark);
 
   return (
     <div className="flex gap-0" style={{ minHeight: "calc(100vh - 56px)" }}>
@@ -224,7 +246,7 @@ export default function ApiDocs() {
       {/* Sidebar */}
       <aside className="hidden lg:flex w-52 flex-col flex-shrink-0 sticky top-0 h-screen overflow-y-auto">
         <div className="p-4 pt-6">
-          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.18em] mb-3 px-2">
+          <div className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.18em] mb-3 px-2">
             Navigation
           </div>
           <nav className="space-y-0.5">
@@ -237,11 +259,11 @@ export default function ApiDocs() {
                   onClick={() => setActive(n.id)}
                   className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-[13px] font-medium transition-all ${
                     isActive
-                      ? "bg-[#4574FF]/10 text-[#4574FF] border border-[#4574FF]/15"
-                      : "text-slate-500 hover:text-slate-800 hover:bg-slate-100"
+                      ? "bg-[#4574FF]/10 dark:bg-[#4574FF]/15 text-[#4574FF] border border-[#4574FF]/15 dark:border-[#4574FF]/25"
+                      : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800"
                   }`}
                 >
-                  <n.icon className={`h-3.5 w-3.5 shrink-0 ${isActive ? "text-[#4574FF]" : "text-slate-400"}`} />
+                  <n.icon className={`h-3.5 w-3.5 shrink-0 ${isActive ? "text-[#4574FF]" : "text-slate-400 dark:text-slate-500"}`} />
                   {n.label}
                   {isActive && <ChevronRight className="h-3 w-3 ml-auto" />}
                 </a>
@@ -250,9 +272,9 @@ export default function ApiDocs() {
           </nav>
 
           {/* Quick note */}
-          <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-3">
-            <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Rate Limit</div>
-            <p className="text-[11px] text-slate-600 leading-relaxed">60 requests / minute per API key.</p>
+          <div className="mt-6 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 p-3">
+            <div className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Rate Limit</div>
+            <p className="text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed">60 requests / minute per API key.</p>
           </div>
         </div>
       </aside>
@@ -262,7 +284,7 @@ export default function ApiDocs() {
 
         {/* Overview */}
         <section id="overview">
-          <div className="rounded-2xl border border-[#4574FF]/15 bg-gradient-to-br from-[#4574FF]/5 to-transparent overflow-hidden relative shadow-sm">
+          <div className="rounded-2xl border border-[#4574FF]/15 dark:border-[#4574FF]/20 bg-gradient-to-br from-[#4574FF]/5 dark:from-[#4574FF]/8 to-transparent overflow-hidden relative shadow-sm">
             <div className="absolute inset-0 pointer-events-none" style={{
               backgroundImage: "linear-gradient(rgba(69,116,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(69,116,255,0.04) 1px, transparent 1px)",
               backgroundSize: "40px 40px",
@@ -275,8 +297,8 @@ export default function ApiDocs() {
                 </div>
                 <div>
                   <div className="text-[10px] font-bold text-[#4574FF] uppercase tracking-[0.18em] mb-1">Public API · v1</div>
-                  <h1 className="font-display text-[1.9rem] font-extrabold text-slate-900 leading-tight">SKY SMS API</h1>
-                  <p className="text-[14px] text-slate-500 mt-1">Full REST API for renting numbers, polling SMS, and managing your account.</p>
+                  <h1 className="font-display text-[1.9rem] font-extrabold text-slate-900 dark:text-white leading-tight">SKY SMS API</h1>
+                  <p className="text-[14px] text-slate-500 dark:text-slate-400 mt-1">Full REST API for renting numbers, polling SMS, and managing your account.</p>
                 </div>
               </div>
 
@@ -288,7 +310,7 @@ export default function ApiDocs() {
                   { icon: Lock,     label: "API key auth" },
                   { icon: Globe,    label: "REST endpoints" },
                 ].map(({ icon: Icon, label }) => (
-                  <div key={label} className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-600 shadow-sm">
+                  <div key={label} className="flex items-center gap-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-1.5 text-[11px] font-semibold text-slate-600 dark:text-slate-300 shadow-sm">
                     <Icon className="h-3 w-3 text-[#4574FF]" />
                     {label}
                   </div>
@@ -296,21 +318,21 @@ export default function ApiDocs() {
               </div>
 
               {/* Auth box */}
-              <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+              <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/60 p-4 shadow-sm">
                 <div className="flex items-start gap-3">
                   <div className="h-8 w-8 rounded-lg bg-[#4574FF]/10 border border-[#4574FF]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                     <Lock className="h-4 w-4 text-[#4574FF]" />
                   </div>
-                  <div className="text-[13px] text-slate-700 leading-relaxed">
+                  <div className="text-[13px] text-slate-700 dark:text-slate-300 leading-relaxed">
                     <p className="mb-1">
-                      <strong className="text-slate-900">Authentication:</strong> Every request requires an{" "}
-                      <code className="bg-slate-100 text-[#4574FF] px-1.5 py-0.5 rounded text-[12px] font-mono">X-API-Key</code>{" "}
+                      <strong className="text-slate-900 dark:text-white">Authentication:</strong> Every request requires an{" "}
+                      <code className="bg-slate-100 dark:bg-slate-700 text-[#4574FF] dark:text-[#7b9eff] px-1.5 py-0.5 rounded text-[12px] font-mono">X-API-Key</code>{" "}
                       header. Generate yours in{" "}
-                      <strong className="text-slate-900">Settings → API Keys</strong>.
+                      <strong className="text-slate-900 dark:text-white">Settings → API Keys</strong>.
                     </p>
                     <p>
-                      <strong className="text-slate-900">Base URL:</strong>{" "}
-                      <code className="bg-slate-100 text-[#4574FF] px-1.5 py-0.5 rounded text-[12px] font-mono">{BASE}</code>
+                      <strong className="text-slate-900 dark:text-white">Base URL:</strong>{" "}
+                      <code className="bg-slate-100 dark:bg-slate-700 text-[#4574FF] dark:text-[#7b9eff] px-1.5 py-0.5 rounded text-[12px] font-mono">{BASE}</code>
                     </p>
                   </div>
                 </div>
@@ -322,17 +344,17 @@ export default function ApiDocs() {
         {/* Endpoint sections */}
         {SECTIONS.map(sec => (
           <section key={sec.id} id={sec.id}>
-            <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+            <div className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm overflow-hidden">
               {/* Section header */}
-              <div className="flex items-center gap-3 px-6 py-4 border-b border-slate-100 bg-slate-50/50">
+              <div className="flex items-center gap-3 px-6 py-4 border-b border-slate-100 dark:border-slate-700/80 bg-slate-50/50 dark:bg-slate-800/30">
                 <div className="w-1 h-5 rounded-full bg-gradient-to-b from-[#4574FF] to-[#00c4c8] flex-shrink-0" />
-                <h2 className="font-display text-[15px] font-bold text-slate-900">{sec.title}</h2>
-                <span className="ml-auto text-[11px] font-semibold text-slate-400 bg-slate-100 rounded-lg px-2 py-0.5">
+                <h2 className="font-display text-[15px] font-bold text-slate-900 dark:text-white">{sec.title}</h2>
+                <span className="ml-auto text-[11px] font-semibold text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-800 rounded-lg px-2 py-0.5">
                   {sec.endpoints.length} endpoint{sec.endpoints.length !== 1 ? "s" : ""}
                 </span>
               </div>
 
-              <div className="divide-y divide-slate-100">
+              <div className="divide-y divide-slate-100 dark:divide-slate-700/60">
                 {sec.endpoints.map((ep, i) => (
                   <div key={i} className="p-5">
                     <Endpoint {...ep} />
@@ -345,25 +367,25 @@ export default function ApiDocs() {
 
         {/* Error Codes */}
         <section id="errors">
-          <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
-            <div className="flex items-center gap-3 px-6 py-4 border-b border-slate-100 bg-slate-50/50">
+          <div className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm overflow-hidden">
+            <div className="flex items-center gap-3 px-6 py-4 border-b border-slate-100 dark:border-slate-700/80 bg-slate-50/50 dark:bg-slate-800/30">
               <div className="w-1 h-5 rounded-full bg-gradient-to-b from-[#4574FF] to-[#00c4c8] flex-shrink-0" />
-              <h2 className="font-display text-[15px] font-bold text-slate-900">Error Codes</h2>
+              <h2 className="font-display text-[15px] font-bold text-slate-900 dark:text-white">Error Codes</h2>
             </div>
 
-            <div className="divide-y divide-slate-100">
+            <div className="divide-y divide-slate-100 dark:divide-slate-700/60">
               {ERROR_ROWS.map((row) => {
-                const c = TYPE_COLORS[row.type];
+                const c = typeColors[row.type];
                 return (
-                  <div key={row.code} className="flex items-center gap-4 px-5 py-3.5 hover:bg-slate-50 transition-colors">
+                  <div key={row.code} className="flex items-center gap-4 px-5 py-3.5 hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
                     <span
                       className="font-mono font-black text-[12px] rounded-lg px-2.5 py-1 border flex-shrink-0 w-12 text-center"
                       style={{ color: c.text, background: c.bg, borderColor: c.border }}
                     >
                       {row.code}
                     </span>
-                    <span className="text-[13px] font-semibold text-slate-700 w-36 flex-shrink-0">{row.label}</span>
-                    <span className="text-[13px] text-slate-500">{row.desc}</span>
+                    <span className="text-[13px] font-semibold text-slate-700 dark:text-slate-300 w-36 flex-shrink-0">{row.label}</span>
+                    <span className="text-[13px] text-slate-500 dark:text-slate-400">{row.desc}</span>
                   </div>
                 );
               })}
@@ -372,12 +394,6 @@ export default function ApiDocs() {
         </section>
 
       </main>
-
-      <style>{`
-        @media (max-width: 900px) {
-          .docs-sidebar { display: none !important; }
-        }
-      `}</style>
     </div>
   );
 }

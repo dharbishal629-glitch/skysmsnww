@@ -139,9 +139,9 @@ export function SearchableSelect({
           "h-11 w-full flex items-center gap-2.5 px-3.5 rounded-xl border border-white/[0.08] bg-white/[0.03]",
           "text-[13.5px] text-left transition-all duration-150",
           "hover:bg-white/[0.06] hover:border-white/[0.12]",
-          "focus:outline-none focus:border-amber-500/30 focus:bg-amber-500/[0.02]",
+          "focus:outline-none focus:border-[#4574FF]/40 focus:bg-[#4574FF]/[0.03]",
           "disabled:opacity-50 disabled:cursor-not-allowed",
-          open && "border-amber-500/30 bg-amber-500/[0.02]",
+          open && "border-[#4574FF]/40 bg-[#4574FF]/[0.03]",
           triggerClassName
         )}
         aria-expanded={open}
@@ -151,7 +151,7 @@ export function SearchableSelect({
             <IconDisplay icon={selected.icon} />
             <span className="flex-1 truncate text-white font-medium">{selected.label}</span>
             {selected.meta && (
-              <span className="text-[11.5px] text-amber-400/70 font-medium shrink-0">{selected.meta}</span>
+              <span className="text-[11.5px] text-slate-400 font-medium shrink-0">{selected.meta}</span>
             )}
           </>
         ) : (
@@ -207,18 +207,18 @@ export function SearchableSelect({
                     className={cn(
                       "w-full flex items-center gap-2.5 px-3.5 py-2.5 text-left transition-colors duration-100",
                       "hover:bg-white/[0.05]",
-                      isSelected && "bg-amber-500/[0.06]",
+                      isSelected && "bg-[#4574FF]/[0.08]",
                       opt.disabled && "opacity-40 cursor-not-allowed"
                     )}
                   >
-                    <Check className={cn("h-3.5 w-3.5 shrink-0 text-amber-400 transition-opacity", isSelected ? "opacity-100" : "opacity-0")} />
+                    <Check className={cn("h-3.5 w-3.5 shrink-0 text-[#4574FF] transition-opacity", isSelected ? "opacity-100" : "opacity-0")} />
                     <IconDisplay icon={opt.icon} />
                     {!opt.icon && <span className="h-4 w-4 shrink-0 rounded-sm bg-white/[0.06]" />}
                     <span className={cn("flex-1 text-[13px] truncate min-w-0", isSelected ? "text-white font-semibold" : "text-slate-300")}>
                       {opt.label}
                     </span>
                     {opt.meta && (
-                      <span className="text-[11.5px] text-amber-400/70 font-medium shrink-0">{opt.meta}</span>
+                      <span className="text-[11.5px] text-slate-400 font-medium shrink-0">{opt.meta}</span>
                     )}
                   </button>
                 );
