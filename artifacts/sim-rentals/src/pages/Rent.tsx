@@ -1,10 +1,9 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { useListServices, useGetAvailability, useCreateRental, getGetDashboardQueryKey } from "@workspace/api-client-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Loader2, Globe, CheckCircle2, AlertCircle, RefreshCw, ArrowUpDown, ArrowUp, ArrowDown, Search, X } from "lucide-react";
+import { Loader2, CheckCircle2, AlertCircle, RefreshCw, ArrowUpDown, ArrowUp, ArrowDown, Search, X, ChevronDown } from "lucide-react";
 import { useLocation } from "wouter";
 import { Skeleton } from "@/components/ui/skeleton";
-import { SearchableSelect } from "@/components/SearchableSelect";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/hooks/useLanguage";
 
@@ -105,7 +104,21 @@ export default function Rent() {
   );
   const [sort, setSort] = useState<SortMode>("stock");
   const [serviceSearch, setServiceSearch] = useState("");
+  const [countrySearch, setCountrySearch] = useState("");
+  const [countryPanelOpen, setCountryPanelOpen] = useState(false);
+  const countrySearchRef = useRef<HTMLInputElement>(null);
   const [, setLocation] = useLocation();
+
+  // Auto-open the country panel whenever a service is selected
+  useEffect(() => {
+    if (serviceCode) {
+      setCountrySearch("");
+      setCountryPanelOpen(true);
+      setTimeout(() => countrySearchRef.current?.focus(), 80);
+    } else {
+      setCountryPanelOpen(false);
+    }
+  }, [serviceCode]);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -169,13 +182,13 @@ export default function Rent() {
     return arr.sort((a, b) => b.available - a.available);
   }, [liveCountries, sort]);
 
-  const countryOptions = sortedCountries.map((country) => ({
-    value: country.code,
-    label: country.name,
-    searchText: `${country.name} ${country.code}`,
-    meta: country.price > 0 ? `$${country.price.toFixed(2)}` : "",
-    icon: country.flag || "🌍",
-  }));
+  const filteredCountries = useMemo(() => {
+    if (!countrySearch.trim()) return sortedCountries;
+    const q = countrySearch.toLowerCase();
+    return sortedCountries.filter(c =>
+      c.name.toLowerCase().includes(q) || c.code.toLowerCase().includes(q)
+    );
+  }, [sortedCountries, countrySearch]);
 
   const selectedService = allServices.find(s => s.code === serviceCode);
   const isAvailable = availability && availability.available > 0 && availability.provider.mode === "live";
@@ -313,27 +326,137 @@ export default function Rent() {
             )}
           </div>
 
-          <div className="p-4">
-            {loadingCountries ? (
-              <div className="space-y-2">
-                <Skeleton className="h-11 w-full rounded-xl bg-slate-100 dark:bg-white/[0.04]" />
-              </div>
-            ) : liveCountries.length === 0 ? (
+          {loadingCountries ? (
+            <div className="px-4 pb-4 space-y-2 pt-3">
+              {[0, 1, 2, 3].map(i => (
+                <Skeleton key={i} className="h-11 w-full rounded-xl bg-slate-100 dark:bg-white/[0.04]" />
+              ))}
+            </div>
+          ) : liveCountries.length === 0 ? (
+            <div className="px-4 pb-4 pt-3">
               <div className="flex items-center gap-2 rounded-xl border border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.03] px-3 py-3 text-[12px] text-slate-500 dark:text-slate-400">
                 <AlertCircle className="h-3.5 w-3.5 shrink-0 text-slate-400 dark:text-slate-500" />
                 No countries available for this service. Try a different one.
               </div>
-            ) : (
-              <SearchableSelect
-                value={countryCode}
-                options={countryOptions}
-                placeholder="Search a country…"
-                searchPlaceholder="Type country name…"
-                emptyText="No country found."
-                onChange={setCountryCode}
-              />
-            )}
-          </div>
+            </div>
+          ) : (
+            <>
+              {/* Selected country summary + toggle */}
+              {countryCode && (
+                <button
+                  type="button"
+                  onClick={() => { setCountryPanelOpen(o => !o); setCountrySearch(""); }}
+                  className="w-full flex items-center gap-3 px-4 py-3 border-b border-slate-200/80 dark:border-white/[0.05] hover:bg-slate-50 dark:hover:bg-white/[0.03] transition-colors text-left"
+                >
+                  {(() => {
+                    const sel = liveCountries.find(c => c.code === countryCode);
+                    const flag = sel?.flag;
+                    const isEmoji = flag && flag.length <= 4 && !flag.startsWith("http");
+                    return (
+                      <>
+                        {isEmoji ? (
+                          <span className="text-xl leading-none select-none">{flag}</span>
+                        ) : flag ? (
+                          <img src={flag} alt="" className="h-6 w-6 rounded-full object-cover shrink-0"
+                            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+                        ) : (
+                          <span className="h-6 w-6 rounded-full bg-white/[0.06] shrink-0" />
+                        )}
+                        <span className="flex-1 text-[13.5px] font-medium text-slate-900 dark:text-white truncate">
+                          {sel?.name}
+                        </span>
+                        <ChevronDown className={`h-4 w-4 text-slate-400 dark:text-slate-500 transition-transform duration-200 ${countryPanelOpen ? "rotate-180" : ""}`} />
+                      </>
+                    );
+                  })()}
+                </button>
+              )}
+
+              {/* Inline expanded country list */}
+              {countryPanelOpen && (
+                <div>
+                  {/* Search input */}
+                  <div className="px-3 pt-3 pb-2">
+                    <div className="flex items-center gap-2 h-9 px-3 rounded-xl border border-slate-200 dark:border-white/[0.07] bg-white dark:bg-white/[0.03] focus-within:border-[#4574FF]/40 focus-within:bg-[#4574FF]/[0.03] transition-all">
+                      <Search className="h-3.5 w-3.5 text-slate-400 dark:text-slate-600 shrink-0" />
+                      <input
+                        ref={countrySearchRef}
+                        type="text"
+                        value={countrySearch}
+                        onChange={e => setCountrySearch(e.target.value)}
+                        placeholder="Type country name…"
+                        className="flex-1 bg-transparent text-[13px] text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 outline-none"
+                      />
+                      {countrySearch && (
+                        <button onClick={() => setCountrySearch("")} className="text-slate-400 dark:text-slate-600 hover:text-slate-600 dark:hover:text-slate-400 transition-colors">
+                          <X className="h-3.5 w-3.5" />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Country list */}
+                  <div className="px-3 pb-3 max-h-[280px] overflow-y-auto space-y-0.5">
+                    {filteredCountries.length === 0 ? (
+                      <div className="py-6 text-center text-[13px] text-slate-500 dark:text-slate-400">No country found.</div>
+                    ) : (
+                      filteredCountries.map(country => {
+                        const isSelected = country.code === countryCode;
+                        const flag = country.flag;
+                        const isEmoji = flag && flag.length <= 4 && !flag.startsWith("http");
+                        return (
+                          <button
+                            key={country.code}
+                            type="button"
+                            onClick={() => {
+                              setCountryCode(country.code);
+                              setCountryPanelOpen(false);
+                              setCountrySearch("");
+                            }}
+                            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all duration-100 ${
+                              isSelected
+                                ? "bg-[#4574FF]/12 border border-[#4574FF]/25 text-slate-900 dark:text-white"
+                                : "hover:bg-slate-100 dark:hover:bg-white/[0.04] border border-transparent text-slate-700 dark:text-slate-300"
+                            }`}
+                          >
+                            {/* Circular flag */}
+                            <span className="h-7 w-7 shrink-0 flex items-center justify-center overflow-hidden rounded-full bg-white/[0.04]">
+                              {isEmoji ? (
+                                <span className="text-lg leading-none select-none">{flag}</span>
+                              ) : flag ? (
+                                <img src={flag} alt="" className="h-7 w-7 object-cover rounded-full"
+                                  onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+                              ) : (
+                                <span className="text-base">🌍</span>
+                              )}
+                            </span>
+                            <span className="flex-1 text-[13.5px] font-medium truncate min-w-0">{country.name}</span>
+                            <span className="text-[12px] text-slate-400 dark:text-slate-500 shrink-0">
+                              {country.price > 0 ? `${country.price.toFixed(2)}` : ""}
+                            </span>
+                            {isSelected && <CheckCircle2 className="h-4 w-4 text-[#4574FF] shrink-0" />}
+                          </button>
+                        );
+                      })
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Collapsed "tap to search" hint when no country and panel is somehow closed */}
+              {!countryCode && !countryPanelOpen && (
+                <button
+                  type="button"
+                  onClick={() => { setCountryPanelOpen(true); setTimeout(() => countrySearchRef.current?.focus(), 80); }}
+                  className="w-full flex items-center gap-2 px-4 py-3 text-[13px] text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/[0.03] transition-colors"
+                >
+                  <Search className="h-3.5 w-3.5 shrink-0" />
+                  <span>Search a country…</span>
+                  <ChevronDown className="h-4 w-4 ml-auto" />
+                </button>
+              )}
+            </>
+          )}
         </div>
       )}
 
