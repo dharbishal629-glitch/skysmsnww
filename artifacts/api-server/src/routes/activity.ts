@@ -83,27 +83,7 @@ router.get("/activity", async (req: Request, res: Response) => {
       SELECT
         id,
         'payment',
-        'Balance topped up +
-      `,
-      [userId],
-    );
-
-    const events = result.rows.map((row) => ({
-      id: row.id,
-      type: row.type,
-      description: row.description,
-      createdAt: row.created_at,
-    }));
-
-    res.json({ events });
-  } catch (err) {
-    console.error("Activity fetch error:", err);
-    res.status(500).json({ error: "Failed to fetch activity" });
-  }
-});
-
-export default router;
- || TO_CHAR(amount, 'FM9999990.00'),
+        'Balance topped up +' || TO_CHAR(amount, 'FM9999990.00'),
         created_at
       FROM sim_payments
       WHERE user_id = $1 AND status = 'confirmed'

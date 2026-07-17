@@ -50,7 +50,7 @@ function TicketRow({ ticket }: { ticket: AdminTicket }) {
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-0.5">
-          <span className="text-[13px] font-semibold text-white truncate">{ticket.subject}</span>
+          <span className="text-[13px] font-semibold text-slate-900 dark:text-white truncate">{ticket.subject}</span>
           {hasUserReplies && <span className="h-1.5 w-1.5 rounded-full bg-blue-400 shrink-0 animate-pulse" />}
         </div>
         <div className="flex items-center gap-1.5 text-[11px] text-slate-500">
@@ -105,7 +105,7 @@ export default function AdminSupport() {
     <div className="max-w-3xl mx-auto space-y-6 page-enter">
 
       <div>
-        <h1 className="font-display text-[22px] font-bold text-white tracking-tight">Support</h1>
+        <h1 className="font-display text-[22px] font-bold text-slate-900 dark:text-white tracking-tight">Support</h1>
         <p className="text-[13px] text-slate-500 mt-0.5">Manage user support tickets. Click a ticket to open the full chat.</p>
       </div>
 

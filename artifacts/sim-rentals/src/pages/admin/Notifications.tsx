@@ -96,7 +96,7 @@ export default function AdminNotifications() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-[22px] font-bold text-white tracking-tight">Notifications</h1>
+          <h1 className="text-[22px] font-bold text-slate-900 dark:text-white tracking-tight">Notifications</h1>
           <p className="text-[13px] text-slate-500 mt-0.5">Broadcast messages to all users or specific users</p>
         </div>
         <button
@@ -111,7 +111,7 @@ export default function AdminNotifications() {
       {/* Compose form */}
       {showForm && (
         <div className="rounded-2xl border border-[#4574FF]/10 bg-[#4574FF]/[0.03] p-6 space-y-4">
-          <h3 className="text-[14px] font-bold text-white">Compose notification</h3>
+          <h3 className="text-[14px] font-bold text-slate-900 dark:text-white">Compose notification</h3>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Title *</label>
@@ -194,7 +194,7 @@ export default function AdminNotifications() {
       <div className="rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
         <div className="flex items-center gap-2.5 px-5 py-4 border-b border-white/[0.05]">
           <Bell className="h-4 w-4 text-sky-400" />
-          <span className="text-[14px] font-bold text-white">Notification history</span>
+          <span className="text-[14px] font-bold text-slate-900 dark:text-white">Notification history</span>
           <span className="ml-auto text-[12px] text-slate-600">{notifications.length} total</span>
         </div>
 
@@ -225,7 +225,7 @@ export default function AdminNotifications() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-[13px] font-semibold text-white">{n.title}</span>
+                    <span className="text-[13px] font-semibold text-slate-900 dark:text-white">{n.title}</span>
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${typeOptions.find((t) => t.value === n.type)?.bg ?? "bg-white/[0.05] border-white/[0.08]"} ${typeOptions.find((t) => t.value === n.type)?.color ?? "text-slate-400"}`}>
                       {n.type}
                     </span>

@@ -173,7 +173,7 @@ export default function AdminPaymentGateways() {
       {/* Header */}
       <div>
         <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-sky-500 mb-1">Admin</p>
-        <h1 className="text-xl font-bold text-white">Payment Gateways & Security</h1>
+        <h1 className="text-xl font-bold text-slate-900 dark:text-white">Payment Gateways & Security</h1>
         <p className="text-[13px] text-slate-500 mt-0.5">Per-coin OxaPay API keys and IP bans</p>
       </div>
 
@@ -182,7 +182,7 @@ export default function AdminPaymentGateways() {
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <Key className="h-4 w-4 text-sky-400" />
-            <h2 className="text-[14px] font-bold text-white">Per-Coin API Keys</h2>
+            <h2 className="text-[14px] font-bold text-slate-900 dark:text-white">Per-Coin API Keys</h2>
           </div>
           <button
             onClick={() => setShowKeyForm(v => !v)}
@@ -270,7 +270,7 @@ export default function AdminPaymentGateways() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-0.5">
-                        <span className="text-[13px] font-bold text-white">{key.coin}</span>
+                        <span className="text-[13px] font-bold text-slate-900 dark:text-white">{key.coin}</span>
                         <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[9px] font-bold border ${
                           key.enabled
                             ? "text-emerald-400 border-emerald-500/20 bg-emerald-500/10"
@@ -308,7 +308,7 @@ export default function AdminPaymentGateways() {
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <ShieldCheck className="h-4 w-4 text-red-400" />
-            <h2 className="text-[14px] font-bold text-white">IP Bans</h2>
+            <h2 className="text-[14px] font-bold text-slate-900 dark:text-white">IP Bans</h2>
             {ipBans.length > 0 && (
               <span className="text-[11px] font-bold px-1.5 py-0.5 rounded-full bg-red-500/10 border border-red-500/20 text-red-400">
                 {ipBans.length}
@@ -378,7 +378,7 @@ export default function AdminPaymentGateways() {
                     <AlertCircle className="h-3.5 w-3.5 text-red-400" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="text-[13px] font-bold text-white font-mono">{ban.ipAddress}</div>
+                    <div className="text-[13px] font-bold text-slate-900 dark:text-white font-mono">{ban.ipAddress}</div>
                     {ban.reason && <div className="text-[11px] text-slate-600 truncate">{ban.reason}</div>}
                     {ban.bannedBy && <div className="text-[10px] text-slate-700">By {ban.bannedBy}</div>}
                   </div>

@@ -215,6 +215,13 @@ router.get("/callback", async (req: Request, res: Response) => {
 
   const sid = await createSession(sessionData);
   setSessionCookie(res, sid);
+
+  // Log login event to activity
+  pool.query(
+    "INSERT INTO sim_activity_log (user_id, type, description) VALUES ($1, $2, $3)",
+    [user.id, "login", "Signed in to account"],
+  ).catch(() => {});
+
   res.redirect(returnTo);
 });
 

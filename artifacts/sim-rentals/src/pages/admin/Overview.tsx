@@ -62,7 +62,7 @@ function ReferralSettingsCard() {
           <Gift className="h-4 w-4 text-[#4574FF]" />
         </div>
         <div>
-          <div className="font-bold text-white text-[14px]">Referral Program</div>
+          <div className="font-bold text-slate-900 dark:text-white text-[14px]">Referral Program</div>
           <div className="text-[11px] text-slate-500 mt-0.5">Bonus amounts and deposit requirements</div>
         </div>
         <div className="ml-auto">
@@ -174,7 +174,7 @@ export default function AdminOverview() {
         <div className="h-14 w-14 rounded-2xl bg-rose-400/10 border border-rose-400/20 flex items-center justify-center mx-auto mb-4">
           <AlertCircle className="h-7 w-7 text-rose-400" />
         </div>
-        <h2 className="text-xl font-bold text-white">Failed to load overview</h2>
+        <h2 className="text-xl font-bold text-slate-900 dark:text-white">Failed to load overview</h2>
         <p className="text-slate-500 mt-1.5 text-sm">Please refresh the page.</p>
       </div>
     );
@@ -228,7 +228,7 @@ export default function AdminOverview() {
 
       {/* Header */}
       <div>
-        <h1 className="text-[22px] font-bold text-white tracking-tight">Admin Overview</h1>
+        <h1 className="text-[22px] font-bold text-slate-900 dark:text-white tracking-tight">Admin Overview</h1>
         <p className="text-slate-500 mt-1 text-[13px]">Platform metrics and configuration.</p>
       </div>
 
@@ -263,7 +263,7 @@ export default function AdminOverview() {
               <Activity className="h-4 w-4 text-blue-400" />
             </div>
             <div>
-              <div className="font-bold text-white text-[14px]">Provider Status</div>
+              <div className="font-bold text-slate-900 dark:text-white text-[14px]">Provider Status</div>
               <div className="text-[11px] text-slate-500 mt-0.5">Upstream SMS provider health</div>
             </div>
           </div>
@@ -277,7 +277,7 @@ export default function AdminOverview() {
                     <AlertCircle className="h-4 w-4 text-sky-400 shrink-0 mt-0.5" />
                   )}
                   <div>
-                    <div className="font-semibold text-[13px] text-white">{maskProviderName(provider.name)}</div>
+                    <div className="font-semibold text-[13px] text-slate-900 dark:text-white">{maskProviderName(provider.name)}</div>
                     <p className="text-[11.5px] text-slate-500 mt-0.5 leading-relaxed">{provider.message}</p>
                   </div>
                 </div>
@@ -296,7 +296,7 @@ export default function AdminOverview() {
               <Link2 className="h-4 w-4 text-indigo-400" />
             </div>
             <div>
-              <div className="font-bold text-white text-[14px]">Community Links</div>
+              <div className="font-bold text-slate-900 dark:text-white text-[14px]">Community Links</div>
               <div className="text-[11px] text-slate-500 mt-0.5">Appear as buttons in the user sidebar</div>
             </div>
           </div>

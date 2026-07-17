@@ -356,7 +356,7 @@ export default function AdminServices() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-xl font-semibold text-white">Service Control</h1>
+        <h1 className="text-xl font-semibold text-slate-900 dark:text-white">Service Control</h1>
         <p className="text-muted-foreground mt-1 text-sm">Search services, set prices, margins, and choose exactly which services users can see.</p>
       </div>
 
@@ -384,7 +384,7 @@ export default function AdminServices() {
                   <Checkbox checked={enabledDraft.has(service.code)} onCheckedChange={() => toggleEnabled(service.code)} />
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="font-semibold text-white">{service.name}</span>
+                      <span className="font-semibold text-slate-900 dark:text-white">{service.name}</span>
                       <Badge variant="outline" className="border-white/10 bg-white/[0.04] text-slate-300">{service.category}</Badge>
                     </div>
                     <div className="text-xs text-muted-foreground font-mono">{service.code} · {service.available.toLocaleString()} live</div>

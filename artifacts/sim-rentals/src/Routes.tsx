@@ -21,7 +21,6 @@ import Support from "@/pages/Support";
 import SupportConversation from "@/pages/SupportConversation";
 import ApiDocs from "@/pages/ApiDocs";
 import Referral from "@/pages/Referral";
-import Notifications from "@/pages/Notifications";
 import Rankings from "@/pages/Rankings";
 import { useAuth } from "@/hooks/useAuth";
 import { useGetMe } from "@workspace/api-client-react";
@@ -121,7 +120,6 @@ export function AppRoutes() {
       <Route path="/api-docs"><ProtectedRoute component={ApiDocs} /></Route>
       <Route path="/referral"><ProtectedRoute component={Referral} /></Route>
       <Route path="/rankings"><ProtectedRoute component={Rankings} /></Route>
-      <Route path="/notifications"><FullScreenRoute component={Notifications} /></Route>
 
       <Route path="/admin"><AdminRoute component={AdminOverview} /></Route>
       <Route path="/admin/users/:id"><AdminRoute component={AdminUserDetail} /></Route>

@@ -1,4 +1,4 @@
-import { Scale, ChevronRight, Phone, Shield, Globe, AlertTriangle, FileText, User, CreditCard, Mail } from "lucide-react";
+import { Scale, ChevronRight } from "lucide-react";
 import { Link } from "wouter";
 import { Reveal } from "@/components/Reveal";
 
@@ -67,40 +67,40 @@ const sections = [
 
 export default function Terms() {
   return (
-    <div className="min-h-screen premium-shell text-white">
-      <header className="sticky top-4 z-50 mx-auto flex max-w-6xl justify-center px-4">
-        <div className="glass-card flex h-14 w-full items-center justify-between rounded-full px-5 neon-border">
+    <div className="min-h-screen bg-white dark:bg-[#080c18]">
+      {/* Header */}
+      <header className="sticky top-0 z-50 border-b border-slate-100 dark:border-slate-800 bg-white dark:bg-[#080c18]">
+        <div className="mx-auto flex max-w-4xl items-center justify-between px-4 h-14">
           <Link href="/">
-            <span className="flex items-center gap-2 font-black text-base cursor-pointer">
-              <Phone className="h-4 w-4 text-sky-400" />
-              <span className="gradient-text">SKY SMS</span>
+            <span className="font-display text-[15px] font-extrabold tracking-tight text-[#0a1628] dark:text-white cursor-pointer">
+              SKY<span className="text-[#4574FF] ml-1">SMS</span>
             </span>
           </Link>
           <Link href="/">
-            <span className="text-sm font-semibold text-slate-400 hover:text-white transition-colors cursor-pointer flex items-center gap-1">
+            <span className="text-sm font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer">
               ← Back to Home
             </span>
           </Link>
         </div>
       </header>
 
-      <main className="relative z-10 mx-auto max-w-4xl px-4 pb-24 pt-16 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-4xl px-4 pb-24 pt-14 sm:px-6 lg:px-8">
         <Reveal variant="up">
           <div className="mb-12 text-center">
-            <div className="mx-auto mb-5 w-fit rounded-full border border-[#4574FF]/20 bg-[#4574FF]/[0.08] px-4 py-2 text-xs font-bold uppercase tracking-[0.22em] text-sky-300">
+            <div className="mx-auto mb-5 w-fit rounded-full border border-[#4574FF]/20 bg-[#4574FF]/[0.08] px-4 py-2 text-xs font-bold uppercase tracking-[0.22em] text-[#4574FF]">
               Legal
             </div>
-            <h1 className="text-5xl font-black tracking-tight text-white mb-4">Terms of Service</h1>
-            <p className="text-slate-400 text-sm">Last updated: April 2026</p>
+            <h1 className="text-5xl font-black tracking-tight text-slate-900 dark:text-white mb-4">Terms of Service</h1>
+            <p className="text-slate-500 dark:text-slate-400 text-sm">Last updated: April 2026</p>
           </div>
         </Reveal>
 
         <Reveal variant="up" delay={60}>
-          <div className="glass-card rounded-2xl p-6 mb-8 flex items-start gap-4 border-l-4 border-l-[#4574FF]">
-            <Scale className="h-5 w-5 text-sky-400 shrink-0 mt-0.5" />
+          <div className="rounded-2xl p-6 mb-8 flex items-start gap-4 border-l-4 border-l-[#4574FF] border border-slate-200 dark:border-slate-700/50 bg-slate-50 dark:bg-slate-800/40">
+            <Scale className="h-5 w-5 text-[#4574FF] shrink-0 mt-0.5" />
             <div>
-              <div className="font-bold text-white mb-1">Please read these terms carefully</div>
-              <p className="text-sm text-slate-400 leading-relaxed">
+              <div className="font-bold text-slate-900 dark:text-white mb-1">Please read these terms carefully</div>
+              <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
                 These Terms of Service govern your use of SKY SMS. By using our service, you agree to these terms in full. If you disagree with any part, please do not use the service.
               </p>
             </div>
@@ -110,21 +110,21 @@ export default function Terms() {
         <div className="space-y-4">
           {sections.map((section, i) => (
             <Reveal key={section.id} variant="up" delay={i * 30}>
-              <div className="glass-card rounded-2xl p-6">
-                <h2 className="text-lg font-bold text-white mb-3">{section.title}</h2>
-                <p className="text-sm text-slate-400 leading-relaxed">{section.content}</p>
+              <div className="rounded-2xl p-6 border border-slate-200 dark:border-slate-700/50 bg-slate-50 dark:bg-slate-800/40">
+                <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-3">{section.title}</h2>
+                <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">{section.content}</p>
               </div>
             </Reveal>
           ))}
         </div>
 
         <Reveal variant="up" delay={200}>
-          <div className="mt-10 glass-card rounded-2xl p-6 text-center">
-            <p className="text-slate-400 text-sm mb-4">
+          <div className="mt-10 rounded-2xl p-6 text-center border border-slate-200 dark:border-slate-700/50 bg-slate-50 dark:bg-slate-800/40">
+            <p className="text-slate-600 dark:text-slate-400 text-sm mb-4">
               By using SKY SMS, you acknowledge that you have read and agree to these Terms of Service.
             </p>
             <Link href="/refund-policy">
-              <span className="inline-flex items-center gap-2 text-sky-400 text-sm font-semibold hover:text-sky-300 transition-colors cursor-pointer">
+              <span className="inline-flex items-center gap-2 text-[#4574FF] text-sm font-semibold hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
                 View Refund Policy <ChevronRight className="h-4 w-4" />
               </span>
             </Link>
@@ -132,8 +132,8 @@ export default function Terms() {
         </Reveal>
       </main>
 
-      <footer className="relative z-10 border-t border-white/5 py-8">
-        <div className="mx-auto max-w-4xl px-4 text-center text-xs text-slate-700">
+      <footer className="border-t border-slate-100 dark:border-slate-800 py-8">
+        <div className="mx-auto max-w-4xl px-4 text-center text-xs text-slate-400 dark:text-slate-600">
           © {new Date().getFullYear()} SKY SMS. All rights reserved.
         </div>
       </footer>

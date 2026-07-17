@@ -42,7 +42,7 @@ function SuspendModal({ user, onClose, onConfirm }: {
                 {isSuspended ? <CheckCircle2 className="h-4 w-4 text-emerald-400" /> : <Ban className="h-4 w-4 text-red-400" />}
               </div>
               <div>
-                <div className="font-bold text-white text-[14.5px]">{isSuspended ? "Reactivate Account" : "Suspend Account"}</div>
+                <div className="font-bold text-slate-900 dark:text-white text-[14.5px]">{isSuspended ? "Reactivate Account" : "Suspend Account"}</div>
                 <div className="text-[12px] text-slate-500 mt-0.5">{user.name} · {user.email}</div>
               </div>
             </div>
@@ -210,7 +210,7 @@ export default function AdminUserDetail() {
           <ArrowLeft className="h-4 w-4" />
         </button>
         <div>
-          <h1 className="font-display text-[22px] font-bold text-white tracking-tight">User Detail</h1>
+          <h1 className="font-display text-[22px] font-bold text-slate-900 dark:text-white tracking-tight">User Detail</h1>
           <p className="text-[13px] text-slate-500 mt-0.5">Manage this account's credits, role, and status.</p>
         </div>
       </div>
@@ -246,7 +246,7 @@ export default function AdminUserDetail() {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <h2 className="font-bold text-white text-[18px]">{data.name}</h2>
+                  <h2 className="font-bold text-slate-900 dark:text-white text-[18px]">{data.name}</h2>
                   <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${isSuspended ? "text-red-400 border-red-500/20 bg-red-500/10" : "text-emerald-400 border-emerald-500/20 bg-emerald-500/10"}`}>{data.status}</span>
                   <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${data.role === "admin" ? "text-blue-400 border-blue-500/20 bg-blue-500/10" : "text-slate-500 border-white/10 bg-white/[0.04]"}`}>{data.role}</span>
                 </div>
@@ -264,7 +264,7 @@ export default function AdminUserDetail() {
             ].map(({ label, value, icon: Icon, color }) => (
               <div key={label} className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-4 text-center">
                 <Icon className={`h-4 w-4 mx-auto mb-2 ${color}`} />
-                <div className="text-[17px] font-bold text-white">{value}</div>
+                <div className="text-[17px] font-bold text-slate-900 dark:text-white">{value}</div>
                 <div className="text-[10px] text-slate-600 mt-0.5">{label}</div>
               </div>
             ))}

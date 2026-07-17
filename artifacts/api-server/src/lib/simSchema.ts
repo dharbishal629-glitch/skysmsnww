@@ -288,6 +288,19 @@ async function createSchema() {
       value NUMERIC NOT NULL,
       recorded_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
+
+    -- 2FA columns on users
+    ALTER TABLE sim_users ADD COLUMN IF NOT EXISTS totp_enabled BOOLEAN NOT NULL DEFAULT FALSE;
+    ALTER TABLE sim_users ADD COLUMN IF NOT EXISTS totp_secret TEXT;
+
+    -- Activity log (logins, 2FA changes, API key events, etc.)
+    CREATE TABLE IF NOT EXISTS sim_activity_log (
+      id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+      user_id TEXT NOT NULL REFERENCES sim_users(id) ON DELETE CASCADE,
+      type TEXT NOT NULL,
+      description TEXT NOT NULL,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    );
   `);
 
   await pool.query(

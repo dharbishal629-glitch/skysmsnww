@@ -139,14 +139,14 @@ export default function AdminCoupons() {
   return (
     <div className="max-w-5xl mx-auto space-y-8">
       <div>
-        <h1 className="text-xl font-semibold text-white">Coupons</h1>
+        <h1 className="text-xl font-semibold text-slate-900 dark:text-white">Coupons</h1>
         <p className="text-muted-foreground mt-1 text-sm">Create discount codes for your users.</p>
       </div>
 
       {/* Create form */}
       <Card className="glass-card">
         <CardHeader>
-          <CardTitle className="text-base font-semibold text-white">Create New Coupon</CardTitle>
+          <CardTitle className="text-base font-semibold text-slate-900 dark:text-white">Create New Coupon</CardTitle>
           <CardDescription>Code, Type, and Value are required. All other fields are optional.</CardDescription>
         </CardHeader>
         <CardContent>
@@ -176,8 +176,8 @@ export default function AdminCoupons() {
                       onClick={() => setForm((f) => ({ ...f, type: t }))}
                       className={`flex-1 flex items-center justify-center text-[13px] font-medium transition-colors ${
                         form.type === t
-                          ? "bg-white/[0.08] text-white"
-                          : "text-slate-400 hover:text-slate-200"
+                          ? "bg-white/[0.08] text-slate-900 dark:text-white"
+                          : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
                       }`}
                     >
                       {t === "percentage" ? "Percentage" : "Fixed Amount"}
@@ -260,7 +260,7 @@ export default function AdminCoupons() {
 
       {/* Coupon list */}
       <div className="space-y-3">
-        <h2 className="text-lg font-bold text-white">All Coupons <span className="text-muted-foreground font-normal text-sm">({coupons.length})</span></h2>
+        <h2 className="text-lg font-bold text-slate-900 dark:text-white">All Coupons <span className="text-muted-foreground font-normal text-sm">({coupons.length})</span></h2>
 
         {loading ? (
           <div className="flex items-center justify-center py-16 text-muted-foreground gap-2">
@@ -309,7 +309,7 @@ export default function AdminCoupons() {
 
                         {/* Uses */}
                         <td className="px-4 py-3 whitespace-nowrap">
-                          <span className="font-bold text-white">{c.usesCount}</span>
+                          <span className="font-bold text-slate-900 dark:text-white">{c.usesCount}</span>
                           <span className="text-muted-foreground"> / </span>
                           <span className="text-muted-foreground">{c.maxUses ?? "∞"}</span>
                         </td>

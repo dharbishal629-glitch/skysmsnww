@@ -404,7 +404,7 @@ export default function AdminUsers() {
 
       {/* Header */}
       <div>
-        <h1 className="font-display text-[22px] font-bold text-white tracking-tight">Users</h1>
+        <h1 className="font-display text-[22px] font-bold text-slate-900 dark:text-white tracking-tight">Users</h1>
         <p className="text-[13px] text-slate-500 mt-0.5">Manage accounts, credits, roles, and view IP addresses.</p>
       </div>
 
@@ -412,7 +412,7 @@ export default function AdminUsers() {
       {!isLoading && (
         <div className="grid grid-cols-4 gap-3">
           {[
-            { label: "Total",     value: counts.all,       color: "text-white" },
+            { label: "Total",     value: counts.all,       color: "text-slate-900 dark:text-white" },
             { label: "Active",    value: counts.active,    color: "text-emerald-400" },
             { label: "Suspended", value: counts.suspended, color: "text-red-400" },
             { label: "Admins",    value: counts.admin,     color: "text-blue-400" },
@@ -492,7 +492,7 @@ export default function AdminUsers() {
                     {/* Name/email */}
                     <button onClick={() => setLocation(`/admin/users/${user.id}`)} className="flex-1 min-w-0 text-left">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="font-semibold text-white text-[13.5px] truncate">{user.name}</span>
+                        <span className="font-semibold text-slate-900 dark:text-white text-[13.5px] truncate">{user.name}</span>
                         {user.role === "admin" && (
                           <span className="inline-flex items-center text-[9.5px] font-bold px-1.5 py-0 rounded-full border text-blue-400 border-blue-500/20 bg-blue-500/10">Admin</span>
                         )}
@@ -511,11 +511,11 @@ export default function AdminUsers() {
                     {/* Stats */}
                     <div className="hidden sm:flex items-center gap-4 shrink-0">
                       <div className="text-right">
-                        <div className="text-[13px] font-bold font-mono text-white">${user.credits.toFixed(2)}</div>
+                        <div className="text-[13px] font-bold font-mono text-slate-900 dark:text-white">${user.credits.toFixed(2)}</div>
                         <div className="text-[10.5px] text-slate-600">credits</div>
                       </div>
                       <div className="text-right">
-                        <div className="text-[13px] font-bold text-white">{user.rentals}</div>
+                        <div className="text-[13px] font-bold text-slate-900 dark:text-white">{user.rentals}</div>
                         <div className="text-[10.5px] text-slate-600">rentals</div>
                       </div>
                     </div>

@@ -387,30 +387,36 @@ function getRequestOrigin(req: Request) {
   return host ? `${protocol}://${host}` : "https://smsrentals.app";
 }
 
-async function createOxaPayInvoice(req: Request, paymentId: string, amount: number, currency: string, credits?: number, overrideMerchantKey?: string) {
+async function createOxaPayInvoice(req: Request, paymentId: string, amount: number, currency: string, credits?: number, overrideMerchantKey?: string, payCurrency?: string) {
   const merchant = overrideMerchantKey || process.env.OXAPAY_MERCHANT_API_KEY;
   if (!merchant) {
     throw new Error("OxaPay merchant key is not configured.");
   }
 
   const origin = getRequestOrigin(req);
+  const body: Record<string, unknown> = {
+    merchant,
+    amount,
+    currency,      // fiat denomination of `amount` (e.g. "USD")
+    lifeTime: 20,
+    feePaidByPayer: 1,
+    underPaidCover: 1,
+    orderId: paymentId,
+    description: `SMS Rentals credit package - ${credits ?? amount} credits`,
+    returnUrl: `${origin}/payments`,
+    callbackUrl: `${origin}/api/payments/oxapay/webhook`,
+  };
+  // payCurrency tells OxaPay which crypto the user will pay with,
+  // while `amount`+`currency` remain in USD — this is what converts correctly.
+  if (payCurrency) {
+    body.payCurrency = payCurrency;
+  }
   const response = await fetch("https://api.oxapay.com/merchants/request", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      merchant,
-      amount,
-      currency,
-      lifeTime: 20,
-      feePaidByPayer: 1,
-      underPaidCover: 1,
-      orderId: paymentId,
-      description: `SMS Rentals credit package - ${credits ?? amount} credits`,
-      returnUrl: `${origin}/payments`,
-      callbackUrl: `${origin}/api/payments/oxapay/webhook`,
-    }),
+    body: JSON.stringify(body),
   });
 
   const payload = await response.json().catch(() => null) as { result?: number; message?: string; payLink?: string; trackId?: string } | null;
@@ -1208,14 +1214,20 @@ router.post("/payments/checkout", async (req, res) => {
       }
     }
 
-    // Determine merchant key and OxaPay currency based on coin selection
+    // Determine merchant key based on coin selection
     const coinMerchantKey = selectedCoin ? await getCoinMerchantKey(selectedCoin) : null;
-    const oxaCurrency = selectedCoin || body.currency;
+
+    // `body.currency` is the fiat currency (e.g. "USD") — always used as the
+    // denomination for `amount`. `selectedCoin` (e.g. "LTC") is passed as
+    // `payCurrency` so OxaPay converts the USD amount to the correct coin value
+    // at checkout time, instead of treating the USD number as coin units.
+    const fiatCurrency = body.currency || "USD";
+    const payCurrency = selectedCoin || undefined;
 
     // User pays the discounted price to OxaPay but receives the full original credits
     const chargedAmount = Number(Math.max(body.amount - discountAmount, 0.01).toFixed(2));
     const totalCredits = body.amount;
-    const { payLink: checkoutUrl, trackId } = await createOxaPayInvoice(req, id, chargedAmount, oxaCurrency, totalCredits, coinMerchantKey || undefined);
+    const { payLink: checkoutUrl, trackId } = await createOxaPayInvoice(req, id, chargedAmount, fiatCurrency, totalCredits, coinMerchantKey || undefined, payCurrency);
     const result = await pool.query(
       `INSERT INTO sim_payments (id, user_id, amount, credits, currency, status, provider, coupon_code, bonus_credits, track_id)
        VALUES ($1, $2, $3, $4, $5, 'pending', 'OxaPay', $6, $7, $8) RETURNING *`,

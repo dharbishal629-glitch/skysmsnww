@@ -203,15 +203,13 @@ export default function Landing({ onLogin }: { onLogin?: () => void }) {
 
           <Reveal variant="up" delay={100}>
             <h1 className="font-display text-[clamp(2.6rem,6vw,4.4rem)] font-extrabold leading-[1.05] tracking-[-0.03em] text-[#0a1628] mb-6">
-              Get an SMS Number for{" "}
-              <br className="hidden sm:block" />
-              Any Service, Any Country
+              Receive SMS of Any Service Online &amp; API Access
             </h1>
           </Reveal>
 
           <Reveal variant="up" delay={170}>
             <p className="text-[16px] leading-relaxed text-[#0a1628] mb-10 max-w-[520px] mx-auto">
-              Instant temporary phone numbers to receive one-time codes for Telegram, WhatsApp, Google, Discord and 1000+ services. Pay per number from your balance. Full API — drop-in compatible.
+              Get virtual numbers here to receive SMS codes instantly—either on our site or via API. Easily create accounts on your favorite apps, and unlock cool perks and profits.
             </p>
           </Reveal>
 

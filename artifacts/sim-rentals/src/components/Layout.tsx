@@ -58,6 +58,13 @@ function typeIcon(type: string) {
   return <Info className="h-3.5 w-3.5 text-[#4574FF]" />;
 }
 
+function typeLabel(type: string) {
+  if (type === "success") return { label: "Success", cls: "bg-emerald-500/15 text-emerald-400 border-emerald-500/20" };
+  if (type === "warning") return { label: "Alert",   cls: "bg-sky-500/15 text-sky-400 border-sky-500/20" };
+  if (type === "promo")   return { label: "Promo",   cls: "bg-violet-500/15 text-violet-400 border-violet-500/20" };
+  return { label: "Info", cls: "bg-[#4574FF]/15 text-[#7ba4ff] border-[#4574FF]/20" };
+}
+
 function typeBg(type: string, read: boolean) {
   if (read) return "bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700";
   if (type === "success") return "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-700/40";
@@ -143,20 +150,20 @@ function NotificationPanel({ open, onClose }: { open: boolean; onClose: () => vo
 
   return (
     <>
-      {/* Backdrop */}
-      <div className="fixed inset-0 z-[60] bg-black/30 dark:bg-black/50 backdrop-blur-[2px]" />
+      {/* Backdrop — sits below mobile header (z-20) on mobile, full screen on desktop */}
+      <div className="fixed inset-x-0 bottom-0 top-14 md:top-0 z-[25] bg-black/50" />
 
-      {/* Panel */}
+      {/* Panel — slides in from right, below mobile header */}
       <div
         ref={panelRef}
-        className="fixed right-0 top-0 bottom-0 z-[70] w-full max-w-[360px] flex flex-col bg-white dark:bg-[#0d1117] border-l border-slate-200 dark:border-slate-800 shadow-2xl"
+        className="fixed right-0 bottom-0 top-14 md:top-0 z-[30] w-full md:max-w-[380px] flex flex-col bg-[#1a2234] shadow-2xl overflow-hidden"
         style={{ animation: "slide-in-right 0.22s cubic-bezier(0.16,1,0.3,1) both" }}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-4 h-14 border-b border-slate-200 dark:border-slate-800 shrink-0">
-          <div className="flex items-center gap-2">
-            <Bell className="h-4 w-4 text-slate-600 dark:text-slate-400" />
-            <span className="font-bold text-[14px] text-slate-800 dark:text-white">Notifications</span>
+        <div className="flex items-center justify-between px-5 h-14 shrink-0">
+          <div className="flex items-center gap-2.5">
+            <Bell className="h-4 w-4 text-slate-300" />
+            <span className="font-semibold text-[15px] text-white tracking-wide">Notifications</span>
             {unread > 0 && (
               <span className="h-5 min-w-[20px] px-1.5 rounded-full bg-[#4574FF] text-[10px] font-bold text-white flex items-center justify-center">
                 {unread}
@@ -168,7 +175,7 @@ function NotificationPanel({ open, onClose }: { open: boolean; onClose: () => vo
               <button
                 onClick={markAllRead}
                 disabled={markingAll}
-                className="flex items-center gap-1 h-7 px-2 rounded-lg text-[11px] font-semibold text-slate-500 dark:text-slate-400 hover:text-[#4574FF] hover:bg-[#4574FF]/8 transition-all disabled:opacity-50"
+                className="flex items-center gap-1 h-7 px-2 rounded-lg text-[11px] font-semibold text-slate-400 hover:text-[#4574FF] transition-all disabled:opacity-50"
                 title="Mark all as read"
               >
                 <CheckCheck className="h-3.5 w-3.5" />
@@ -177,7 +184,7 @@ function NotificationPanel({ open, onClose }: { open: boolean; onClose: () => vo
             )}
             <button
               onClick={onClose}
-              className="h-7 w-7 flex items-center justify-center rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
+              className="h-7 w-7 flex items-center justify-center rounded-lg text-slate-400 hover:text-white transition-all"
             >
               <X className="h-4 w-4" />
             </button>
@@ -189,51 +196,84 @@ function NotificationPanel({ open, onClose }: { open: boolean; onClose: () => vo
           {loading ? (
             <div className="p-3 space-y-2">
               {[0, 1, 2].map(i => (
-                <div key={i} className="flex gap-3 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
-                  <Skeleton className="h-8 w-8 rounded-lg bg-slate-100 dark:bg-slate-800 shrink-0" />
+                <div key={i} className="flex gap-3 p-3 rounded-xl bg-[#232f45]">
+                  <Skeleton className="h-8 w-8 rounded-lg bg-[#2d3a52] shrink-0" />
                   <div className="flex-1 space-y-2">
-                    <Skeleton className="h-3 w-32 bg-slate-100 dark:bg-slate-800" />
-                    <Skeleton className="h-2.5 w-48 bg-slate-100 dark:bg-slate-800" />
+                    <Skeleton className="h-3 w-32 bg-[#2d3a52]" />
+                    <Skeleton className="h-2.5 w-48 bg-[#2d3a52]" />
                   </div>
                 </div>
               ))}
             </div>
           ) : notifications.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-48 gap-3 text-center px-6">
-              <div className="h-12 w-12 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center">
-                <Bell className="h-5 w-5 text-slate-300 dark:text-slate-600" />
-              </div>
-              <div>
-                <p className="text-[13px] font-semibold text-slate-600 dark:text-slate-300">No notifications yet</p>
-                <p className="text-[12px] text-slate-400 dark:text-slate-500 mt-0.5">We'll notify you about account activity.</p>
+            <div className="flex flex-col items-center justify-center h-full gap-4 text-center px-8 pb-16">
+              {/* Megaphone illustration */}
+              <svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                {/* Glow circle */}
+                <circle cx="48" cy="52" r="30" fill="#1e2d45" />
+                {/* Megaphone body */}
+                <path d="M28 42 L52 30 L52 70 L28 58 Z" fill="#2a3f5e" stroke="#3a5580" strokeWidth="1.5" strokeLinejoin="round"/>
+                {/* Bell of megaphone */}
+                <path d="M52 34 Q70 40 70 50 Q70 60 52 66 Z" fill="#2a3f5e" stroke="#3a5580" strokeWidth="1.5" strokeLinejoin="round"/>
+                {/* Speaker grille lines */}
+                <line x1="56" y1="40" x2="66" y2="44" stroke="#4a6580" strokeWidth="1" strokeLinecap="round"/>
+                <line x1="56" y1="50" x2="68" y2="50" stroke="#4a6580" strokeWidth="1" strokeLinecap="round"/>
+                <line x1="56" y1="60" x2="66" y2="56" stroke="#4a6580" strokeWidth="1" strokeLinecap="round"/>
+                {/* Handle/base */}
+                <rect x="22" y="42" width="8" height="16" rx="3" fill="#2a3f5e" stroke="#3a5580" strokeWidth="1.5"/>
+                {/* Sound waves */}
+                <path d="M74 42 Q80 50 74 58" stroke="#4574FF" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.6"/>
+                <path d="M78 37 Q88 50 78 63" stroke="#4574FF" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.3"/>
+                {/* Sparkle top-left */}
+                <g opacity="0.7">
+                  <line x1="20" y1="28" x2="20" y2="34" stroke="#4574FF" strokeWidth="1.5" strokeLinecap="round"/>
+                  <line x1="17" y1="31" x2="23" y2="31" stroke="#4574FF" strokeWidth="1.5" strokeLinecap="round"/>
+                </g>
+                {/* Sparkle bottom-right small */}
+                <g opacity="0.5">
+                  <line x1="74" y1="70" x2="74" y2="74" stroke="#7ba4ff" strokeWidth="1.5" strokeLinecap="round"/>
+                  <line x1="72" y1="72" x2="76" y2="72" stroke="#7ba4ff" strokeWidth="1.5" strokeLinecap="round"/>
+                </g>
+                {/* Small dot accent */}
+                <circle cx="26" cy="24" r="2" fill="#4574FF" opacity="0.5"/>
+                <circle cx="76" cy="30" r="1.5" fill="#7ba4ff" opacity="0.4"/>
+              </svg>
+              <div className="space-y-1.5">
+                <p className="text-[15px] font-semibold text-white">No Notifications Available</p>
+                <p className="text-[13px] text-slate-400">Your interactions will be visible here</p>
               </div>
             </div>
           ) : (
-            <div className="p-3 space-y-1.5">
+            <div className="p-3 space-y-1">
               {notifications.map(n => (
                 <button
                   key={n.id}
                   onClick={() => handleClick(n)}
-                  className={`w-full text-left flex gap-3 p-3 rounded-xl border transition-all hover:shadow-sm active:scale-[0.99] ${
+                  className={`w-full text-left flex gap-3 p-3.5 rounded-xl transition-all active:scale-[0.99] ${
                     n.read
-                      ? "border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60"
-                      : "border-[#4574FF]/20 bg-[#4574FF]/[0.03] dark:bg-[#4574FF]/10 hover:bg-[#4574FF]/[0.06]"
+                      ? "hover:bg-[#232f45]"
+                      : "bg-[#232f45] border border-[#4574FF]/20"
                   }`}
                 >
-                  <div className={`h-8 w-8 shrink-0 rounded-lg border flex items-center justify-center mt-0.5 ${typeBg(n.type, n.read)}`}>
+                  <div className={`h-9 w-9 shrink-0 rounded-xl flex items-center justify-center mt-0.5 ${typeBg(n.type, n.read)}`}>
                     {typeIcon(n.type)}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2">
-                      <span className={`text-[12.5px] font-semibold leading-snug ${n.read ? "text-slate-600 dark:text-slate-300" : "text-slate-900 dark:text-white"}`}>
+                      <span className={`text-[13px] font-semibold leading-snug ${n.read ? "text-slate-300" : "text-white"}`}>
                         {n.title}
                       </span>
                       <div className="flex items-center gap-1.5 shrink-0 mt-0.5">
                         {!n.read && <span className="h-1.5 w-1.5 rounded-full bg-[#4574FF]" />}
-                        <span className="text-[10.5px] text-slate-400 dark:text-slate-500 whitespace-nowrap">{timeAgo(n.createdAt)}</span>
+                        <span className="text-[11px] text-slate-500 whitespace-nowrap">{timeAgo(n.createdAt)}</span>
                       </div>
                     </div>
-                    <p className={`text-[11.5px] leading-relaxed mt-0.5 ${n.read ? "text-slate-400 dark:text-slate-500" : "text-slate-500 dark:text-slate-400"}`}>
+                    <div className="flex items-center gap-1.5 mt-1 mb-0.5">
+                      <span className={`inline-flex items-center text-[10px] font-bold px-1.5 py-0.5 rounded-full border ${typeLabel(n.type).cls}`}>
+                        {typeLabel(n.type).label}
+                      </span>
+                    </div>
+                    <p className={`text-[12px] leading-relaxed mt-0.5 ${n.read ? "text-slate-500" : "text-slate-400"}`}>
                       {n.message}
                     </p>
                     {n.link && (
@@ -578,9 +618,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <Menu className="h-[18px] w-[18px]" />
           </button>
           <div className="flex items-center gap-2 cursor-pointer">
-            <div className="h-7 w-7 rounded-lg bg-[#0a1628] dark:bg-[#4574FF]/20 flex items-center justify-center">
-              <span className="text-white font-black text-[11px] tracking-tighter">S</span>
-            </div>
             <span className="font-display text-[15px] font-extrabold tracking-tight text-[#0a1628] dark:text-white">
               SKY<span className="text-[#4574FF] ml-0.5">SMS</span>
             </span>

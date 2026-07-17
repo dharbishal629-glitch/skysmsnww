@@ -166,7 +166,7 @@ export default function Support() {
           </p>
         </div>
         <button
-          onClick={() => { setShowForm(v => !v); if (activeTab !== "tickets") setActiveTab("tickets"); }}
+          onClick={() => setShowForm(v => !v)}
           className={`shrink-0 flex items-center gap-2 h-10 px-4 rounded-xl text-[12px] font-bold transition-all active:scale-95 ${
             showForm
               ? "bg-slate-100 border border-slate-200 text-slate-600 hover:text-slate-800"
