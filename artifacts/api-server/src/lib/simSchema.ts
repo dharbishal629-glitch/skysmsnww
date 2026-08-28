@@ -280,6 +280,33 @@ async function createSchema() {
       false
     );
 
+    -- Support ownership and queue controls. A claim belongs to one support
+    -- administrator and is released automatically if that staff account is removed.
+    ALTER TABLE sim_support_tickets
+      ADD COLUMN IF NOT EXISTS claimed_by_user_id TEXT REFERENCES sim_users(id) ON DELETE SET NULL;
+    ALTER TABLE sim_support_tickets
+      ADD COLUMN IF NOT EXISTS claimed_at TIMESTAMPTZ;
+    CREATE INDEX IF NOT EXISTS sim_support_tickets_claimed_by_idx
+      ON sim_support_tickets(claimed_by_user_id)
+      WHERE claimed_by_user_id IS NOT NULL;
+
+    CREATE TABLE IF NOT EXISTS sim_support_settings (
+      id INTEGER PRIMARY KEY DEFAULT 1 CHECK (id = 1),
+      claiming_enabled BOOLEAN NOT NULL DEFAULT TRUE,
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      updated_by_user_id TEXT REFERENCES sim_users(id) ON DELETE SET NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS sim_support_ticket_events (
+      id TEXT PRIMARY KEY,
+      ticket_id TEXT NOT NULL REFERENCES sim_support_tickets(id) ON DELETE CASCADE,
+      actor_user_id TEXT REFERENCES sim_users(id) ON DELETE SET NULL,
+      event_type TEXT NOT NULL,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    );
+    CREATE INDEX IF NOT EXISTS sim_support_ticket_events_ticket_idx
+      ON sim_support_ticket_events(ticket_id, created_at DESC);
+
     -- Status incidents
     CREATE TABLE IF NOT EXISTS sim_status_incidents (
       id TEXT PRIMARY KEY,
@@ -325,6 +352,12 @@ async function createSchema() {
   await pool.query(
     `INSERT INTO sim_referral_settings (id, enabled, bonus_amount, min_deposit_amount)
      VALUES (1, TRUE, 0.50, 0)
+     ON CONFLICT (id) DO NOTHING`,
+  );
+
+  await pool.query(
+    `INSERT INTO sim_support_settings (id, claiming_enabled)
+     VALUES (1, TRUE)
      ON CONFLICT (id) DO NOTHING`,
   );
 

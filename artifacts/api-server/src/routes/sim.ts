@@ -247,23 +247,37 @@ async function requireAdmin(req: Request, res: Response): Promise<boolean> {
   return false;
 }
 
+type SupportActor = {
+  userId: string;
+  name: string;
+  email: string;
+  isAdmin: boolean;
+  isSupportAdmin: boolean;
+};
+
 async function requireSupportAdmin(
   req: Request,
   res: Response,
-): Promise<boolean> {
+): Promise<SupportActor | null> {
   if (!req.isAuthenticated()) {
     res.status(401).json({ error: "Unauthorized" });
-    return false;
+    return null;
   }
-  if (isAdminEmail(req.user.email) || isSupportAdminEmail(req.user.email))
-    return true;
-  const result = await pool.query("SELECT role FROM sim_users WHERE id = $1", [
-    req.user.id,
-  ]);
-  if (["admin", "support_admin"].includes(String(result.rows[0]?.role)))
-    return true;
+  const account = await getAccount(getUserId(req), req.user);
+  const isAdmin = account.role === "admin" || isAdminEmail(req.user.email);
+  const isSupportAdmin =
+    account.role === "support_admin" || isSupportAdminEmail(req.user.email);
+  if (isAdmin || isSupportAdmin) {
+    return {
+      userId: account.id,
+      name: account.name,
+      email: account.email,
+      isAdmin,
+      isSupportAdmin,
+    };
+  }
   res.status(403).json({ error: "Support admin access required" });
-  return false;
+  return null;
 }
 
 function providerStatus(name: "Hero SMS" | "OxaPay") {
@@ -768,12 +782,22 @@ async function getAccount(userId: string, authUser?: AuthUser) {
       "User"
     : "User";
   const email = authUser?.email || `user-${userId}@sms-rentals.app`;
-  const role = isAdminEmail(authUser?.email) ? "admin" : "user";
+  const role = isAdminEmail(authUser?.email)
+    ? "admin"
+    : isSupportAdminEmail(authUser?.email)
+      ? "support_admin"
+      : "user";
 
   await pool.query(
     `INSERT INTO sim_users (id, name, email, role, credits, status)
      VALUES ($1, $2, $3, $4, 0, 'active')
-     ON CONFLICT (id) DO UPDATE SET name = EXCLUDED.name, email = EXCLUDED.email, role = EXCLUDED.role`,
+     ON CONFLICT (id) DO UPDATE SET
+       name = EXCLUDED.name,
+       email = EXCLUDED.email,
+       role = CASE
+         WHEN EXCLUDED.role IN ('admin', 'support_admin') THEN EXCLUDED.role
+         ELSE sim_users.role
+       END`,
     [userId, name, email, role],
   );
   const result = await pool.query("SELECT * FROM sim_users WHERE id = $1", [
@@ -2522,6 +2546,42 @@ async function findSupportTicket(reference: string, userId?: string) {
   return result.rows[0] as Record<string, unknown> | undefined;
 }
 
+async function getSupportClaimingEnabled() {
+  const result = await pool.query(
+    "SELECT claiming_enabled FROM sim_support_settings WHERE id = 1",
+  );
+  return result.rows[0]?.claiming_enabled !== false;
+}
+
+async function getSupportTicketForStaff(ticketId: string) {
+  const result = await pool.query(
+    `SELECT
+       t.*,
+       u.email AS user_email,
+       u.name AS user_name,
+       claimant.email AS claimant_email,
+       claimant.name AS claimant_name
+     FROM sim_support_tickets t
+     JOIN sim_users u ON u.id = t.user_id
+     LEFT JOIN sim_users claimant ON claimant.id = t.claimed_by_user_id
+     WHERE t.id = $1`,
+    [ticketId],
+  );
+  return result.rows[0] as Record<string, unknown> | undefined;
+}
+
+async function recordSupportTicketEvent(
+  ticketId: string,
+  actorUserId: string,
+  eventType: "claimed" | "released",
+) {
+  await pool.query(
+    `INSERT INTO sim_support_ticket_events (id, ticket_id, actor_user_id, event_type)
+     VALUES ($1, $2, $3, $4)`,
+    [crypto.randomUUID(), ticketId, actorUserId, eventType],
+  );
+}
+
 async function mapSupportTicket(
   row: Record<string, unknown>,
   viewer: "user" | "admin",
@@ -2535,6 +2595,16 @@ async function mapSupportTicket(
           userId: String(row.user_id),
           userEmail: String(row.user_email),
           userName: String(row.user_name),
+          claimedByUserId: row.claimed_by_user_id
+            ? String(row.claimed_by_user_id)
+            : null,
+          claimedByName: row.claimant_name ? String(row.claimant_name) : null,
+          claimedByEmail: row.claimant_email
+            ? String(row.claimant_email)
+            : null,
+          claimedAt: row.claimed_at
+            ? new Date(String(row.claimed_at)).toISOString()
+            : null,
         }
       : {}),
     subject: String(row.subject),
@@ -2678,9 +2748,15 @@ router.get("/support/tickets/:id", async (req, res) => {
 router.get("/admin/support", async (req, res) => {
   if (!(await requireSupportAdmin(req, res))) return;
   const result = await pool.query(`
-    SELECT t.*, u.email AS user_email, u.name AS user_name
+    SELECT
+      t.*,
+      u.email AS user_email,
+      u.name AS user_name,
+      claimant.email AS claimant_email,
+      claimant.name AS claimant_name
     FROM sim_support_tickets t
     JOIN sim_users u ON u.id = t.user_id
+    LEFT JOIN sim_users claimant ON claimant.id = t.claimed_by_user_id
     ORDER BY t.created_at DESC
   `);
   res.json({
@@ -2690,6 +2766,35 @@ router.get("/admin/support", async (req, res) => {
   });
 });
 
+router.get("/admin/support/settings", async (req, res) => {
+  const actor = await requireSupportAdmin(req, res);
+  if (!actor) return;
+  res.json({
+    claimingEnabled: await getSupportClaimingEnabled(),
+    canManageClaiming: actor.isAdmin,
+  });
+});
+
+router.patch("/admin/support/settings", async (req, res) => {
+  const actor = await requireSupportAdmin(req, res);
+  if (!actor) return;
+  if (!actor.isAdmin) {
+    res.status(403).json({ error: "Full admin access required." });
+    return;
+  }
+  if (typeof req.body?.claimingEnabled !== "boolean") {
+    res.status(400).json({ error: "claimingEnabled must be a boolean." });
+    return;
+  }
+  await pool.query(
+    `UPDATE sim_support_settings
+     SET claiming_enabled = $1, updated_at = NOW(), updated_by_user_id = $2
+     WHERE id = 1`,
+    [req.body.claimingEnabled, actor.userId],
+  );
+  res.json({ claimingEnabled: req.body.claimingEnabled });
+});
+
 router.get("/admin/support/:id", async (req, res) => {
   if (!(await requireSupportAdmin(req, res))) return;
   const ticket = await findSupportTicket(req.params.id);
@@ -2697,16 +2802,93 @@ router.get("/admin/support/:id", async (req, res) => {
     res.status(404).json({ error: "Ticket not found." });
     return;
   }
-  const result = await pool.query(
-    `SELECT t.*, u.email AS user_email, u.name AS user_name
-    FROM sim_support_tickets t JOIN sim_users u ON u.id = t.user_id WHERE t.id = $1`,
-    [ticket.id],
+  const staffTicket = await getSupportTicketForStaff(String(ticket.id));
+  res.json({ ticket: await mapSupportTicket(staffTicket!, "admin") });
+});
+
+router.post("/admin/support/:id/claim", async (req, res) => {
+  const actor = await requireSupportAdmin(req, res);
+  if (!actor) return;
+  if (!actor.isSupportAdmin || actor.isAdmin) {
+    res.status(403).json({ error: "Only support admins can claim tickets." });
+    return;
+  }
+
+  const claimed = await pool.query(
+    `UPDATE sim_support_tickets
+     SET
+       claimed_by_user_id = $2,
+       claimed_at = NOW(),
+       status = CASE WHEN status = 'open' THEN 'in_progress' ELSE status END,
+       updated_at = NOW()
+     WHERE (id = $1 OR ticket_number = $1)
+       AND claimed_by_user_id IS NULL
+       AND status NOT IN ('resolved', 'closed')
+       AND EXISTS (
+         SELECT 1 FROM sim_support_settings
+         WHERE id = 1 AND claiming_enabled = TRUE
+       )
+     RETURNING id`,
+    [req.params.id, actor.userId],
   );
-  res.json({ ticket: await mapSupportTicket(result.rows[0], "admin") });
+
+  if (!claimed.rows[0]) {
+    const existing = await findSupportTicket(req.params.id);
+    if (!existing) {
+      res.status(404).json({ error: "Ticket not found." });
+      return;
+    }
+    if (!(await getSupportClaimingEnabled())) {
+      res.status(403).json({ error: "Ticket claiming is currently disabled." });
+      return;
+    }
+    res.status(409).json({
+      error:
+        existing.claimed_by_user_id ||
+        ["resolved", "closed"].includes(String(existing.status))
+          ? "This ticket can no longer be claimed."
+          : "Unable to claim this ticket.",
+    });
+    return;
+  }
+
+  const ticketId = String(claimed.rows[0].id);
+  await recordSupportTicketEvent(ticketId, actor.userId, "claimed");
+  const ticket = await getSupportTicketForStaff(ticketId);
+  res.json({ ticket: await mapSupportTicket(ticket!, "admin") });
+});
+
+router.delete("/admin/support/:id/claim", async (req, res) => {
+  const actor = await requireSupportAdmin(req, res);
+  if (!actor) return;
+  const existing = await findSupportTicket(req.params.id);
+  if (!existing) {
+    res.status(404).json({ error: "Ticket not found." });
+    return;
+  }
+  if (!existing.claimed_by_user_id) {
+    res.status(409).json({ error: "This ticket is not claimed." });
+    return;
+  }
+  if (!actor.isAdmin && String(existing.claimed_by_user_id) !== actor.userId) {
+    res.status(403).json({ error: "Only the assigned support admin can release this ticket." });
+    return;
+  }
+  const ticketId = String(existing.id);
+  await pool.query(
+    `UPDATE sim_support_tickets
+     SET claimed_by_user_id = NULL, claimed_at = NULL, updated_at = NOW()
+     WHERE id = $1`,
+    [ticketId],
+  );
+  await recordSupportTicketEvent(ticketId, actor.userId, "released");
+  const ticket = await getSupportTicketForStaff(ticketId);
+  res.json({ ticket: await mapSupportTicket(ticket!, "admin") });
 });
 
 router.patch("/admin/support/:id", async (req, res) => {
-  if (!(await requireSupportAdmin(req, res))) return;
+  const actor = await requireSupportAdmin(req, res);
+  if (!actor) return;
   const { id } = req.params;
   const { status, adminReply } = req.body as Record<string, string>;
   const validStatuses = ["open", "in_progress", "resolved", "closed"];
@@ -2720,6 +2902,16 @@ router.patch("/admin/support/:id", async (req, res) => {
     return;
   }
   const ticketId = String(existingTicket.id);
+  if (
+    !actor.isAdmin &&
+    (await getSupportClaimingEnabled()) &&
+    String(existingTicket.claimed_by_user_id ?? "") !== actor.userId
+  ) {
+    res.status(403).json({
+      error: "Claim this ticket before replying or changing its status.",
+    });
+    return;
+  }
   const newStatus = status ?? existingTicket.status;
   const newReply =
     adminReply !== undefined
@@ -2727,21 +2919,21 @@ router.patch("/admin/support/:id", async (req, res) => {
       : existingTicket.admin_reply;
   if (newReply && newReply !== existingTicket.admin_reply) {
     await pool.query(
-      "INSERT INTO sim_support_messages (id, ticket_id, sender_role, sender_name, message) VALUES ($1, $2, 'admin', 'SKY SMS Support', $3)",
-      [crypto.randomUUID(), ticketId, newReply],
+      "INSERT INTO sim_support_messages (id, ticket_id, sender_role, sender_name, message) VALUES ($1, $2, 'admin', $3, $4)",
+      [
+        crypto.randomUUID(),
+        ticketId,
+        actor.isAdmin ? "SKY SMS Admin" : "SKY SMS Support",
+        newReply,
+      ],
     );
   }
   await pool.query(
     "UPDATE sim_support_tickets SET status = $1, admin_reply = $2, updated_at = NOW() WHERE id = $3",
     [newStatus, newReply || null, ticketId],
   );
-  const updated = await pool.query(
-    `SELECT t.*, u.email AS user_email, u.name AS user_name
-    FROM sim_support_tickets t JOIN sim_users u ON u.id = t.user_id WHERE t.id = $1`,
-    [ticketId],
-  );
-  const row = updated.rows[0];
-  res.json({ ticket: await mapSupportTicket(row, "admin") });
+  const updated = await getSupportTicketForStaff(ticketId);
+  res.json({ ticket: await mapSupportTicket(updated!, "admin") });
 });
 
 router.get("/admin/transactions", async (req, res) => {
