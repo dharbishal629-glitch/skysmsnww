@@ -2867,3 +2867,58 @@ textarea:focus-visible {
     gap: 5px;
   }
 }
+
+/* Shared visual treatment for every authenticated screen */
+.app-content main > div[class*="max-w"],
+.app-content main > div[class*="space-y"] {
+  animation: dashboard-enter 0.45s ease both;
+}
+.app-content main h1 {
+  letter-spacing: -0.055em !important;
+}
+.app-content main .rounded-2xl {
+  border-radius: 12px !important;
+}
+.app-content main button {
+  border-radius: 8px;
+}
+.app-content main input,
+.app-content main textarea,
+.app-content main select {
+  border-radius: 8px;
+}
+.app-content main .shadow-sm {
+  box-shadow: 0 7px 22px rgba(37, 71, 79, 0.045) !important;
+}
+.dark .app-content main .shadow-sm {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.18) !important;
+}
+.support-attachment {
+  display: block;
+  width: min(260px, 100%);
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px !important;
+  background: rgba(255, 255, 255, 0.06);
+  text-align: left;
+  cursor: zoom-in;
+}
+.support-attachment img {
+  display: block;
+  width: 100%;
+  max-height: 240px;
+  object-fit: cover;
+}
+.support-attachment span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  color: #9db1b7;
+  font-size: 10px;
+  font-weight: 700;
+}
+.support-attachment span svg {
+  width: 13px;
+}
