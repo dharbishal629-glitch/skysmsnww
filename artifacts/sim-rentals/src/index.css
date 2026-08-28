@@ -2282,3 +2282,122 @@ html.dark {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Shared dashboard polish */
+.app-shell {
+  background: #eef3f5;
+}
+.app-content {
+  background: #f4f7f8 !important;
+  background-image:
+    radial-gradient(
+      circle at 90% 0%,
+      rgba(120, 226, 220, 0.15),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 20% 100%,
+      rgba(200, 241, 105, 0.1),
+      transparent 25%
+    ) !important;
+}
+.app-sidebar {
+  border-color: #dce5e8 !important;
+  box-shadow: 10px 0 35px rgba(35, 66, 75, 0.04) !important;
+}
+.app-sidebar-inner {
+  background: rgba(249, 251, 250, 0.92) !important;
+}
+.app-sidebar-inner > div:first-child {
+  border-color: #e4ebec !important;
+}
+.app-nav-item {
+  border-radius: 8px !important;
+  color: #6d7d84 !important;
+}
+.app-nav-item:hover {
+  color: #102433 !important;
+  background: #edf3f0 !important;
+}
+.app-nav-item-active {
+  color: #466f45 !important;
+  background: #e5f2d5 !important;
+  box-shadow: inset 3px 0 #96bd5f !important;
+}
+.app-nav-item-active svg {
+  color: #769c4f !important;
+}
+.app-content main > * {
+  animation: dashboard-enter 0.45s ease both;
+}
+button,
+a {
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid rgba(120, 170, 90, 0.28);
+  outline-offset: 2px;
+}
+.app-mobile-header {
+  border-color: #dce5e8 !important;
+  background: rgba(249, 251, 250, 0.92) !important;
+  backdrop-filter: blur(14px);
+}
+@keyframes dashboard-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (max-width: 767px) {
+  .app-content main {
+    padding: 22px 16px !important;
+  }
+}
+.dark .app-shell {
+  background: #07111f;
+}
+.dark .app-content {
+  background: #07111f !important;
+  background-image:
+    radial-gradient(
+      circle at 90% 0%,
+      rgba(69, 116, 255, 0.14),
+      transparent 30%
+    ),
+    linear-gradient(rgba(120, 226, 220, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120, 226, 220, 0.025) 1px, transparent 1px) !important;
+  background-size:
+    auto,
+    48px 48px,
+    48px 48px !important;
+}
+.dark .app-sidebar-inner {
+  background: #0b1725 !important;
+}
+.dark .app-sidebar {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+.dark .app-nav-item {
+  color: #91a2af !important;
+}
+.dark .app-nav-item:hover {
+  color: #f5faf8 !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+.dark .app-nav-item-active {
+  color: #c8f169 !important;
+  background: rgba(200, 241, 105, 0.1) !important;
+  box-shadow: inset 3px 0 #c8f169 !important;
+}
+.dark .app-mobile-header {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  background: rgba(11, 23, 37, 0.92) !important;
+}
