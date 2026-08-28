@@ -19,9 +19,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     try {
       const saved = localStorage.getItem("skysms-theme") as Theme | null;
       if (saved === "dark" || saved === "light") return saved;
-      return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      // SKY SMS is designed as a dark, control-room style workspace. Users can
+      // still opt into the light theme with the toolbar toggle.
+      return "dark";
     } catch {
-      return "light";
+      return "dark";
     }
   });
 
@@ -32,13 +34,17 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     } else {
       root.classList.remove("dark");
     }
-    try { localStorage.setItem("skysms-theme", theme); } catch {}
+    try {
+      localStorage.setItem("skysms-theme", theme);
+    } catch {}
   }, [theme]);
 
-  const toggleTheme = () => setTheme(t => (t === "light" ? "dark" : "light"));
+  const toggleTheme = () => setTheme((t) => (t === "light" ? "dark" : "light"));
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, isDark: theme === "dark" }}>
+    <ThemeContext.Provider
+      value={{ theme, toggleTheme, isDark: theme === "dark" }}
+    >
       {children}
     </ThemeContext.Provider>
   );

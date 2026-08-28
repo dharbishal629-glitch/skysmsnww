@@ -16,7 +16,10 @@ app.use((_req, res, next) => {
   res.setHeader("X-Frame-Options", "DENY");
   res.setHeader("X-XSS-Protection", "0");
   res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
-  res.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+  res.setHeader(
+    "Permissions-Policy",
+    "camera=(), microphone=(), geolocation=()",
+  );
   res.setHeader(
     "Content-Security-Policy",
     [
@@ -27,7 +30,7 @@ app.use((_req, res, next) => {
       "img-src 'self' data: https: blob:",
       "connect-src 'self' wss: https:",
       "frame-ancestors 'none'",
-    ].join("; ")
+    ].join("; "),
   );
   // Strip internal headers from responses
   res.removeHeader("X-Powered-By");
@@ -55,7 +58,9 @@ app.use(
 );
 
 const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(",").map((o) => o.trim()).filter(Boolean)
+  ? process.env.ALLOWED_ORIGINS.split(",")
+      .map((o) => o.trim())
+      .filter(Boolean)
   : null;
 
 app.use(
@@ -74,7 +79,9 @@ app.use(
 );
 
 app.use(cookieParser());
-app.use(express.json());
+// Support attachments are sent as base64 data URLs. Keep the limit above the
+// route's 2 MB attachment limit while still rejecting unexpectedly large JSON.
+app.use(express.json({ limit: "3mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(authMiddleware);
 
@@ -114,16 +121,25 @@ if (frontendDir) {
 }
 
 // Global error handler — never expose stack traces in production
-app.use((err: unknown, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
-  const isProduction = process.env.NODE_ENV === "production";
-  const statusCode = (err as { status?: number; statusCode?: number })?.status
-    ?? (err as { statusCode?: number })?.statusCode
-    ?? 500;
-  const message = (err instanceof Error && !isProduction)
-    ? err.message
-    : "An unexpected error occurred";
-  logger.error({ err }, "Unhandled error");
-  res.status(statusCode).json({ error: message });
-});
+app.use(
+  (
+    err: unknown,
+    _req: express.Request,
+    res: express.Response,
+    _next: express.NextFunction,
+  ) => {
+    const isProduction = process.env.NODE_ENV === "production";
+    const statusCode =
+      (err as { status?: number; statusCode?: number })?.status ??
+      (err as { statusCode?: number })?.statusCode ??
+      500;
+    const message =
+      err instanceof Error && !isProduction
+        ? err.message
+        : "An unexpected error occurred";
+    logger.error({ err }, "Unhandled error");
+    res.status(statusCode).json({ error: message });
+  },
+);
 
 export default app;

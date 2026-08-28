@@ -21,7 +21,7 @@ export const GetMeResponse = zod.object({
   id: zod.string(),
   name: zod.string(),
   email: zod.string(),
-  role: zod.enum(["user", "admin"]),
+  role: zod.enum(["user", "admin", "support_admin"]),
   credits: zod.number(),
   avatarUrl: zod.string().optional(),
 });
@@ -34,7 +34,7 @@ export const GetDashboardResponse = zod.object({
     id: zod.string(),
     name: zod.string(),
     email: zod.string(),
-    role: zod.enum(["user", "admin"]),
+    role: zod.enum(["user", "admin", "support_admin"]),
     credits: zod.number(),
     avatarUrl: zod.string().optional(),
   }),

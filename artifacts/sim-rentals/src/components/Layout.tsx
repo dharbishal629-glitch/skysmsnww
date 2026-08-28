@@ -707,7 +707,9 @@ function SidebarContent({
   const { discord, telegram } = useCommunityLinks();
   const { t } = useLanguage();
   const hasCommunity = discord || telegram;
-  const isAdmin = user?.role === "admin";
+  const userRole = String(user?.role ?? "user");
+  const isAdmin = userRole === "admin";
+  const isSupportAdmin = userRole === "support_admin";
 
   return (
     <div className="app-sidebar-inner flex flex-col h-full overflow-hidden bg-white dark:bg-slate-900">
@@ -770,27 +772,29 @@ function SidebarContent({
           );
         })}
 
-        {isAdmin && (
+        {(isAdmin || isSupportAdmin) && (
           <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800">
             <div className="mb-1.5 px-3 text-[9.5px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.22em]">
               {t("admin")}
             </div>
-            {adminItems.map((item) => {
-              const active =
-                location === item.href ||
-                (item.href !== "/admin" &&
-                  location.startsWith(item.href + "/"));
-              return (
-                <NavItem
-                  key={item.href}
-                  href={item.href}
-                  label={item.label}
-                  icon={item.icon}
-                  active={active}
-                  onClick={onNav}
-                />
-              );
-            })}
+            {adminItems
+              .filter((item) => isAdmin || item.href === "/admin/support")
+              .map((item) => {
+                const active =
+                  location === item.href ||
+                  (item.href !== "/admin" &&
+                    location.startsWith(item.href + "/"));
+                return (
+                  <NavItem
+                    key={item.href}
+                    href={item.href}
+                    label={item.label}
+                    icon={item.icon}
+                    active={active}
+                    onClick={onNav}
+                  />
+                );
+              })}
           </div>
         )}
       </div>

@@ -1,7 +1,23 @@
 import { useState, useMemo, useEffect, useRef } from "react";
-import { useListServices, useGetAvailability, useCreateRental, getGetDashboardQueryKey } from "@workspace/api-client-react";
+import {
+  useListServices,
+  useGetAvailability,
+  useCreateRental,
+  getGetDashboardQueryKey,
+} from "@workspace/api-client-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Loader2, CheckCircle2, AlertCircle, RefreshCw, ArrowUpDown, ArrowUp, ArrowDown, Search, X, ChevronDown } from "lucide-react";
+import {
+  Loader2,
+  CheckCircle2,
+  AlertCircle,
+  RefreshCw,
+  ArrowUpDown,
+  ArrowUp,
+  ArrowDown,
+  Search,
+  X,
+  ChevronDown,
+} from "lucide-react";
 import { useLocation } from "wouter";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
@@ -20,7 +36,9 @@ function useCountriesForService(serviceCode: string) {
   return useQuery<{ countries: LiveCountry[] }>({
     queryKey: ["/api/catalog/countries-for-service", serviceCode],
     queryFn: async () => {
-      const res = await fetch(`/api/catalog/countries-for-service?serviceCode=${serviceCode}`);
+      const res = await fetch(
+        `/api/catalog/countries-for-service?serviceCode=${serviceCode}`,
+      );
       if (!res.ok) throw new Error("Failed to load countries");
       return res.json();
     },
@@ -31,23 +49,52 @@ function useCountriesForService(serviceCode: string) {
 }
 
 const serviceIconDomains: Record<string, string> = {
-  aol: "aol.com", aliexpress: "aliexpress.com", telegram: "telegram.org",
-  whatsapp: "whatsapp.com", google: "google.com", instagram: "instagram.com",
-  facebook: "facebook.com", twitter: "x.com", "x / twitter": "x.com",
-  discord: "discord.com", amazon: "amazon.com", tiktok: "tiktok.com",
-  snapchat: "snapchat.com", linkedin: "linkedin.com", netflix: "netflix.com",
-  spotify: "spotify.com", uber: "uber.com", airbnb: "airbnb.com",
-  paypal: "paypal.com", apple: "apple.com", yandex: "yandex.com",
-  yahoo: "yahoo.com", proton: "proton.me", "ok.ru": "ok.ru", qq: "qq.com",
-  wechat: "wechat.com", viber: "viber.com", vk: "vk.com",
-  tinder: "tinder.com", bumble: "bumble.com", "pof.com": "pof.com",
-  coinbase: "coinbase.com", steam: "steampowered.com", naver: "naver.com",
-  bolt: "bolt.eu", wise: "wise.com", nike: "nike.com",
+  aol: "aol.com",
+  aliexpress: "aliexpress.com",
+  telegram: "telegram.org",
+  whatsapp: "whatsapp.com",
+  google: "google.com",
+  instagram: "instagram.com",
+  facebook: "facebook.com",
+  twitter: "x.com",
+  "x / twitter": "x.com",
+  discord: "discord.com",
+  amazon: "amazon.com",
+  tiktok: "tiktok.com",
+  snapchat: "snapchat.com",
+  linkedin: "linkedin.com",
+  netflix: "netflix.com",
+  spotify: "spotify.com",
+  uber: "uber.com",
+  airbnb: "airbnb.com",
+  paypal: "paypal.com",
+  apple: "apple.com",
+  yandex: "yandex.com",
+  yahoo: "yahoo.com",
+  proton: "proton.me",
+  "ok.ru": "ok.ru",
+  qq: "qq.com",
+  wechat: "wechat.com",
+  viber: "viber.com",
+  vk: "vk.com",
+  tinder: "tinder.com",
+  bumble: "bumble.com",
+  "pof.com": "pof.com",
+  coinbase: "coinbase.com",
+  steam: "steampowered.com",
+  naver: "naver.com",
+  bolt: "bolt.eu",
+  wise: "wise.com",
+  nike: "nike.com",
 };
 
 function getServiceIcon(name: string): string | null {
   const key = name.toLowerCase();
-  const domain = serviceIconDomains[key] ?? Object.entries(serviceIconDomains).find(([label]) => key.includes(label))?.[1];
+  const domain =
+    serviceIconDomains[key] ??
+    Object.entries(serviceIconDomains).find(([label]) =>
+      key.includes(label),
+    )?.[1];
   if (!domain) return null;
   return `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
 }
@@ -58,7 +105,15 @@ function maskProviderName(name: string): string {
 
 type SortMode = "stock" | "price-asc" | "price-desc";
 
-function SortPill({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
+function SortPill({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
   return (
     <button
       type="button"
@@ -83,7 +138,9 @@ function ServiceIcon({ name }: { name: string }) {
         src={iconUrl}
         alt=""
         className="h-7 w-7 rounded-lg object-contain"
-        onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+        onError={(e) => {
+          (e.target as HTMLImageElement).style.display = "none";
+        }}
       />
     );
   }
@@ -97,10 +154,10 @@ function ServiceIcon({ name }: { name: string }) {
 export default function Rent() {
   const { t } = useLanguage();
   const [serviceCode, setServiceCode] = useState<string>(
-    () => new URLSearchParams(window.location.search).get("service") ?? ""
+    () => new URLSearchParams(window.location.search).get("service") ?? "",
   );
   const [countryCode, setCountryCode] = useState<string>(
-    () => new URLSearchParams(window.location.search).get("country") ?? ""
+    () => new URLSearchParams(window.location.search).get("country") ?? "",
   );
   const [sort, setSort] = useState<SortMode>("stock");
   const [serviceSearch, setServiceSearch] = useState("");
@@ -122,43 +179,75 @@ export default function Rent() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const { data: servicesData, isLoading: loadingServices, isError: servicesError, refetch: refetchServices } = useListServices({}, {
-    query: { queryKey: ["/api/catalog/services"], refetchInterval: 20_000, staleTime: 20_000 }
-  });
+  const {
+    data: servicesData,
+    isLoading: loadingServices,
+    isError: servicesError,
+    refetch: refetchServices,
+  } = useListServices(
+    {},
+    {
+      query: {
+        queryKey: ["/api/catalog/services"],
+        refetchInterval: 20_000,
+        staleTime: 20_000,
+      },
+    },
+  );
 
-  const { data: countriesData, isLoading: loadingCountries } = useCountriesForService(serviceCode);
+  const { data: countriesData, isLoading: loadingCountries } =
+    useCountriesForService(serviceCode);
 
-  const { data: availability, isLoading: loadingAvailability, isFetching: fetchingAvailability } = useGetAvailability(
+  const {
+    data: availability,
+    isLoading: loadingAvailability,
+    isFetching: fetchingAvailability,
+  } = useGetAvailability(
     { countryCode, serviceCode },
     {
       query: {
         enabled: !!countryCode && !!serviceCode,
         queryKey: ["/api/catalog/availability", { countryCode, serviceCode }],
         refetchInterval: 15000,
-      }
-    }
+      },
+    },
   );
 
   const createRental = useCreateRental();
 
   const handleRent = () => {
     if (!countryCode || !serviceCode) return;
-    createRental.mutate({ data: { countryCode, serviceCode } }, {
-      onSuccess: (rental) => {
-        toast({
-          title: "Number rented!",
-          description: `Ready to receive SMS for ${rental.serviceName}.`,
-        });
-        queryClient.invalidateQueries({ queryKey: getGetDashboardQueryKey() });
-        queryClient.invalidateQueries({ queryKey: ["/api/rentals"] });
-        setLocation("/rentals");
+    createRental.mutate(
+      { data: { countryCode, serviceCode } },
+      {
+        onSuccess: (rental) => {
+          toast({
+            title: "Number rented!",
+            description: `Ready to receive SMS for ${rental.serviceName}.`,
+          });
+          queryClient.invalidateQueries({
+            queryKey: getGetDashboardQueryKey(),
+          });
+          queryClient.invalidateQueries({ queryKey: ["/api/rentals"] });
+          setLocation("/rentals");
+        },
+        onError: (error: unknown) => {
+          const apiErr = error as {
+            data?: { error?: string };
+            message?: string;
+          } | null;
+          const description =
+            apiErr?.data?.error ||
+            apiErr?.message ||
+            "Check your balance and try again.";
+          toast({
+            title: "Failed to rent",
+            description,
+            variant: "destructive",
+          });
+        },
       },
-      onError: (error: unknown) => {
-        const apiErr = error as { data?: { error?: string }; message?: string } | null;
-        const description = apiErr?.data?.error || apiErr?.message || "Check your balance and try again.";
-        toast({ title: "Failed to rent", description, variant: "destructive" });
-      }
-    });
+    );
   };
 
   const allServices = servicesData?.services ?? [];
@@ -166,10 +255,11 @@ export default function Rent() {
   const filteredServices = useMemo(() => {
     if (!serviceSearch.trim()) return allServices;
     const q = serviceSearch.toLowerCase();
-    return allServices.filter(s =>
-      s.name.toLowerCase().includes(q) ||
-      s.code.toLowerCase().includes(q) ||
-      (s.category ?? "").toLowerCase().includes(q)
+    return allServices.filter(
+      (s) =>
+        s.name.toLowerCase().includes(q) ||
+        s.code.toLowerCase().includes(q) ||
+        (s.category ?? "").toLowerCase().includes(q),
     );
   }, [allServices, serviceSearch]);
 
@@ -177,32 +267,39 @@ export default function Rent() {
 
   const sortedCountries = useMemo(() => {
     const arr = [...liveCountries];
-    if (sort === "price-asc") return arr.sort((a, b) => (a.price || 999) - (b.price || 999));
-    if (sort === "price-desc") return arr.sort((a, b) => (b.price || 0) - (a.price || 0));
+    if (sort === "price-asc")
+      return arr.sort((a, b) => (a.price || 999) - (b.price || 999));
+    if (sort === "price-desc")
+      return arr.sort((a, b) => (b.price || 0) - (a.price || 0));
     return arr.sort((a, b) => b.available - a.available);
   }, [liveCountries, sort]);
 
   const filteredCountries = useMemo(() => {
     if (!countrySearch.trim()) return sortedCountries;
     const q = countrySearch.toLowerCase();
-    return sortedCountries.filter(c =>
-      c.name.toLowerCase().includes(q) || c.code.toLowerCase().includes(q)
+    return sortedCountries.filter(
+      (c) =>
+        c.name.toLowerCase().includes(q) || c.code.toLowerCase().includes(q),
     );
   }, [sortedCountries, countrySearch]);
 
-  const selectedService = allServices.find(s => s.code === serviceCode);
-  const isAvailable = availability && availability.available > 0 && availability.provider.mode === "live";
+  const selectedService = allServices.find((s) => s.code === serviceCode);
+  const isAvailable =
+    availability &&
+    availability.available > 0 &&
+    availability.provider.mode === "live";
   const canRent = isAvailable && !createRental.isPending;
 
   return (
-    <div className="max-w-lg mx-auto space-y-5">
-
+    <div className="max-w-lg mx-auto space-y-5 sky-page" data-sky-page="rent">
       {/* Header */}
       <div>
         <h1 className="font-display text-[22px] font-bold tracking-tight text-slate-900 dark:text-white">
           {t("rentANumber")}
         </h1>
-        <p className="text-slate-500 dark:text-slate-400 mt-0.5 text-[13px]">Pick a service, then choose a country. Prices refresh in real time.</p>
+        <p className="text-slate-500 dark:text-slate-400 mt-0.5 text-[13px]">
+          Pick a service, then choose a country. Prices refresh in real time.
+        </p>
       </div>
 
       {/* Step 1: Service Selection */}
@@ -217,12 +314,19 @@ export default function Rent() {
                 </span>
               )}
             </div>
-            {!selectedService && <div className="text-[12px] text-slate-500 dark:text-slate-400 mt-0.5">Search and tap a service below</div>}
+            {!selectedService && (
+              <div className="text-[12px] text-slate-500 dark:text-slate-400 mt-0.5">
+                Search and tap a service below
+              </div>
+            )}
           </div>
           {selectedService && (
             <button
               type="button"
-              onClick={() => { setServiceCode(""); setCountryCode(""); }}
+              onClick={() => {
+                setServiceCode("");
+                setCountryCode("");
+              }}
               className="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
               title="Change service"
             >
@@ -238,12 +342,15 @@ export default function Rent() {
             <input
               type="text"
               value={serviceSearch}
-              onChange={e => setServiceSearch(e.target.value)}
+              onChange={(e) => setServiceSearch(e.target.value)}
               placeholder="Telegram, Discord, WhatsApp…"
               className="flex-1 bg-transparent text-[13px] text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 outline-none"
             />
             {serviceSearch && (
-              <button onClick={() => setServiceSearch("")} className="text-slate-400 dark:text-slate-600 hover:text-slate-600 dark:hover:text-slate-400 transition-colors">
+              <button
+                onClick={() => setServiceSearch("")}
+                className="text-slate-400 dark:text-slate-600 hover:text-slate-600 dark:hover:text-slate-400 transition-colors"
+              >
                 <X className="h-3.5 w-3.5" />
               </button>
             )}
@@ -253,15 +360,22 @@ export default function Rent() {
         {/* Service list */}
         {loadingServices ? (
           <div className="px-3 pb-3 space-y-1.5">
-            {[0, 1, 2, 3, 4, 5].map(i => (
-              <Skeleton key={i} className="h-12 w-full rounded-xl bg-slate-100 dark:bg-white/[0.04]" />
+            {[0, 1, 2, 3, 4, 5].map((i) => (
+              <Skeleton
+                key={i}
+                className="h-12 w-full rounded-xl bg-slate-100 dark:bg-white/[0.04]"
+              />
             ))}
           </div>
         ) : servicesError ? (
           <div className="px-3 pb-3">
             <div className="flex items-center justify-between gap-3 rounded-xl border border-red-400/20 bg-red-400/[0.06] px-3 py-2.5 text-[12px] text-red-600 dark:text-red-200">
               <span>Services failed to load.</span>
-              <button type="button" onClick={() => refetchServices()} className="font-bold text-red-500 dark:text-red-100 flex items-center gap-1 hover:text-red-700 dark:hover:text-white transition-colors">
+              <button
+                type="button"
+                onClick={() => refetchServices()}
+                className="font-bold text-red-500 dark:text-red-100 flex items-center gap-1 hover:text-red-700 dark:hover:text-white transition-colors"
+              >
                 <RefreshCw className="h-3 w-3" /> {t("retry")}
               </button>
             </div>
@@ -269,15 +383,21 @@ export default function Rent() {
         ) : (
           <div className="px-3 pb-3 max-h-[320px] overflow-y-auto space-y-0.5">
             {filteredServices.length === 0 ? (
-              <div className="py-6 text-center text-[13px] text-slate-500 dark:text-slate-400">No services found.</div>
+              <div className="py-6 text-center text-[13px] text-slate-500 dark:text-slate-400">
+                No services found.
+              </div>
             ) : (
-              filteredServices.map(service => {
+              filteredServices.map((service) => {
                 const isSelected = service.code === serviceCode;
                 return (
                   <button
                     key={service.code}
                     type="button"
-                    onClick={() => { setServiceCode(service.code); setCountryCode(""); setServiceSearch(""); }}
+                    onClick={() => {
+                      setServiceCode(service.code);
+                      setCountryCode("");
+                      setServiceSearch("");
+                    }}
                     className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all duration-100 ${
                       isSelected
                         ? "bg-[#4574FF]/12 border border-[#4574FF]/25 text-slate-900 dark:text-white"
@@ -285,9 +405,15 @@ export default function Rent() {
                     }`}
                   >
                     <ServiceIcon name={service.name} />
-                    <span className="flex-1 text-[13.5px] font-medium truncate min-w-0">{service.name}</span>
-                    <span className="text-[12px] text-slate-400 dark:text-slate-500 shrink-0">${service.price.toFixed(2)}</span>
-                    {isSelected && <CheckCircle2 className="h-4 w-4 text-[#4574FF] shrink-0" />}
+                    <span className="flex-1 text-[13.5px] font-medium truncate min-w-0">
+                      {service.name}
+                    </span>
+                    <span className="text-[12px] text-slate-400 dark:text-slate-500 shrink-0">
+                      ${service.price.toFixed(2)}
+                    </span>
+                    {isSelected && (
+                      <CheckCircle2 className="h-4 w-4 text-[#4574FF] shrink-0" />
+                    )}
                   </button>
                 );
               })
@@ -305,21 +431,34 @@ export default function Rent() {
                 2 — Select Country
                 {countryCode && (
                   <span className="ml-2 text-[#4574FF] text-[13px] font-medium">
-                    ✓ {liveCountries.find(c => c.code === countryCode)?.name}
+                    ✓ {liveCountries.find((c) => c.code === countryCode)?.name}
                   </span>
                 )}
               </div>
-              {!countryCode && <div className="text-[12px] text-slate-500 dark:text-slate-400 mt-0.5">Choose where you want your number from</div>}
+              {!countryCode && (
+                <div className="text-[12px] text-slate-500 dark:text-slate-400 mt-0.5">
+                  Choose where you want your number from
+                </div>
+              )}
             </div>
             {serviceCode && !loadingCountries && liveCountries.length > 1 && (
               <div className="flex items-center gap-1">
-                <SortPill active={sort === "stock"} onClick={() => setSort("stock")}>
+                <SortPill
+                  active={sort === "stock"}
+                  onClick={() => setSort("stock")}
+                >
                   <ArrowUpDown className="h-3 w-3" />
                 </SortPill>
-                <SortPill active={sort === "price-asc"} onClick={() => setSort("price-asc")}>
+                <SortPill
+                  active={sort === "price-asc"}
+                  onClick={() => setSort("price-asc")}
+                >
                   <ArrowUp className="h-3 w-3" />
                 </SortPill>
-                <SortPill active={sort === "price-desc"} onClick={() => setSort("price-desc")}>
+                <SortPill
+                  active={sort === "price-desc"}
+                  onClick={() => setSort("price-desc")}
+                >
                   <ArrowDown className="h-3 w-3" />
                 </SortPill>
               </div>
@@ -328,8 +467,11 @@ export default function Rent() {
 
           {loadingCountries ? (
             <div className="px-4 pb-4 space-y-2 pt-3">
-              {[0, 1, 2, 3].map(i => (
-                <Skeleton key={i} className="h-11 w-full rounded-xl bg-slate-100 dark:bg-white/[0.04]" />
+              {[0, 1, 2, 3].map((i) => (
+                <Skeleton
+                  key={i}
+                  className="h-11 w-full rounded-xl bg-slate-100 dark:bg-white/[0.04]"
+                />
               ))}
             </div>
           ) : liveCountries.length === 0 ? (
@@ -345,27 +487,44 @@ export default function Rent() {
               {countryCode && (
                 <button
                   type="button"
-                  onClick={() => { setCountryPanelOpen(o => !o); setCountrySearch(""); }}
+                  onClick={() => {
+                    setCountryPanelOpen((o) => !o);
+                    setCountrySearch("");
+                  }}
                   className="w-full flex items-center gap-3 px-4 py-3 border-b border-slate-200/80 dark:border-white/[0.05] hover:bg-slate-50 dark:hover:bg-white/[0.03] transition-colors text-left"
                 >
                   {(() => {
-                    const sel = liveCountries.find(c => c.code === countryCode);
+                    const sel = liveCountries.find(
+                      (c) => c.code === countryCode,
+                    );
                     const flag = sel?.flag;
-                    const isEmoji = flag && flag.length <= 4 && !flag.startsWith("http");
+                    const isEmoji =
+                      flag && flag.length <= 4 && !flag.startsWith("http");
                     return (
                       <>
                         {isEmoji ? (
-                          <span className="text-xl leading-none select-none">{flag}</span>
+                          <span className="text-xl leading-none select-none">
+                            {flag}
+                          </span>
                         ) : flag ? (
-                          <img src={flag} alt="" className="h-6 w-6 rounded-full object-cover shrink-0"
-                            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+                          <img
+                            src={flag}
+                            alt=""
+                            className="h-6 w-6 rounded-full object-cover shrink-0"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).style.display =
+                                "none";
+                            }}
+                          />
                         ) : (
                           <span className="h-6 w-6 rounded-full bg-white/[0.06] shrink-0" />
                         )}
                         <span className="flex-1 text-[13.5px] font-medium text-slate-900 dark:text-white truncate">
                           {sel?.name}
                         </span>
-                        <ChevronDown className={`h-4 w-4 text-slate-400 dark:text-slate-500 transition-transform duration-200 ${countryPanelOpen ? "rotate-180" : ""}`} />
+                        <ChevronDown
+                          className={`h-4 w-4 text-slate-400 dark:text-slate-500 transition-transform duration-200 ${countryPanelOpen ? "rotate-180" : ""}`}
+                        />
                       </>
                     );
                   })()}
@@ -383,12 +542,15 @@ export default function Rent() {
                         ref={countrySearchRef}
                         type="text"
                         value={countrySearch}
-                        onChange={e => setCountrySearch(e.target.value)}
+                        onChange={(e) => setCountrySearch(e.target.value)}
                         placeholder="Type country name…"
                         className="flex-1 bg-transparent text-[13px] text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 outline-none"
                       />
                       {countrySearch && (
-                        <button onClick={() => setCountrySearch("")} className="text-slate-400 dark:text-slate-600 hover:text-slate-600 dark:hover:text-slate-400 transition-colors">
+                        <button
+                          onClick={() => setCountrySearch("")}
+                          className="text-slate-400 dark:text-slate-600 hover:text-slate-600 dark:hover:text-slate-400 transition-colors"
+                        >
                           <X className="h-3.5 w-3.5" />
                         </button>
                       )}
@@ -398,12 +560,15 @@ export default function Rent() {
                   {/* Country list */}
                   <div className="px-3 pb-3 max-h-[280px] overflow-y-auto space-y-0.5">
                     {filteredCountries.length === 0 ? (
-                      <div className="py-6 text-center text-[13px] text-slate-500 dark:text-slate-400">No country found.</div>
+                      <div className="py-6 text-center text-[13px] text-slate-500 dark:text-slate-400">
+                        No country found.
+                      </div>
                     ) : (
-                      filteredCountries.map(country => {
+                      filteredCountries.map((country) => {
                         const isSelected = country.code === countryCode;
                         const flag = country.flag;
-                        const isEmoji = flag && flag.length <= 4 && !flag.startsWith("http");
+                        const isEmoji =
+                          flag && flag.length <= 4 && !flag.startsWith("http");
                         return (
                           <button
                             key={country.code}
@@ -422,19 +587,35 @@ export default function Rent() {
                             {/* Circular flag */}
                             <span className="h-7 w-7 shrink-0 flex items-center justify-center overflow-hidden rounded-full bg-white/[0.04]">
                               {isEmoji ? (
-                                <span className="text-lg leading-none select-none">{flag}</span>
+                                <span className="text-lg leading-none select-none">
+                                  {flag}
+                                </span>
                               ) : flag ? (
-                                <img src={flag} alt="" className="h-7 w-7 object-cover rounded-full"
-                                  onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+                                <img
+                                  src={flag}
+                                  alt=""
+                                  className="h-7 w-7 object-cover rounded-full"
+                                  onError={(e) => {
+                                    (
+                                      e.target as HTMLImageElement
+                                    ).style.display = "none";
+                                  }}
+                                />
                               ) : (
                                 <span className="text-base">🌍</span>
                               )}
                             </span>
-                            <span className="flex-1 text-[13.5px] font-medium truncate min-w-0">{country.name}</span>
-                            <span className="text-[12px] text-slate-400 dark:text-slate-500 shrink-0">
-                              {country.price > 0 ? `${country.price.toFixed(2)}` : ""}
+                            <span className="flex-1 text-[13.5px] font-medium truncate min-w-0">
+                              {country.name}
                             </span>
-                            {isSelected && <CheckCircle2 className="h-4 w-4 text-[#4574FF] shrink-0" />}
+                            <span className="text-[12px] text-slate-400 dark:text-slate-500 shrink-0">
+                              {country.price > 0
+                                ? `${country.price.toFixed(2)}`
+                                : ""}
+                            </span>
+                            {isSelected && (
+                              <CheckCircle2 className="h-4 w-4 text-[#4574FF] shrink-0" />
+                            )}
                           </button>
                         );
                       })
@@ -447,7 +628,10 @@ export default function Rent() {
               {!countryCode && !countryPanelOpen && (
                 <button
                   type="button"
-                  onClick={() => { setCountryPanelOpen(true); setTimeout(() => countrySearchRef.current?.focus(), 80); }}
+                  onClick={() => {
+                    setCountryPanelOpen(true);
+                    setTimeout(() => countrySearchRef.current?.focus(), 80);
+                  }}
                   className="w-full flex items-center gap-2 px-4 py-3 text-[13px] text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/[0.03] transition-colors"
                 >
                   <Search className="h-3.5 w-3.5 shrink-0" />
@@ -462,9 +646,13 @@ export default function Rent() {
 
       {/* Step 3: Availability + Rent */}
       {countryCode && serviceCode && (
-        <div className={`rounded-2xl border overflow-hidden transition-all duration-300 shadow-sm dark:shadow-none ${isAvailable ? "border-emerald-500/20" : "border-slate-200 dark:border-white/[0.07]"} bg-white dark:bg-white/[0.025]`}>
+        <div
+          className={`rounded-2xl border overflow-hidden transition-all duration-300 shadow-sm dark:shadow-none ${isAvailable ? "border-emerald-500/20" : "border-slate-200 dark:border-white/[0.07]"} bg-white dark:bg-white/[0.025]`}
+        >
           <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200/80 dark:border-white/[0.05]">
-            <div className="font-semibold text-slate-900 dark:text-white text-[14px]">3 — Confirm & Rent</div>
+            <div className="font-semibold text-slate-900 dark:text-white text-[14px]">
+              3 — Confirm & Rent
+            </div>
             {(loadingAvailability || fetchingAvailability) && (
               <Loader2 className="h-3.5 w-3.5 animate-spin text-slate-400 dark:text-slate-600" />
             )}
@@ -474,7 +662,9 @@ export default function Rent() {
             {!availability && !loadingAvailability ? (
               <div className="flex items-center gap-3 text-rose-600 dark:text-rose-300 bg-rose-400/[0.06] border border-rose-400/15 rounded-xl p-3.5">
                 <AlertCircle className="h-4 w-4 shrink-0" />
-                <span className="text-[13px] font-medium">Failed to check availability.</span>
+                <span className="text-[13px] font-medium">
+                  Failed to check availability.
+                </span>
               </div>
             ) : availability ? (
               <div className="space-y-4">
@@ -482,24 +672,43 @@ export default function Rent() {
                   <div className="flex items-center gap-3 bg-slate-50 dark:bg-white/[0.03] border border-slate-200 dark:border-white/[0.08] rounded-xl p-3.5">
                     <AlertCircle className="h-4 w-4 text-slate-400 dark:text-slate-500 shrink-0" />
                     <div>
-                      <div className="font-bold text-slate-700 dark:text-slate-300 text-[13.5px]">No numbers available</div>
-                      <div className="text-[12px] mt-0.5 text-slate-500 dark:text-slate-600">Try a different country.</div>
+                      <div className="font-bold text-slate-700 dark:text-slate-300 text-[13.5px]">
+                        No numbers available
+                      </div>
+                      <div className="text-[12px] mt-0.5 text-slate-500 dark:text-slate-600">
+                        Try a different country.
+                      </div>
                     </div>
                   </div>
                 )}
 
                 <div className="rounded-xl border border-slate-200/80 dark:border-white/[0.06] bg-slate-50/60 dark:bg-white/[0.015] divide-y divide-slate-200/80 dark:divide-white/[0.04]">
                   <div className="flex items-center justify-between px-4 py-2.5">
-                    <span className="text-[12.5px] text-slate-500 dark:text-slate-400">Price per SMS</span>
-                    <span className="text-[18px] font-bold text-slate-900 dark:text-white" data-testid="text-price-quote">${availability.price.toFixed(2)}</span>
+                    <span className="text-[12.5px] text-slate-500 dark:text-slate-400">
+                      Price per SMS
+                    </span>
+                    <span
+                      className="text-[18px] font-bold text-slate-900 dark:text-white"
+                      data-testid="text-price-quote"
+                    >
+                      ${availability.price.toFixed(2)}
+                    </span>
                   </div>
                   <div className="flex items-center justify-between px-4 py-2.5">
-                    <span className="text-[12.5px] text-slate-500 dark:text-slate-400">Numbers in stock</span>
-                    <span className="text-[13px] font-semibold text-slate-700 dark:text-slate-300">{availability.available.toLocaleString()}</span>
+                    <span className="text-[12.5px] text-slate-500 dark:text-slate-400">
+                      Numbers in stock
+                    </span>
+                    <span className="text-[13px] font-semibold text-slate-700 dark:text-slate-300">
+                      {availability.available.toLocaleString()}
+                    </span>
                   </div>
                   <div className="flex items-center justify-between px-4 py-2.5">
-                    <span className="text-[12.5px] text-slate-500 dark:text-slate-400">Network</span>
-                    <span className="text-[13px] font-semibold text-slate-700 dark:text-slate-300">{maskProviderName(availability.provider.name)}</span>
+                    <span className="text-[12.5px] text-slate-500 dark:text-slate-400">
+                      Network
+                    </span>
+                    <span className="text-[13px] font-semibold text-slate-700 dark:text-slate-300">
+                      {maskProviderName(availability.provider.name)}
+                    </span>
                   </div>
                 </div>
 
@@ -514,7 +723,9 @@ export default function Rent() {
                   data-testid="button-confirm-rent"
                 >
                   {createRental.isPending ? (
-                    <><Loader2 className="h-4 w-4 animate-spin" /> Allocating…</>
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" /> Allocating…
+                    </>
                   ) : availability?.provider.mode !== "live" ? (
                     "Provider Unavailable"
                   ) : availability?.available === 0 ? (
@@ -534,7 +745,6 @@ export default function Rent() {
           </div>
         </div>
       )}
-
     </div>
   );
 }

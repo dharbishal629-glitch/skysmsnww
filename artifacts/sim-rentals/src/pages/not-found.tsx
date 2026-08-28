@@ -3,7 +3,10 @@ import { Phone } from "lucide-react";
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen premium-shell flex items-center justify-center px-4">
+    <div
+      className="min-h-screen premium-shell flex items-center justify-center px-4 sky-page"
+      data-sky-page="not-found"
+    >
       <div className="text-center max-w-sm">
         <div className="mx-auto mb-6 h-16 w-16 rounded-2xl bg-[#4574FF]/10 border border-[#4574FF]/20 flex items-center justify-center">
           <Phone className="h-8 w-8 text-[#4574FF]/60" />

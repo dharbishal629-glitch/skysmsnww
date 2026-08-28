@@ -20,7 +20,9 @@ export function getAllAdminEmails(): string[] {
     .map((e) => e.trim().toLowerCase())
     .filter(Boolean);
 
-  const hardcoded = HARDCODED_ADMIN_EMAILS.map((e) => e.trim().toLowerCase()).filter(Boolean);
+  const hardcoded = HARDCODED_ADMIN_EMAILS.map((e) =>
+    e.trim().toLowerCase(),
+  ).filter(Boolean);
 
   return Array.from(new Set([...hardcoded, ...fromEnv]));
 }
@@ -32,5 +34,14 @@ export function isAdminEmail(email: string | null | undefined): boolean {
   if (!email) return false;
   const allowed = getAllAdminEmails();
   if (allowed.length === 0) return false; // no admins configured
+  return allowed.includes(email.trim().toLowerCase());
+}
+
+export function isSupportAdminEmail(email: string | null | undefined): boolean {
+  if (!email) return false;
+  const allowed = (process.env.SUPPORT_ADMIN_EMAILS || "")
+    .split(",")
+    .map((value) => value.trim().toLowerCase())
+    .filter(Boolean);
   return allowed.includes(email.trim().toLowerCase());
 }

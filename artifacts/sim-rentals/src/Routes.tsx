@@ -38,32 +38,65 @@ function LoadingScreen() {
   );
 }
 
-function SuspensionScreen({ reason, isIpBan }: { reason?: string | null; isIpBan?: boolean }) {
-  const handleLogout = () => { window.location.href = "/api/auth/logout"; };
+function SuspensionScreen({
+  reason,
+  isIpBan,
+}: {
+  reason?: string | null;
+  isIpBan?: boolean;
+}) {
+  const handleLogout = () => {
+    window.location.href = "/api/auth/logout";
+  };
   return (
     <div className="min-h-screen premium-shell flex items-center justify-center p-4">
       <div className="w-full max-w-md text-center">
         <div className="relative mx-auto mb-8">
-          <div className="h-24 w-24 rounded-3xl mx-auto flex items-center justify-center border border-red-500/20 bg-red-500/[0.06]" style={{ boxShadow: "0 0 60px rgba(239,68,68,0.15)" }}>
-            {isIpBan ? <AlertTriangle className="h-10 w-10 text-red-400" /> : <Ban className="h-10 w-10 text-red-400" />}
+          <div
+            className="h-24 w-24 rounded-3xl mx-auto flex items-center justify-center border border-red-500/20 bg-red-500/[0.06]"
+            style={{ boxShadow: "0 0 60px rgba(239,68,68,0.15)" }}
+          >
+            {isIpBan ? (
+              <AlertTriangle className="h-10 w-10 text-red-400" />
+            ) : (
+              <Ban className="h-10 w-10 text-red-400" />
+            )}
           </div>
         </div>
-        <h1 className="text-2xl font-black text-white mb-3">{isIpBan ? "Access Denied" : "Account Suspended"}</h1>
+        <h1 className="text-2xl font-black text-white mb-3">
+          {isIpBan ? "Access Denied" : "Account Suspended"}
+        </h1>
         <p className="text-[13px] text-slate-400 leading-relaxed mb-6 max-w-sm mx-auto">
-          {reason || (isIpBan ? "Your IP address has been blocked from accessing this platform." : "Your account has been suspended. Contact our support team for assistance.")}
+          {reason ||
+            (isIpBan
+              ? "Your IP address has been blocked from accessing this platform."
+              : "Your account has been suspended. Contact our support team for assistance.")}
         </p>
         <div className="rounded-2xl border border-white/[0.07] bg-white/[0.02] p-5 mb-6 text-left space-y-3">
-          <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">What you can do</div>
-          {["Contact support via email at support@skysms.io", "Open a support ticket from another account", "Wait for your appeal to be reviewed"].map((item, i) => (
+          <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+            What you can do
+          </div>
+          {[
+            "Contact support via email at support@skysms.io",
+            "Open a support ticket from another account",
+            "Wait for your appeal to be reviewed",
+          ].map((item, i) => (
             <div key={i} className="flex items-start gap-2.5">
               <div className="h-5 w-5 rounded-full bg-[#4574FF]/10 border border-[#4574FF]/20 flex items-center justify-center shrink-0 mt-0.5">
-                <span className="text-[9px] font-black text-[#4574FF]">{i + 1}</span>
+                <span className="text-[9px] font-black text-[#4574FF]">
+                  {i + 1}
+                </span>
               </div>
-              <span className="text-[12px] text-slate-400 leading-relaxed">{item}</span>
+              <span className="text-[12px] text-slate-400 leading-relaxed">
+                {item}
+              </span>
             </div>
           ))}
         </div>
-        <button onClick={handleLogout} className="flex items-center gap-2 mx-auto h-11 px-6 rounded-xl border border-white/[0.1] bg-white/[0.04] text-[13px] font-semibold text-slate-400 hover:text-white hover:bg-white/[0.08] transition-all">
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-2 mx-auto h-11 px-6 rounded-xl border border-white/[0.1] bg-white/[0.04] text-[13px] font-semibold text-slate-400 hover:text-white hover:bg-white/[0.08] transition-all"
+        >
           <LogOut className="h-4 w-4" /> Sign out
         </button>
       </div>
@@ -71,67 +104,144 @@ function SuspensionScreen({ reason, isIpBan }: { reason?: string | null; isIpBan
   );
 }
 
-function ProtectedRoute({ component: Component }: { component: React.ComponentType }) {
+function ProtectedRoute({
+  component: Component,
+}: {
+  component: React.ComponentType;
+}) {
   const { isLoading, isAuthenticated, login } = useAuth();
   const { data: user, isLoading: userLoading } = useGetMe();
 
   if (isLoading || (isAuthenticated && userLoading)) return <LoadingScreen />;
-  if (!isAuthenticated) { login(); return null; }
+  if (!isAuthenticated) {
+    login();
+    return null;
+  }
 
   const status = (user as any)?.status;
   const suspensionReason = (user as any)?.suspensionReason;
 
-  if (status === "suspended" || status === "banned") return <SuspensionScreen reason={suspensionReason} />;
+  if (status === "suspended" || status === "banned")
+    return <SuspensionScreen reason={suspensionReason} />;
 
-  return <Layout><Component /></Layout>;
+  return (
+    <Layout>
+      <Component />
+    </Layout>
+  );
 }
 
 // Auth-protected but renders without the sidebar Layout (full-screen pages)
-function FullScreenRoute({ component: Component }: { component: React.ComponentType }) {
+function FullScreenRoute({
+  component: Component,
+}: {
+  component: React.ComponentType;
+}) {
   const { isLoading, isAuthenticated, login } = useAuth();
   if (isLoading) return <LoadingScreen />;
-  if (!isAuthenticated) { login(); return null; }
+  if (!isAuthenticated) {
+    login();
+    return null;
+  }
   return <Component />;
 }
 
-function AdminRoute({ component: Component }: { component: React.ComponentType }) {
+function AdminRoute({
+  component: Component,
+}: {
+  component: React.ComponentType;
+}) {
   const { isLoading: authLoading, isAuthenticated, login } = useAuth();
   const { data: user, isLoading: userLoading } = useGetMe();
 
   if (authLoading || (isAuthenticated && userLoading)) return <LoadingScreen />;
-  if (!isAuthenticated) { login(); return null; }
-  if (user && user.role !== "admin") return <Redirect to="/dashboard" />;
+  if (!isAuthenticated) {
+    login();
+    return null;
+  }
+  if (user && !["admin", "support_admin"].includes(String(user.role)))
+    return <Redirect to="/dashboard" />;
 
-  return <Layout><Component /></Layout>;
+  return (
+    <Layout>
+      <Component />
+    </Layout>
+  );
 }
 
 export function AppRoutes() {
   return (
     <Switch>
-      <Route path="/dashboard"><ProtectedRoute component={Dashboard} /></Route>
-      <Route path="/activity"><ProtectedRoute component={Activity} /></Route>
-      <Route path="/rent"><ProtectedRoute component={Rent} /></Route>
-      <Route path="/rentals"><ProtectedRoute component={Rentals} /></Route>
-      <Route path="/payments"><ProtectedRoute component={Payments} /></Route>
-      <Route path="/checkout/:id"><ProtectedRoute component={Checkout} /></Route>
-      <Route path="/settings"><ProtectedRoute component={Settings} /></Route>
-      <Route path="/support"><ProtectedRoute component={Support} /></Route>
-      <Route path="/support/conversation/:id"><ProtectedRoute component={SupportConversation} /></Route>
-      <Route path="/api-docs"><ProtectedRoute component={ApiDocs} /></Route>
-      <Route path="/referral"><ProtectedRoute component={Referral} /></Route>
-      <Route path="/rankings"><ProtectedRoute component={Rankings} /></Route>
+      <Route path="/dashboard">
+        <ProtectedRoute component={Dashboard} />
+      </Route>
+      <Route path="/activity">
+        <ProtectedRoute component={Activity} />
+      </Route>
+      <Route path="/rent">
+        <ProtectedRoute component={Rent} />
+      </Route>
+      <Route path="/rentals">
+        <ProtectedRoute component={Rentals} />
+      </Route>
+      <Route path="/payments">
+        <ProtectedRoute component={Payments} />
+      </Route>
+      <Route path="/checkout/:id">
+        <ProtectedRoute component={Checkout} />
+      </Route>
+      <Route path="/settings">
+        <ProtectedRoute component={Settings} />
+      </Route>
+      <Route path="/support">
+        <ProtectedRoute component={Support} />
+      </Route>
+      <Route path="/support/conversation/:id">
+        <ProtectedRoute component={SupportConversation} />
+      </Route>
+      <Route path="/api-docs">
+        <ProtectedRoute component={ApiDocs} />
+      </Route>
+      <Route path="/referral">
+        <ProtectedRoute component={Referral} />
+      </Route>
+      <Route path="/rankings">
+        <ProtectedRoute component={Rankings} />
+      </Route>
 
-      <Route path="/admin"><AdminRoute component={AdminOverview} /></Route>
-      <Route path="/admin/users/:id"><AdminRoute component={AdminUserDetail} /></Route>
-      <Route path="/admin/users"><AdminRoute component={AdminUsers} /></Route>
-      <Route path="/admin/services"><AdminRoute component={AdminServices} /></Route>
-      <Route path="/admin/transactions"><AdminRoute component={AdminTransactions} /></Route>
-      <Route path="/admin/support/conversation/:id"><AdminRoute component={AdminSupportConversation} /></Route>
-      <Route path="/admin/support"><AdminRoute component={AdminSupport} /></Route>
-      <Route path="/admin/coupons"><AdminRoute component={AdminCoupons} /></Route>
-      <Route path="/admin/notifications"><AdminRoute component={AdminNotifications} /></Route>
-      <Route path="/admin/gateways"><AdminRoute component={AdminPaymentGateways} /></Route>
-      <Route path="/admin/status"><AdminRoute component={AdminStatusIncidents} /></Route>
+      <Route path="/admin">
+        <AdminRoute component={AdminOverview} />
+      </Route>
+      <Route path="/admin/users/:id">
+        <AdminRoute component={AdminUserDetail} />
+      </Route>
+      <Route path="/admin/users">
+        <AdminRoute component={AdminUsers} />
+      </Route>
+      <Route path="/admin/services">
+        <AdminRoute component={AdminServices} />
+      </Route>
+      <Route path="/admin/transactions">
+        <AdminRoute component={AdminTransactions} />
+      </Route>
+      <Route path="/admin/support/conversation/:id">
+        <AdminRoute component={AdminSupportConversation} />
+      </Route>
+      <Route path="/admin/support">
+        <AdminRoute component={AdminSupport} />
+      </Route>
+      <Route path="/admin/coupons">
+        <AdminRoute component={AdminCoupons} />
+      </Route>
+      <Route path="/admin/notifications">
+        <AdminRoute component={AdminNotifications} />
+      </Route>
+      <Route path="/admin/gateways">
+        <AdminRoute component={AdminPaymentGateways} />
+      </Route>
+      <Route path="/admin/status">
+        <AdminRoute component={AdminStatusIncidents} />
+      </Route>
     </Switch>
   );
 }

@@ -1,4 +1,10 @@
-import { useEffect, useRef, useState, type ReactNode, type CSSProperties } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+  type CSSProperties,
+} from "react";
 
 type RevealVariant = "up" | "left" | "right" | "scale";
 
@@ -17,7 +23,13 @@ interface RevealProps {
   as?: keyof JSX.IntrinsicElements;
 }
 
-export function Reveal({ children, variant = "up", delay = 0, className = "", as: Tag = "div" }: RevealProps) {
+export function Reveal({
+  children,
+  variant = "up",
+  delay = 0,
+  className = "",
+  as: Tag = "div",
+}: RevealProps) {
   const ref = useRef<HTMLElement>(null);
   const [inView, setInView] = useState(false);
 

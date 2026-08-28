@@ -261,6 +261,25 @@ async function createSchema() {
     -- Support message image attachments
     ALTER TABLE sim_support_messages ADD COLUMN IF NOT EXISTS image_url TEXT;
 
+    -- Stable, human-readable support ticket reference (the UUID id remains intact).
+    CREATE SEQUENCE IF NOT EXISTS sim_support_ticket_number_seq;
+    ALTER TABLE sim_support_tickets ADD COLUMN IF NOT EXISTS ticket_number TEXT;
+    CREATE UNIQUE INDEX IF NOT EXISTS sim_support_tickets_ticket_number_idx
+      ON sim_support_tickets(ticket_number) WHERE ticket_number IS NOT NULL;
+    WITH numbered AS (
+      SELECT id, ROW_NUMBER() OVER (ORDER BY created_at ASC, id ASC) AS number
+      FROM sim_support_tickets WHERE ticket_number IS NULL
+    )
+    UPDATE sim_support_tickets t
+    SET ticket_number = 'TKT-' || LPAD(numbered.number::text, 6, '0')
+    FROM numbered WHERE t.id = numbered.id;
+    SELECT setval(
+      'sim_support_ticket_number_seq',
+      GREATEST(COALESCE((SELECT MAX(NULLIF(regexp_replace(ticket_number, '[^0-9]', '', 'g'), '')::bigint)
+        FROM sim_support_tickets), 0), 0) + 1,
+      false
+    );
+
     -- Status incidents
     CREATE TABLE IF NOT EXISTS sim_status_incidents (
       id TEXT PRIMARY KEY,
@@ -306,7 +325,7 @@ async function createSchema() {
   await pool.query(
     `INSERT INTO sim_referral_settings (id, enabled, bonus_amount, min_deposit_amount)
      VALUES (1, TRUE, 0.50, 0)
-     ON CONFLICT (id) DO NOTHING`
+     ON CONFLICT (id) DO NOTHING`,
   );
 
   for (const code of SEED_ENABLED_SERVICES) {
@@ -322,7 +341,6 @@ async function createSchema() {
     `INSERT INTO sim_enabled_services (service_code, enabled) VALUES ('pp', TRUE)
      ON CONFLICT (service_code) DO UPDATE SET enabled = TRUE`,
   );
-
 }
 
 export async function ensureSimSchema() {

@@ -1443,6 +1443,134 @@ html.dark {
   overflow: hidden;
   font-family: "Inter", sans-serif;
 }
+
+/* SKY workspace polish: keep the product visually coherent even where older
+   pages still use utility-first light-mode classes. */
+.dark .app-content {
+  background-color: #080c18 !important;
+  background-image:
+    linear-gradient(rgba(69, 116, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(69, 116, 255, 0.045) 1px, transparent 1px),
+    radial-gradient(
+      circle at 80% -10%,
+      rgba(69, 116, 255, 0.12),
+      transparent 34rem
+    );
+  background-size:
+    48px 48px,
+    48px 48px,
+    auto;
+}
+.dark .app-content main > * {
+  animation: sky-page-in 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.dark .app-content main > *:nth-child(2) {
+  animation-delay: 45ms;
+}
+.dark .app-content main > *:nth-child(3) {
+  animation-delay: 90ms;
+}
+.dark .app-content main > *:nth-child(4) {
+  animation-delay: 135ms;
+}
+.dark .app-card,
+.dark .stat-card,
+.dark .app-content main .bg-white,
+.dark .app-content main .bg-slate-900 {
+  background: linear-gradient(
+    145deg,
+    rgba(18, 27, 49, 0.96),
+    rgba(10, 16, 31, 0.98)
+  ) !important;
+  border-color: rgba(126, 156, 255, 0.16) !important;
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.2),
+    inset 0 1px rgba(255, 255, 255, 0.035);
+}
+.dark .app-content main input,
+.dark .app-content main textarea,
+.dark .app-content main select {
+  background-color: rgba(255, 255, 255, 0.045);
+  border-color: rgba(148, 163, 184, 0.2);
+}
+.dark .app-content main button:not(.app-nav-item) {
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+.dark .app-content main button:not(.app-nav-item):active {
+  transform: scale(0.985);
+}
+.dark .app-sidebar,
+.dark .app-mobile-header {
+  background: #0b1223 !important;
+  border-color: rgba(126, 156, 255, 0.14) !important;
+}
+.dark .app-sidebar-inner {
+  background: linear-gradient(180deg, #0d1528, #080c18) !important;
+}
+.dark .app-nav-item-active {
+  box-shadow:
+    inset 3px 0 #4574ff,
+    0 8px 22px rgba(69, 116, 255, 0.1);
+}
+.dark .page-heading-accent::after {
+  box-shadow: 0 0 12px rgba(0, 196, 200, 0.7);
+}
+.sky-kicker {
+  color: #6e9bff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+.sky-surface {
+  background: linear-gradient(
+    145deg,
+    rgba(18, 27, 49, 0.96),
+    rgba(10, 16, 31, 0.98)
+  );
+  border: 1px solid rgba(126, 156, 255, 0.16);
+  border-radius: 18px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+}
+@keyframes sky-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (max-width: 640px) {
+  .app-content main {
+    padding: 1rem !important;
+  }
+  .app-content main .grid-cols-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .app-content main .overflow-x-auto {
+    scrollbar-width: none;
+  }
+  .app-content main h1 {
+    font-size: 1.65rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dark .app-content main > * {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
 .landing-page button,
 .landing-page a {
   -webkit-tap-highlight-color: transparent;

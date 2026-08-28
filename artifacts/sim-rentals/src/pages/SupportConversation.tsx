@@ -47,6 +47,9 @@ interface Ticket {
   messages: TicketMessage[];
   createdAt: string;
   updatedAt: string;
+  ticketNumber?: string | number;
+  displayId?: string;
+  imageUrl?: string | null;
 }
 
 function compressImage(file: File, maxSizePx = 800): Promise<string> {
@@ -267,13 +270,16 @@ export default function SupportConversation() {
           senderRole: "user",
           senderName: "You",
           message: ticket.message,
-          imageUrl: null,
+          imageUrl: ticket.imageUrl ?? null,
           createdAt: ticket.createdAt,
         },
       ];
 
   return (
-    <div className="max-w-2xl mx-auto flex flex-col h-[calc(100vh-8rem)]">
+    <div
+      className="max-w-2xl mx-auto flex flex-col h-[calc(100vh-8rem)] sky-page"
+      data-sky-page="support-conversation"
+    >
       {/* Header */}
       <div className="flex items-center gap-3 pb-4 border-b border-white/[0.06] shrink-0">
         <button
@@ -286,6 +292,11 @@ export default function SupportConversation() {
         <div className="w-px h-5 bg-white/[0.08] shrink-0" />
         <div className="flex-1 min-w-0">
           <div className="text-[14px] font-bold text-white truncate">
+            {ticket.displayId || ticket.ticketNumber ? (
+              <span className="font-mono text-[10px] text-sky-400 mr-2">
+                #{ticket.displayId ?? ticket.ticketNumber}
+              </span>
+            ) : null}
             {ticket.subject}
           </div>
           <div className="flex items-center gap-2 mt-0.5">

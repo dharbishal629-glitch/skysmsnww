@@ -309,7 +309,7 @@ components:
           type: string
         role:
           type: string
-          enum: [user, admin]
+          enum: [user, admin, support_admin]
         credits:
           type: number
         avatarUrl:
@@ -338,7 +338,16 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ProviderStatus"
-      required: [account, activeRentals, completedRentals, totalSpent, recentRentals, recentPayments, providerStatuses]
+      required:
+        [
+          account,
+          activeRentals,
+          completedRentals,
+          totalSpent,
+          recentRentals,
+          recentPayments,
+          providerStatuses,
+        ]
     Country:
       type: object
       properties:
@@ -382,7 +391,8 @@ components:
           type: string
         provider:
           $ref: "#/components/schemas/ProviderStatus"
-      required: [countryCode, serviceCode, available, price, estimatedWait, provider]
+      required:
+        [countryCode, serviceCode, available, price, estimatedWait, provider]
     SmsMessage:
       type: object
       properties:
@@ -425,7 +435,20 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/SmsMessage"
-      required: [id, countryCode, countryName, serviceCode, serviceName, phoneNumber, price, status, createdAt, expiresAt, messages]
+      required:
+        [
+          id,
+          countryCode,
+          countryName,
+          serviceCode,
+          serviceName,
+          phoneNumber,
+          price,
+          status,
+          createdAt,
+          expiresAt,
+          messages,
+        ]
     CreateRentalRequest:
       type: object
       properties:
@@ -486,7 +509,8 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ProviderStatus"
-      required: [totalUsers, activeRentals, revenue, pendingPayments, providerStatuses]
+      required:
+        [totalUsers, activeRentals, revenue, pendingPayments, providerStatuses]
     AdminUser:
       type: object
       properties:

@@ -36,6 +36,32 @@ interface TicketMessage {
   createdAt: string;
 }
 
+function compressImage(file: File, maxSizePx = 800): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const image = new Image();
+      image.onload = () => {
+        const scale = Math.min(
+          1,
+          maxSizePx / Math.max(image.width, image.height),
+        );
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.max(1, Math.round(image.width * scale));
+        canvas.height = Math.max(1, Math.round(image.height * scale));
+        canvas
+          .getContext("2d")
+          ?.drawImage(image, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL("image/jpeg", 0.7));
+      };
+      image.onerror = reject;
+      image.src = String(reader.result);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
 interface AdminTicket {
   id: string;
   userId: string;
@@ -50,6 +76,8 @@ interface AdminTicket {
   messages: TicketMessage[];
   createdAt: string;
   updatedAt: string;
+  ticketNumber?: string | number;
+  displayId?: string;
 }
 
 async function fetchAdminTicket(id: string): Promise<AdminTicket> {
@@ -126,6 +154,8 @@ export default function AdminSupportConversation() {
   const { toast } = useToast();
   const qc = useQueryClient();
   const [reply, setReply] = useState("");
+  const [pendingImage, setPendingImage] = useState<string | null>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
   const [newStatus, setNewStatus] = useState<string | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLTextAreaElement>(null);
@@ -181,12 +211,41 @@ export default function AdminSupportConversation() {
 
   const sendReply = () => {
     const text = reply.trim();
-    if (!text || !ticket) return;
+    if ((!text && !pendingImage) || !ticket || mutation.isPending) return;
+    if (pendingImage) {
+      void sendAttachment().catch((err: Error) =>
+        toast({
+          title: "Error",
+          description: err.message,
+          variant: "destructive",
+        }),
+      );
+      return;
+    }
     mutation.mutate({
       id: ticket.id,
       adminReply: text,
       status: newStatus ?? ticket.status,
     });
+  };
+
+  const sendAttachment = async () => {
+    if (!ticket || !pendingImage) return;
+    const res = await fetch(`${BASE}/api/admin/support/${ticket.id}/messages`, {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: reply.trim(), imageData: pendingImage }),
+    });
+    const data = (await res.json()) as { error?: string };
+    if (!res.ok) throw new Error(data.error || "Failed to send attachment");
+    if (newStatus && newStatus !== ticket.status) {
+      await updateTicket({ id: ticket.id, status: newStatus });
+    }
+    setReply("");
+    setPendingImage(null);
+    qc.invalidateQueries({ queryKey: ["admin-ticket", id] });
+    toast({ title: "Reply sent" });
   };
 
   if (isLoading) {
@@ -231,7 +290,8 @@ export default function AdminSupportConversation() {
 
   return (
     <div
-      className="max-w-2xl mx-auto flex flex-col page-enter"
+      className="max-w-2xl mx-auto flex flex-col page-enter sky-page"
+      data-sky-page="admin-support-conversation"
       style={{ height: "calc(100vh - 120px)", minHeight: 500 }}
     >
       {/* Back */}
@@ -252,6 +312,11 @@ export default function AdminSupportConversation() {
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap mb-0.5">
               <span className="text-[14px] font-bold text-white">
+                {ticket.displayId || ticket.ticketNumber ? (
+                  <span className="font-mono text-[10px] text-blue-400 mr-2">
+                    #{ticket.displayId ?? ticket.ticketNumber}
+                  </span>
+                ) : null}
                 {ticket.subject}
               </span>
               <span
@@ -373,6 +438,40 @@ export default function AdminSupportConversation() {
           </div>
         </div>
         <div className="flex gap-2">
+          <input
+            ref={fileRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={async (e) => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+              if (file.size > 10 * 1024 * 1024) {
+                toast({
+                  title: "Image too large",
+                  description: "Max 10MB",
+                  variant: "destructive",
+                });
+                return;
+              }
+              try {
+                setPendingImage(await compressImage(file));
+              } catch {
+                toast({
+                  title: "Could not process image",
+                  variant: "destructive",
+                });
+              }
+              e.target.value = "";
+            }}
+          />
+          <button
+            type="button"
+            onClick={() => fileRef.current?.click()}
+            className="h-12 w-12 self-end rounded-xl border border-white/[0.08] bg-white/[0.04] text-slate-500 hover:text-blue-300 flex items-center justify-center"
+          >
+            <ImageIcon className="h-4 w-4" />
+          </button>
           <textarea
             ref={textRef}
             value={reply}
@@ -389,7 +488,7 @@ export default function AdminSupportConversation() {
           />
           <button
             onClick={sendReply}
-            disabled={!reply.trim() || mutation.isPending}
+            disabled={(!reply.trim() && !pendingImage) || mutation.isPending}
             className="w-12 self-end flex items-center justify-center rounded-xl text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all active:scale-95 shrink-0 aspect-square"
             style={{
               background: "linear-gradient(135deg, #2563eb, #1d4ed8)",
@@ -406,6 +505,29 @@ export default function AdminSupportConversation() {
             )}
           </button>
         </div>
+        {pendingImage && (
+          <div className="mt-2 flex items-center gap-2 text-[11px] text-blue-300">
+            <img
+              src={pendingImage}
+              alt="Pending attachment"
+              className="h-12 w-12 rounded-lg object-cover"
+            />
+            <button
+              type="button"
+              onClick={() => setPendingImage(null)}
+              className="text-slate-500 hover:text-white"
+            >
+              Remove
+            </button>
+            <button
+              type="button"
+              onClick={sendAttachment}
+              className="ml-auto text-blue-300 font-semibold"
+            >
+              Send image
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
