@@ -1,479 +1,402 @@
+import { useEffect, useState } from "react";
+import { useLocation } from "wouter";
 import {
-  Shield, Globe, Lock, MessageSquare, RefreshCw, Clock,
-  ArrowRight, Code2, Check, ChevronDown,
-  Wifi, Activity, Sparkles, Zap, MessageCircle, Bolt,
+  Activity,
+  ArrowRight,
+  Check,
+  ChevronDown,
+  Clock3,
+  Code2,
+  Globe2,
+  LockKeyhole,
+  MessageSquare,
+  RefreshCw,
+  ShieldCheck,
+  Sparkles,
+  Zap,
 } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
-import { SkySmsLogoMark } from "@/components/SkySmsLogo";
-import { useState, useEffect } from "react";
-import { useLocation } from "wouter";
-
-function svcIcon(domain: string) {
-  return `https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://${domain}&size=128`;
-}
 
 const services = [
-  { name: "Telegram",  domain: "telegram.org" },
-  { name: "WhatsApp",  domain: "web.whatsapp.com" },
-  { name: "Google",    domain: "google.com" },
+  { name: "Telegram", domain: "telegram.org" },
+  { name: "WhatsApp", domain: "whatsapp.com" },
+  { name: "Google", domain: "google.com" },
   { name: "Instagram", domain: "instagram.com" },
-  { name: "Facebook",  domain: "facebook.com" },
-  { name: "Discord",   domain: "discord.com" },
-  { name: "Amazon",    domain: "amazon.com" },
-  { name: "PayPal",    domain: "paypal.com" },
-  { name: "TikTok",    domain: "tiktok.com" },
-  { name: "Twitter/X", domain: "x.com" },
-  { name: "Netflix",   domain: "netflix.com" },
-  { name: "LinkedIn",  domain: "linkedin.com" },
-  { name: "Snapchat",  domain: "snapchat.com" },
-  { name: "Microsoft", domain: "microsoft.com" },
-  { name: "Uber",      domain: "uber.com" },
-  { name: "Airbnb",    domain: "airbnb.com" },
+  { name: "Discord", domain: "discord.com" },
+  { name: "Amazon", domain: "amazon.com" },
+  { name: "PayPal", domain: "paypal.com" },
+  { name: "TikTok", domain: "tiktok.com" },
+  { name: "Netflix", domain: "netflix.com" },
+  { name: "LinkedIn", domain: "linkedin.com" },
 ];
 
 const features = [
   {
     icon: Zap,
-    title: "Instant Number Delivery",
-    desc: "Numbers are allocated in under 3 seconds. No queue, no wait — just pick your service and go.",
-  },
-  {
-    icon: Globe,
-    title: "10+ Countries, Live Stock",
-    desc: "Real-time availability per country shown before you buy. You never waste a cent on an out-of-stock number.",
-  },
-  {
-    icon: Lock,
-    title: "Crypto-Only Payments",
-    desc: "Top up with BTC, ETH, USDT, and 30+ coins via OxaPay. Private, borderless, zero chargebacks.",
+    title: "Numbers in seconds",
+    desc: "Choose a service and country, then get a working number without waiting in a queue.",
   },
   {
     icon: MessageSquare,
-    title: "Live SMS Inbox",
-    desc: "Codes arrive in real time on your rental card. One tap to copy — no manual polling.",
+    title: "A live SMS inbox",
+    desc: "Watch your verification code arrive in real time. Copy it once and keep moving.",
+  },
+  {
+    icon: Globe2,
+    title: "Global availability",
+    desc: "Compare live stock across 10+ countries before you spend a single cent.",
+  },
+  {
+    icon: LockKeyhole,
+    title: "Built for privacy",
+    desc: "Crypto payments and isolated rental sessions keep your activity discreet.",
   },
   {
     icon: RefreshCw,
-    title: "Automatic Refunds",
-    desc: "Cancel before expiry and get your balance back in under a second. Expired with no SMS? Also refunded.",
+    title: "Fair by default",
+    desc: "No SMS? Cancel the rental and your balance comes back automatically.",
   },
   {
     icon: Code2,
-    title: "Full REST API",
-    desc: "API key authentication. Create rentals, poll messages, cancel numbers — fully automated.",
+    title: "Automation ready",
+    desc: "Use the REST API to create rentals, read codes, and cancel sessions.",
   },
 ];
 
 const faqs = [
-  {
-    q: "How does renting a phone number work?",
-    a: "Add credits to your account, pick a service (e.g. Telegram) and a country, then get a real temporary phone number instantly. Any SMS sent to that number appears on your dashboard in real time. Each rental has a set activation window.",
-  },
-  {
-    q: "Which platforms are supported?",
-    a: "We support 50+ platforms — Telegram, WhatsApp, Google, Instagram, Facebook, Discord, Amazon, PayPal, TikTok, and many more. Live availability is shown per service and country before you spend.",
-  },
-  {
-    q: "What payment methods do you accept?",
-    a: "Cryptocurrency payments only, processed via OxaPay. We accept BTC, ETH, USDT (TRC20 & ERC20), LTC, DOGE, TRX, and 30+ other coins. All transactions are private and borderless.",
-  },
-  {
-    q: "What happens if I don't receive an SMS?",
-    a: "Cancel an active rental before the window closes for an immediate full refund. If the window expires without an SMS, we automatically refund your balance — no questions asked.",
-  },
-  {
-    q: "Are numbers shared with other users?",
-    a: "Numbers are pooled between sessions, but each rental is completely isolated. You only ever see messages that arrive during your active window. No shared inboxes, no history leakage.",
-  },
-  {
-    q: "Is there a developer API?",
-    a: "Yes. Generate an API key in Settings and use our REST API to list services, create rentals, poll for incoming SMS, and cancel — fully scriptable for automation.",
-  },
+  [
+    "How does renting a number work?",
+    "Add credits, choose a service and country, then receive a temporary phone number instantly. SMS messages appear on your dashboard during the activation window.",
+  ],
+  [
+    "Which services are supported?",
+    "SKY SMS supports 50+ services including Telegram, WhatsApp, Google, Instagram, Facebook, Discord, Amazon and more. Availability is live.",
+  ],
+  [
+    "What if my SMS never arrives?",
+    "Cancel an active rental for an immediate refund. Rentals that expire without a message are refunded automatically.",
+  ],
+  [
+    "Can I use the developer API?",
+    "Yes. Generate an API key in Settings and use the REST API to list services, create rentals, poll messages and cancel numbers.",
+  ],
 ];
 
-const stats = [
-  { value: "50+",   label: "Supported platforms", icon: Activity },
-  { value: "10+",   label: "Countries available",  icon: Globe },
-  { value: "<3s",   label: "Average delivery",     icon: Clock },
-  { value: "100%",  label: "Refund guarantee",     icon: Shield },
-];
+function iconUrl(domain: string) {
+  return `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+}
 
-/** Floating badge used in the hero illustration */
-function FloatingBadge({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+function Logo() {
   return (
-    <div className={`flex items-center gap-2 rounded-2xl bg-white/80 border border-white/90 shadow-lg backdrop-blur-md px-4 py-2.5 text-[12px] font-semibold text-slate-800 ${className}`}>
-      {children}
+    <a href="/" className="landing-logo">
+      <img src="/brand-logo.jpg" alt="SKY SMS" />
+    </a>
+  );
+}
+
+function PreviewCard() {
+  return (
+    <div className="signal-preview" aria-label="SKY SMS live inbox preview">
+      <div className="preview-glow" />
+      <div className="preview-window">
+        <div className="preview-topbar">
+          <span className="traffic">
+            <i />
+            <i />
+            <i />
+          </span>
+          <span className="preview-label">LIVE INBOX</span>
+          <span className="preview-dots">...</span>
+        </div>
+        <div className="preview-content">
+          <div className="preview-heading">
+            <div>
+              <span className="eyebrow">ACTIVE RENTAL</span>
+              <strong>Telegram</strong>
+            </div>
+            <span className="live-pill">
+              <i /> LIVE
+            </span>
+          </div>
+          <div className="number-tile">
+            <span className="country-flag">US</span>
+            <div>
+              <span className="eyebrow">UNITED STATES</span>
+              <strong>+1 (415) 555-0184</strong>
+            </div>
+            <button aria-label="Copy number">Copy</button>
+          </div>
+          <div className="code-message">
+            <div className="message-icon">
+              <MessageSquare />
+            </div>
+            <div>
+              <span className="eyebrow">NEW MESSAGE - JUST NOW</span>
+              <p>
+                Your Telegram verification code is <b>482 917</b>
+              </p>
+            </div>
+            <Check className="message-check" />
+          </div>
+          <div className="preview-footer">
+            <span>
+              <Clock3 /> Expires in 09:42
+            </span>
+            <span className="secure-note">
+              <ShieldCheck /> Session isolated
+            </span>
+          </div>
+        </div>
+      </div>
+      <div className="preview-chip chip-top">
+        <span className="chip-dot" /> Code received
+      </div>
+      <div className="preview-chip chip-bottom">
+        <Activity /> 2,418 numbers online
+      </div>
     </div>
   );
 }
 
-/** Inline SKY SMS wordmark for the landing */
-function LandingLogo() {
-  return (
-    <img src="/brand-logo.jpg" alt="SKY SMS" className="h-9 w-auto rounded-lg" />
-  );
-}
-
-export default function Landing({ onLogin }: { onLogin?: () => void }) {
+export default function Landing() {
+  const [, setLocation] = useLocation();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [scrolled, setScrolled] = useState(false);
-  const [, setLocation] = useLocation();
-
   const goSignIn = () => setLocation("/sign-in");
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 18);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
-    <div className="min-h-screen premium-shell" style={{ overflowX: "hidden" }}>
-
-      {/* ── Ambient grid overlay ── */}
-      <div className="pointer-events-none fixed inset-0 z-0 hero-grid opacity-60" aria-hidden />
-
-      {/* ── Navigation ── */}
-      <header className={`sticky top-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "border-b border-white/30 bg-white/60 backdrop-blur-2xl shadow-sm"
-          : "bg-transparent"
-      }`}>
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <LandingLogo />
-
-          <nav className="hidden items-center gap-7 text-[13px] font-semibold text-[#0a1628] md:flex">
-            <a className="hover:text-[#0a1628] transition-colors duration-150" href="#services">Services</a>
-            <a className="hover:text-[#0a1628] transition-colors duration-150" href="#features">Features</a>
-            <a className="hover:text-[#0a1628] transition-colors duration-150" href="#pricing">Pricing</a>
-            <a className="hover:text-[#0a1628] transition-colors duration-150" href="#faq">FAQ</a>
+    <div className="landing-page">
+      <div className="landing-noise" aria-hidden />
+      <header className={`landing-header ${scrolled ? "is-scrolled" : ""}`}>
+        <div className="landing-container nav-inner">
+          <Logo />
+          <nav>
+            <a href="#how-it-works">How it works</a>
+            <a href="#features">Features</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#faq">FAQ</a>
           </nav>
-
-          <div className="flex items-center gap-3">
-            <button
-              onClick={goSignIn}
-              className="hidden text-[13px] font-semibold text-[#0a1628] hover:text-[#0a1628] transition-colors sm:inline"
-            >
+          <div className="nav-actions">
+            <button className="nav-signin" onClick={goSignIn}>
               Sign in
             </button>
-            <button
-              onClick={goSignIn}
-              className="h-9 px-5 rounded-xl text-[13px] font-bold btn-flat shadow-md"
-            >
-              Get a Number
+            <button className="nav-cta" onClick={goSignIn}>
+              Get a number <ArrowRight />
             </button>
           </div>
         </div>
       </header>
 
-      <main className="relative z-10">
-
-        {/* ── Hero ── */}
-        <section className="relative mx-auto max-w-5xl px-6 pt-24 pb-16 text-center">
-
-          {/* Floating badges */}
-          <div className="hidden lg:block">
-            <FloatingBadge className="absolute left-[2%] top-[30%] float-badge">
-              <span className="h-2 w-2 rounded-full bg-emerald-500" />
-              SMS received
-            </FloatingBadge>
-            <FloatingBadge className="absolute right-[2%] top-[55%] float-badge-2">
-              <Check className="h-3.5 w-3.5 text-[#4574FF]" />
-              Code delivered
-            </FloatingBadge>
-            <div className="absolute right-[5%] top-[20%] h-11 w-11 rounded-2xl bg-[#4574FF] shadow-lg flex items-center justify-center float-badge-2">
-              <Zap className="h-5 w-5 text-white" />
-            </div>
-          </div>
-
-          <Reveal variant="up" delay={0}>
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/60 bg-white/50 backdrop-blur-sm px-4 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#4574FF] mb-7 shadow-sm shimmer-border">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#4574FF] status-pulse" />
-              Virtual numbers for SMS verification
-            </div>
-          </Reveal>
-
-          <Reveal variant="up" delay={60}>
-            <div className="inline-block mb-4">
-              <span className="text-[11px] font-bold uppercase tracking-widest text-[#0a1628]/60 bg-white/40 rounded-full px-3 py-1">
-                Pay per activation
-              </span>
-            </div>
-          </Reveal>
-
-          <Reveal variant="up" delay={100}>
-            <h1 className="font-display text-[clamp(2.6rem,6vw,4.4rem)] font-extrabold leading-[1.05] tracking-[-0.03em] text-[#0a1628] mb-6">
-              Receive SMS of Any Service Online &amp; API Access
-            </h1>
-          </Reveal>
-
-          <Reveal variant="up" delay={170}>
-            <p className="text-[16px] leading-relaxed text-[#0a1628] mb-10 max-w-[520px] mx-auto">
-              Get virtual numbers here to receive SMS codes instantly—either on our site or via API. Easily create accounts on your favorite apps, and unlock cool perks and profits.
-            </p>
-          </Reveal>
-
-          <Reveal variant="up" delay={230}>
-            <div className="flex flex-wrap justify-center gap-3 mb-8">
-              <button
-                onClick={goSignIn}
-                className="group h-13 px-9 rounded-xl text-[15px] font-bold flex items-center gap-2 btn-flat shadow-lg"
-              >
-                Get a Number
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-              </button>
-              <a
-                href="#pricing"
-                className="h-13 inline-flex items-center justify-center rounded-xl btn-glass border px-7 text-[15px] font-semibold text-[#0a1628] shadow"
-              >
-                View pricing
-              </a>
-            </div>
-          </Reveal>
-
-          {/* Trust badges */}
-          <Reveal variant="up" delay={290}>
-            <div className="flex flex-wrap justify-center gap-5">
-              {[
-                { icon: Shield,    text: "Private & secure" },
-                { icon: RefreshCw, text: "Auto-refunds" },
-                { icon: Wifi,      text: "Real-time SMS" },
-              ].map(({ icon: Icon, text }) => (
-                <div key={text} className="flex items-center gap-2 text-[12px] text-[#0a1628] font-medium">
-                  <Icon className="h-3.5 w-3.5 text-[#4574FF] shrink-0" />
-                  <span>{text}</span>
-                </div>
-              ))}
-            </div>
-          </Reveal>
-        </section>
-
-        {/* ── Stats Strip ── */}
-        <Reveal variant="up" delay={350}>
-          <div className="mx-auto max-w-4xl px-6 pb-16">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {stats.map((stat) => (
-                <div key={stat.label} className="rounded-2xl bg-white/50 backdrop-blur-sm border border-white/70 p-5 text-center shadow-sm hover:shadow-md hover:bg-white/65 transition-all duration-300">
-                  <div className="font-display text-[2rem] font-black text-[#0a1628] mb-1">{stat.value}</div>
-                  <div className="text-[12px] text-[#0a1628]/75 font-medium">{stat.label}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </Reveal>
-
-        {/* ── Services Marquee ── */}
-        <section id="services" className="py-14 border-y border-white/40">
-          <Reveal variant="up">
-            <p className="text-center text-[11px] font-bold uppercase tracking-[0.25em] text-[#0a1628]/80 mb-8">
-              Works with every major platform
-            </p>
-          </Reveal>
-          <div className="relative overflow-hidden marquee-fade">
-            <div className="flex gap-4 marquee-track" style={{ width: "max-content" }}>
-              {[...services, ...services].map((svc, i) => (
-                <button
-                  key={`${svc.name}-${i}`}
-                  onClick={goSignIn}
-                  className="flex items-center gap-2.5 rounded-xl bg-white/55 backdrop-blur-sm border border-white/70 px-4 py-2.5 hover:bg-white/80 hover:border-white hover:shadow-md transition-all duration-200 shrink-0 group shadow-sm"
-                >
-                  <div className="h-7 w-7 rounded-lg bg-white/70 flex items-center justify-center overflow-hidden shrink-0">
-                    <img
-                      src={svcIcon(svc.domain)}
-                      alt={svc.name}
-                      className="h-5 w-5 object-contain"
-                      loading="lazy"
-                      onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
-                    />
-                  </div>
-                  <span className="text-[13px] font-semibold text-[#0a1628] group-hover:text-[#0a1628] transition-colors whitespace-nowrap">{svc.name}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── Features ── */}
-        <section id="features" className="py-20 border-t border-white/30">
-          <div className="mx-auto max-w-6xl px-6">
+      <main>
+        <section className="landing-container hero-section">
+          <div className="hero-copy">
             <Reveal variant="up">
-              <div className="text-center mb-16">
-                <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#4574FF] mb-3">Platform Features</p>
-                <h2 className="font-display text-[clamp(1.8rem,4vw,2.8rem)] font-bold text-[#0a1628] mb-3">
-                  Built for speed & privacy
-                </h2>
-                <p className="text-[15px] text-[#0a1628]/75 max-w-md mx-auto">
-                  Everything you need, nothing you don't. SKY SMS is built to be fast, reliable, and completely private.
-                </p>
+              <div className="live-kicker">
+                <span /> <b>LIVE NETWORK</b> 2,418 numbers ready now
               </div>
             </Reveal>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {features.map((feat, i) => (
-                <Reveal key={feat.title} variant="up" delay={i * 60}>
-                  <div className="feature-card rounded-2xl p-6 h-full group relative overflow-hidden">
-                    <div className="mb-5 h-11 w-11 rounded-xl bg-[#4574FF]/10 border border-[#4574FF]/20 flex items-center justify-center group-hover:scale-105 transition-transform duration-300 shadow-sm">
-                      <feat.icon className="h-5 w-5 text-[#4574FF]" />
-                    </div>
-                    <h3 className="font-display text-[15px] font-bold text-[#0a1628] mb-2">{feat.title}</h3>
-                    <p className="text-[13px] leading-relaxed text-[#0a1628]/75">{feat.desc}</p>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── Pricing ── */}
-        <section id="pricing" className="py-20 border-t border-white/30">
-          <div className="mx-auto max-w-3xl px-6">
-            <Reveal variant="up">
-              <div className="text-center mb-14">
-                <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#4574FF] mb-3">Pricing</p>
-                <h2 className="font-display text-[clamp(1.8rem,4vw,2.8rem)] font-bold text-[#0a1628] mb-3">
-                  Pay only for what you use
-                </h2>
-                <p className="text-[15px] text-[#0a1628]/75">No subscriptions. No hidden fees. Top up any amount and spend it when you need it.</p>
-              </div>
-            </Reveal>
-
             <Reveal variant="up" delay={80}>
-              <div className="relative rounded-3xl overflow-hidden shadow-xl">
-                {/* White glass card */}
-                <div className="relative bg-white/70 backdrop-blur-xl border border-white/80 rounded-3xl p-8 text-center">
-                  <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-[#4574FF]/5 to-transparent pointer-events-none" />
-                  <div className="relative z-10">
-                    <div className="inline-flex items-center gap-2 rounded-full border border-[#4574FF]/20 bg-[#4574FF]/8 px-5 py-1.5 text-[11px] font-bold text-[#4574FF] uppercase tracking-wider mb-6">
-                      <Sparkles className="h-3 w-3" />
-                      Pay as you go
-                    </div>
-                    <div className="mb-6">
-                      <span className="font-display text-[4.5rem] font-black text-[#0a1628] leading-none">$0.10</span>
-                      <span className="text-[#0a1628]/60 text-[16px] ml-2">starting per SMS</span>
-                    </div>
-                    <ul className="space-y-3 mb-8 text-left max-w-sm mx-auto">
-                      {[
-                        "Instant number allocation",
-                        "Real-time SMS delivery",
-                        "Automatic refunds on no SMS",
-                        "All 50+ platforms included",
-                        "No monthly fees — ever",
-                      ].map((item) => (
-                        <li key={item} className="flex items-center gap-3 text-[14px] text-[#0a1628]">
-                          <div className="h-5 w-5 rounded-full bg-[#4574FF]/12 border border-[#4574FF]/25 flex items-center justify-center shrink-0">
-                            <Check className="h-3 w-3 text-[#4574FF]" />
-                          </div>
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                    <button
-                      onClick={goSignIn}
-                      className="h-12 px-10 rounded-xl text-[15px] font-bold btn-flat shadow-lg"
-                    >
-                      Start for free
-                    </button>
-                    <p className="text-[12px] text-[#0a1628]/60 mt-4">Minimum top-up from $1 · Crypto only via OxaPay</p>
-                  </div>
-                </div>
+              <h1>
+                Verification,
+                <br />
+                <em>without the wait.</em>
+              </h1>
+            </Reveal>
+            <Reveal variant="up" delay={140}>
+              <p className="hero-lede">
+                Private phone numbers for the services you use every day.
+                Receive your SMS code in seconds, pay only for what you need.
+              </p>
+            </Reveal>
+            <Reveal variant="up" delay={200}>
+              <div className="hero-actions">
+                <button className="primary-cta" onClick={goSignIn}>
+                  Start renting <ArrowRight />
+                </button>
+                <a className="text-link" href="#how-it-works">
+                  See how it works <span>↓</span>
+                </a>
+              </div>
+            </Reveal>
+            <Reveal variant="up" delay={260}>
+              <div className="trust-line">
+                <ShieldCheck /> <span>Private sessions</span>
+                <i /> <RefreshCw /> <span>Automatic refunds</span>
+                <i /> <Zap /> <span>Under 3 seconds</span>
               </div>
             </Reveal>
           </div>
+          <Reveal variant="scale" delay={160}>
+            <PreviewCard />
+          </Reveal>
         </section>
 
-        {/* ── FAQ ── */}
-        <section id="faq" className="py-20 border-t border-white/30">
-          <div className="mx-auto max-w-3xl px-6">
-            <Reveal variant="up">
-              <div className="text-center mb-14">
-                <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#4574FF] mb-3">FAQ</p>
-                <h2 className="font-display text-[clamp(1.8rem,4vw,2.8rem)] font-bold text-[#0a1628]">
-                  Common questions
-                </h2>
+        <section className="service-band" id="how-it-works">
+          <div className="landing-container">
+            <div className="section-intro compact">
+              <span className="section-tag">READY WHEN YOU ARE</span>
+              <h2>
+                One number. One code.
+                <br />
+                <span>Zero friction.</span>
+              </h2>
+            </div>
+            <div className="steps">
+              <div>
+                <b>01</b>
+                <strong>Pick a service</strong>
+                <p>Find the app you need from 50+ supported platforms.</p>
               </div>
-            </Reveal>
-
-            <div className="space-y-2">
-              {faqs.map((faq, i) => (
-                <Reveal key={i} variant="up" delay={i * 40}>
-                  <div
-                    className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
-                      openFaq === i
-                        ? "border-[#4574FF]/20 bg-white/70 shadow-md"
-                        : "border-white/60 bg-white/40 hover:border-white/80 hover:bg-white/55"
-                    } backdrop-blur-sm`}
-                  >
-                    <button
-                      className="w-full flex items-center justify-between px-6 py-5 text-left gap-4 group"
-                      onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                    >
-                      <span className="font-semibold text-[14px] text-[#0a1628] group-hover:text-[#4574FF] transition-colors">{faq.q}</span>
-                      <ChevronDown className={`h-4 w-4 shrink-0 transition-all duration-300 ${openFaq === i ? "rotate-180 text-[#4574FF]" : "text-slate-400"}`} />
-                    </button>
-                    <div
-                      style={{
-                        maxHeight: openFaq === i ? "300px" : "0",
-                        overflow: "hidden",
-                        transition: "max-height 0.35s cubic-bezier(0.22,1,0.36,1)",
-                      }}
-                    >
-                      <div className="px-6 pb-5">
-                        <p className="text-[13.5px] leading-relaxed text-[#0a1628]/75">{faq.a}</p>
-                      </div>
-                    </div>
-                  </div>
-                </Reveal>
-              ))}
+              <div>
+                <b>02</b>
+                <strong>Choose a country</strong>
+                <p>See live stock and transparent pricing before checkout.</p>
+              </div>
+              <div>
+                <b>03</b>
+                <strong>Receive your code</strong>
+                <p>Your private SMS inbox updates instantly when it arrives.</p>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* ── Final CTA ── */}
-        <section className="py-20 border-t border-white/30">
-          <div className="mx-auto max-w-4xl px-6 text-center">
-            <Reveal variant="up">
-              <div className="relative rounded-3xl overflow-hidden px-8 py-16 bg-white/50 backdrop-blur-xl border border-white/70 shadow-lg">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#4574FF]/6 to-transparent pointer-events-none" />
-                <div className="relative z-10">
-                  <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#4574FF] mb-5">Get started today</p>
-                  <h2 className="font-display text-[clamp(2rem,4vw,3.2rem)] font-black mb-5 leading-tight text-[#0a1628]">
-                    Your first number takes{" "}
-                    <span className="text-[#4574FF]">10 seconds.</span>
-                  </h2>
-                  <p className="text-[15px] text-[#0a1628]/80 mb-8 max-w-md mx-auto">
-                    No account approvals. No identity checks. Sign in and rent your first number right away.
-                  </p>
-                  <button
-                    onClick={goSignIn}
-                    className="group h-13 px-10 rounded-xl text-[16px] inline-flex items-center gap-2.5 btn-flat shadow-lg"
-                  >
-                    Start renting now
-                    <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />
-                  </button>
-                </div>
-              </div>
-            </Reveal>
+        <section className="platform-strip">
+          <p>Works with the platforms you already use</p>
+          <div className="platform-list">
+            {services.map((service) => (
+              <button key={service.name} onClick={goSignIn}>
+                <img src={iconUrl(service.domain)} alt="" />
+                {service.name}
+              </button>
+            ))}
           </div>
         </section>
 
-        {/* ── Footer ── */}
-        <footer className="border-t border-white/40 py-10">
-          <div className="mx-auto max-w-6xl px-6">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-              <LandingLogo />
-              <div className="flex flex-wrap items-center justify-center gap-6 text-[13px] text-[#0a1628]/75">
-                <a href="/terms" className="hover:text-[#0a1628] transition-colors">Terms of Service</a>
-                <a href="/refund-policy" className="hover:text-[#0a1628] transition-colors">Refund Policy</a>
-                <a href="#faq" className="hover:text-[#0a1628] transition-colors">FAQ</a>
-              </div>
-              <div className="text-[12px] text-[#0a1628]/60">
-                © {new Date().getFullYear()} SKY SMS. All rights reserved.
-              </div>
+        <section className="landing-container content-section" id="features">
+          <div className="section-intro">
+            <span className="section-tag">THE SKY SMS DIFFERENCE</span>
+            <h2>
+              Simple tools for
+              <br />
+              <span>temporary access.</span>
+            </h2>
+            <p>
+              Everything is designed to get you from sign-in to verification
+              with less noise and more control.
+            </p>
+          </div>
+          <div className="feature-grid">
+            {features.map(({ icon: Icon, title, desc }, index) => (
+              <Reveal key={title} variant="up" delay={index * 45}>
+                <article className="feature-tile">
+                  <div className="feature-icon">
+                    <Icon />
+                  </div>
+                  <strong>{title}</strong>
+                  <p>{desc}</p>
+                  <span className="tile-number">0{index + 1}</span>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+
+        <section className="landing-container pricing-section" id="pricing">
+          <div className="pricing-card">
+            <div>
+              <span className="section-tag">PAY AS YOU GO</span>
+              <h2>
+                Start small.
+                <br />
+                <span>Scale when ready.</span>
+              </h2>
+              <p>
+                No subscriptions or setup fees. Add exactly what you need to
+                your balance and keep unused credits until next time.
+              </p>
+            </div>
+            <div className="price-lockup">
+              <strong>$0.10</strong>
+              <span>
+                starting
+                <br />
+                per SMS
+              </span>
+              <button onClick={goSignIn}>
+                Get started <ArrowRight />
+              </button>
+              <small>Minimum top-up $1 · Crypto payments via OxaPay</small>
             </div>
           </div>
-        </footer>
+        </section>
 
+        <section className="landing-container faq-section" id="faq">
+          <div className="section-intro">
+            <span className="section-tag">NEED TO KNOW</span>
+            <h2>
+              Questions,
+              <br />
+              <span>answered.</span>
+            </h2>
+          </div>
+          <div className="faq-list">
+            {faqs.map(([q, a], index) => (
+              <div
+                className={`faq-row ${openFaq === index ? "open" : ""}`}
+                key={q}
+              >
+                <button
+                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                >
+                  <strong>{q}</strong>
+                  <ChevronDown />
+                </button>
+                <div className="faq-answer">
+                  <p>{a}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="landing-container final-cta">
+          <div>
+            <span className="section-tag">YOUR NEXT CODE IS CLOSER</span>
+            <h2>
+              Make verification
+              <br />
+              <span>the easy part.</span>
+            </h2>
+            <button className="primary-cta" onClick={goSignIn}>
+              Rent your first number <ArrowRight />
+            </button>
+          </div>
+          <div className="cta-orbit" aria-hidden>
+            <span />
+            <span />
+            <span />
+          </div>
+        </section>
       </main>
+
+      <footer className="landing-footer">
+        <div className="landing-container">
+          <Logo />
+          <div>
+            <a href="/terms">Terms</a>
+            <a href="/refund-policy">Refund policy</a>
+            <a href="#faq">FAQ</a>
+          </div>
+          <span>© {new Date().getFullYear()} SKY SMS</span>
+        </div>
+      </footer>
     </div>
   );
 }
