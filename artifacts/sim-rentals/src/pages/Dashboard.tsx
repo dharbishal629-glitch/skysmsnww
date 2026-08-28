@@ -1,126 +1,282 @@
-import { useGetDashboard, useGetMe, getGetDashboardQueryKey } from "@workspace/api-client-react";
+import {
+  useGetDashboard,
+  useGetMe,
+  getGetDashboardQueryKey,
+} from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
-import { AlertCircle } from "lucide-react";
 import { Link } from "wouter";
+import {
+  ArrowUpRight,
+  BarChart3,
+  CheckCircle2,
+  CreditCard,
+  Globe2,
+  Phone,
+  Plus,
+  Receipt,
+  ShieldCheck,
+  Sparkles,
+  Wallet,
+} from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useLanguage } from "@/hooks/useLanguage";
+import { AnalyticsChart } from "@/components/AnalyticsChart";
+
+function StatCard({
+  label,
+  value,
+  detail,
+  icon: Icon,
+  tone,
+  href,
+}: {
+  label: string;
+  value: string;
+  detail: string;
+  icon: React.ElementType;
+  tone: string;
+  href: string;
+}) {
+  return (
+    <Link href={href}>
+      <div className="dash-stat-card">
+        <div className={`dash-stat-icon ${tone}`}>
+          <Icon />
+        </div>
+        <div className="dash-stat-meta">
+          <span>{label}</span>
+          <strong>{value}</strong>
+          <small>{detail}</small>
+        </div>
+        <ArrowUpRight className="dash-card-arrow" />
+      </div>
+    </Link>
+  );
+}
 
 export default function Dashboard() {
   const { data, isLoading, error } = useGetDashboard();
   const { data: user } = useGetMe();
   const queryClient = useQueryClient();
-
-  useEffect(() => {
-    const id = setInterval(() => {
-      queryClient.invalidateQueries({ queryKey: getGetDashboardQueryKey() });
-    }, 30_000);
-    return () => clearInterval(id);
-  }, [queryClient]);
   const { t } = useLanguage();
 
-  if (isLoading) {
+  useEffect(() => {
+    const id = setInterval(
+      () =>
+        queryClient.invalidateQueries({ queryKey: getGetDashboardQueryKey() }),
+      30_000,
+    );
+    return () => clearInterval(id);
+  }, [queryClient]);
+
+  if (isLoading)
     return (
-      <div className="max-w-2xl mx-auto space-y-6 page-enter">
-        <div className="space-y-1">
-          <Skeleton className="h-7 w-52 bg-slate-200 dark:bg-slate-700" />
-          <Skeleton className="h-4 w-40 bg-slate-100 dark:bg-slate-800" />
-        </div>
-        <div className="grid grid-cols-2 gap-3">
-          {[0, 1, 2, 3].map(i => (
-            <div key={i} className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-5 space-y-3 shadow-sm">
-              <Skeleton className="h-3 w-16 bg-slate-100 dark:bg-slate-800" />
-              <Skeleton className="h-8 w-20 bg-slate-100 dark:bg-slate-800" />
-              <Skeleton className="h-3 w-24 bg-slate-100 dark:bg-slate-800" />
-            </div>
+      <div className="dashboard-page page-enter">
+        <Skeleton className="h-10 w-64 bg-slate-200 dark:bg-slate-800" />
+        <div className="dash-stats-grid">
+          {[1, 2, 3, 4].map((item) => (
+            <Skeleton
+              key={item}
+              className="h-32 rounded-2xl bg-slate-200 dark:bg-slate-800"
+            />
           ))}
         </div>
+        <Skeleton className="h-80 rounded-2xl bg-slate-200 dark:bg-slate-800" />
       </div>
     );
-  }
-
-  if (error) {
+  if (error || !data)
     return (
-      <div className="flex flex-col items-center justify-center py-24 text-center">
-        <AlertCircle className="h-8 w-8 text-red-400 mb-3" />
-        <p className="text-[13px] text-slate-500 dark:text-slate-400">Could not load dashboard.</p>
+      <div className="dash-error">
+        <ShieldCheck />
+        <h2>We could not load your workspace</h2>
+        <p>Refresh the page and try again.</p>
       </div>
     );
-  }
 
-  const balance = data?.account?.credits ?? 0;
-  const stats = [
-    {
-      label: t("balance"),
-      value: `${balance.toFixed(2)}`,
-      sub: balance === 0 ? t("addFunds") : "Available",
-      link: "/payments",
-      accent: "#4574FF",
-    },
-    {
-      label: t("filterActive"),
-      value: String(data?.activeRentals ?? 0),
-      sub: t("activeRentals"),
-      link: "/rentals",
-      accent: "#10b981",
-    },
-    {
-      label: "Completed",
-      value: String(data?.completedRentals ?? 0),
-      sub: "total rentals",
-      link: "/rentals",
-      accent: "#6366f1",
-    },
-    {
-      label: "Spent",
-      value: `${(data?.totalSpent ?? 0).toFixed(2)}`,
-      sub: "total spent",
-      link: "/payments",
-      accent: "#10b981",
-    },
-  ];
+  const balance = data.account?.credits ?? 0;
+  const firstName = user?.name?.split(" ")[0] || "there";
+  const recentRentals = data.recentRentals ?? [];
+  const recentPayments = data.recentPayments ?? [];
 
   return (
-    <div className="max-w-2xl mx-auto space-y-7 page-enter">
-
-      {/* Header */}
-      <div>
-        <h1 className="font-display text-[22px] font-bold tracking-tight text-slate-900 dark:text-white">
-          {t("welcomeBack")}
-          {user?.name ? (
-            <span className="text-[#4574FF]">{`, ${user.name.split(" ")[0]}`}</span>
-          ) : ""}
-        </h1>
-        <p className="text-[13px] text-slate-500 dark:text-slate-400 mt-0.5">Here's an overview of your account.</p>
+    <div className="dashboard-page page-enter">
+      <div className="dashboard-welcome">
+        <div>
+          <div className="dash-kicker">
+            <Sparkles /> PERSONAL OVERVIEW
+          </div>
+          <h1>
+            {t("welcomeBack")}, <span>{firstName}</span>
+          </h1>
+          <p>Your private verification workspace, at a glance.</p>
+        </div>
+        <Link href="/rent">
+          <button className="dash-primary-button">
+            <Plus /> Rent a number
+          </button>
+        </Link>
       </div>
-
-      {/* Stats grid */}
-      <div className="grid grid-cols-2 gap-3">
-        {stats.map(({ label, value, sub, link, accent }) => (
-          <Link key={label} href={link}>
-            <div
-              className="group rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-5 cursor-pointer hover:border-[#4574FF]/30 hover:shadow-md dark:hover:border-[#4574FF]/30 transition-all duration-200 relative overflow-hidden shadow-sm"
-              style={{
-                boxShadow: "0 1px 4px rgba(0,0,0,0.04), 0 4px 12px rgba(69,116,255,0.04)",
-              }}
-            >
-              <div
-                className="absolute inset-x-0 top-0 h-[2px] rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                style={{ background: `linear-gradient(to right, ${accent}, ${accent}88)` }}
-              />
-              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500 mb-2">{label}</p>
-              <p
-                className="font-display text-[28px] font-black leading-none tracking-tight mb-1.5"
-                style={{ color: accent }}
-              >
-                {value}
-              </p>
-              <p className="text-[11px] text-slate-400 dark:text-slate-500">{sub}</p>
+      <div className="dash-stats-grid">
+        <StatCard
+          label={t("balance")}
+          value={`$${balance.toFixed(2)}`}
+          detail={balance > 0 ? "Available to spend" : "Add credits to begin"}
+          icon={Wallet}
+          tone="lime"
+          href="/payments"
+        />
+        <StatCard
+          label="Active rentals"
+          value={String(data.activeRentals ?? 0)}
+          detail="Live right now"
+          icon={Phone}
+          tone="cyan"
+          href="/rentals"
+        />
+        <StatCard
+          label="Completed"
+          value={String(data.completedRentals ?? 0)}
+          detail="Successful sessions"
+          icon={CheckCircle2}
+          tone="blue"
+          href="/rentals"
+        />
+        <StatCard
+          label="Total spent"
+          value={`$${(data.totalSpent ?? 0).toFixed(2)}`}
+          detail="Across all rentals"
+          icon={Receipt}
+          tone="peach"
+          href="/activity"
+        />
+      </div>
+      <div className="dash-main-grid">
+        <section className="dash-panel analytics-panel">
+          <div className="dash-panel-heading">
+            <div>
+              <div className="panel-label">
+                <BarChart3 /> USAGE ANALYTICS
+              </div>
+              <h2>Recent activity</h2>
+              <p>Rentals and account funding over the last 7 days.</p>
             </div>
-          </Link>
-        ))}
+            <div className="chart-legend">
+              <span>
+                <i className="legend-lime" /> Rentals
+              </span>
+              <span>
+                <i className="legend-cyan" /> Added funds
+              </span>
+            </div>
+          </div>
+          <AnalyticsChart rentals={recentRentals} payments={recentPayments} />
+        </section>
+        <section className="dash-panel quick-panel">
+          <div className="panel-label">
+            <ZapIcon /> QUICK ACTIONS
+          </div>
+          <h2>Keep moving</h2>
+          <div className="quick-actions">
+            <Link href="/rent">
+              <span>
+                <Phone /> Rent a number
+              </span>
+              <ArrowUpRight />
+            </Link>
+            <Link href="/payments">
+              <span>
+                <CreditCard /> Add credits
+              </span>
+              <ArrowUpRight />
+            </Link>
+            <Link href="/settings">
+              <span>
+                <ShieldCheck /> Secure account
+              </span>
+              <ArrowUpRight />
+            </Link>
+          </div>
+          <div className="privacy-note">
+            <Globe2 />
+            <div>
+              <strong>Global network</strong>
+              <p>Live availability across 10+ countries.</p>
+            </div>
+          </div>
+        </section>
       </div>
-
+      <div className="dash-bottom-grid">
+        <section className="dash-panel">
+          <div className="dash-panel-heading compact-heading">
+            <div>
+              <div className="panel-label">
+                <Phone /> RECENT RENTALS
+              </div>
+              <h2>Latest sessions</h2>
+            </div>
+            <Link href="/rentals">
+              View all <ArrowUpRight />
+            </Link>
+          </div>
+          {recentRentals.length ? (
+            <div className="dash-list">
+              {recentRentals.slice(0, 4).map((rental) => (
+                <div className="dash-list-row" key={rental.id}>
+                  <span className="row-avatar">
+                    <Phone />
+                  </span>
+                  <div>
+                    <strong>{rental.serviceName}</strong>
+                    <small>{rental.countryName}</small>
+                  </div>
+                  <span className="row-price">${rental.price.toFixed(2)}</span>
+                  <span
+                    className={`row-status ${rental.status === "active" ? "active" : ""}`}
+                  >
+                    {rental.status === "active" ? "Active" : "Complete"}
+                  </span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="dash-empty">
+              <Phone />
+              <p>No rentals yet. Your sessions will show here.</p>
+            </div>
+          )}
+        </section>
+        <section className="dash-panel balance-panel">
+          <div className="panel-label">
+            <Wallet /> ACCOUNT HEALTH
+          </div>
+          <h2>Ready to verify</h2>
+          <div className="health-meter">
+            <span
+              style={{ width: `${Math.min(100, Math.max(14, balance * 5))}%` }}
+            />
+          </div>
+          <div className="health-copy">
+            <strong>
+              {balance > 0 ? "Your balance is ready" : "Your balance is empty"}
+            </strong>
+            <span>
+              {balance > 0
+                ? "You can rent a number anytime."
+                : "Top up to start your first rental."}
+            </span>
+          </div>
+          <Link href="/payments">
+            <button className="dash-outline-button">
+              {balance > 0 ? "Manage balance" : "Add credits"} <ArrowUpRight />
+            </button>
+          </Link>
+        </section>
+      </div>
     </div>
   );
+}
+
+function ZapIcon() {
+  return <Sparkles />;
 }
