@@ -100,6 +100,41 @@ html {
   background: #34d399 !important;
 }
 
+/* Opaque application surfaces: legacy opacity utilities must not create a
+   washed-out or unreadable screen. */
+[data-sky-page] [class*="bg-white/"],
+[data-sky-page] [class*="bg-slate-"] {
+  background-color: #0d202a !important;
+}
+[data-sky-page] [class*="bg-emerald-"] {
+  background-color: #102c28 !important;
+}
+[data-sky-page] [class*="border-white/"],
+[data-sky-page] [class*="border-slate-"] {
+  border-color: #244047 !important;
+}
+[data-sky-page] button:not([class*="bg-red"]):not([class*="destructive"]):not([class*="bg-emerald-5"]):not([class*="bg-emerald-6"]) {
+  background-color: #102c28 !important;
+  border: 1px solid #31534f;
+  color: #dce8e3 !important;
+}
+[data-sky-page] button:not([class*="bg-red"]):not([class*="destructive"]):hover {
+  background-color: #164238 !important;
+  border-color: #8bb35d;
+}
+
+/* Smooth mobile navigation opening and closing. */
+@keyframes nav-overlay-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes nav-overlay-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes nav-drawer-in { from { transform: translateX(-100%); opacity: .6; } to { transform: translateX(0); opacity: 1; } }
+@keyframes nav-drawer-out { from { transform: translateX(0); opacity: 1; } to { transform: translateX(-100%); opacity: .6; } }
+.overlay-fade-in { animation: nav-overlay-in .22s ease-out both; }
+.overlay-fade-out { animation: nav-overlay-out .22s ease-in both; }
+.sidebar-slide-in { animation: nav-drawer-in .28s cubic-bezier(.22,1,.36,1) both; }
+.sidebar-slide-out { animation: nav-drawer-out .22s ease-in both; }
+.app-nav-item-active { position: relative; background: #102c28 !important; color: #8bb35d !important; border-radius: .75rem; }
+.app-nav-item-active::before { content: ""; position: absolute; left: 0; top: 22%; bottom: 22%; width: 3px; border-radius: 0 3px 3px 0; background: #8bb35d; }
+
 /* Dashboard layout */
 .dashboard-page {
   max-width: 1160px;
