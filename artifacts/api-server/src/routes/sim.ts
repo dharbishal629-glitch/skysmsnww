@@ -2871,11 +2871,9 @@ router.delete("/admin/support/:id/claim", async (req, res) => {
     return;
   }
   if (!actor.isAdmin && String(existing.claimed_by_user_id) !== actor.userId) {
-    res
-      .status(403)
-      .json({
-        error: "Only the assigned support admin can release this ticket.",
-      });
+    res.status(403).json({
+      error: "Only the assigned support admin can release this ticket.",
+    });
     return;
   }
   const ticketId = String(existing.id);

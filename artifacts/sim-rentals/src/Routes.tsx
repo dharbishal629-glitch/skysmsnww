@@ -30,10 +30,10 @@ import { Ban, AlertTriangle, LogOut } from "lucide-react";
 
 function LoadingScreen() {
   return (
-    <div className="min-h-screen premium-shell flex items-center justify-center">
+    <div className="loading-screen min-h-screen flex items-center justify-center">
       <div className="flex flex-col items-center gap-4">
-        <div className="h-11 w-11 animate-spin rounded-full border-2 border-[#10b981] border-t-transparent" />
-        <div className="text-[12px] text-slate-600 font-medium">Loading…</div>
+        <div className="h-11 w-11 animate-spin rounded-full border-2 border-[#9ca3af] border-t-transparent" />
+        <div className="text-[12px] text-[#9ca3af] font-medium">Loading…</div>
       </div>
     </div>
   );

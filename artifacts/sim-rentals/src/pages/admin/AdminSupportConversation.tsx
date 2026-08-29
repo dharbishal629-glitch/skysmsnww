@@ -271,7 +271,7 @@ export default function AdminSupportConversation() {
     return (
       <div className="max-w-2xl mx-auto space-y-4 page-enter">
         <button
-           onClick={() => setLocation(supportListPath)}
+          onClick={() => setLocation(supportListPath)}
           className="flex items-center gap-2 text-[13px] text-slate-500 hover:text-white transition-colors"
         >
           <ArrowLeft className="h-4 w-4" /> Back to Support
@@ -298,7 +298,7 @@ export default function AdminSupportConversation() {
     >
       {/* Back */}
       <button
-         onClick={() => setLocation(supportListPath)}
+        onClick={() => setLocation(supportListPath)}
         className="flex items-center gap-2 text-[12px] text-slate-500 hover:text-white transition-colors mb-4 self-start"
       >
         <ArrowLeft className="h-3.5 w-3.5" /> Back to Support

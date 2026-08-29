@@ -155,6 +155,11 @@ body {
   background: #0a0f0e;
 }
 
+.loading-screen {
+  background: #080c18;
+  color: #d1d5db;
+}
+
 .dark .page-grid {
   background-color: #0a0f0e;
   background-image:
@@ -710,8 +715,13 @@ body {
     animation: pulse 2s ease-in-out infinite;
   }
   @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
   }
 
   .hero-copy h1 {
@@ -856,9 +866,15 @@ body {
     height: 10px;
     border-radius: 50%;
   }
-  .traffic i:nth-child(1) { background: #ef4444; }
-  .traffic i:nth-child(2) { background: #f59e0b; }
-  .traffic i:nth-child(3) { background: #10b981; }
+  .traffic i:nth-child(1) {
+    background: #ef4444;
+  }
+  .traffic i:nth-child(2) {
+    background: #f59e0b;
+  }
+  .traffic i:nth-child(3) {
+    background: #10b981;
+  }
 
   .preview-label {
     flex: 1;
@@ -1400,14 +1416,26 @@ body {
 
   /* ── Animations ── */
   @keyframes loading-bar {
-    0% { transform: translateX(-100%); }
-    50% { transform: translateX(0); }
-    100% { transform: translateX(100%); }
+    0% {
+      transform: translateX(-100%);
+    }
+    50% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(100%);
+    }
   }
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .page-enter {
@@ -1438,7 +1466,9 @@ body {
 
   /* ── Hover elevate ── */
   .hover-elevate {
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    transition:
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
   }
   .hover-elevate:hover {
     transform: translateY(-1px);
@@ -1585,4 +1615,30 @@ body {
   .number-tile strong {
     font-size: 0.75rem;
   }
+}
+
+/* Final green workspace overrides for legacy page classes. */
+:root {
+  --accent-color: #10b981;
+  --accent-light: #34d399;
+  --accent-dim: rgba(16, 185, 129, 0.1);
+}
+.dark {
+  --primary: 155 75% 45%;
+  --ring: 155 75% 45%;
+}
+[data-sky-page] [class*="text-blue"],
+[data-sky-page] [class*="text-sky"],
+[data-sky-page] [class*="text-violet"] {
+  color: #34d399 !important;
+}
+[data-sky-page] [class*="bg-blue"],
+[data-sky-page] [class*="bg-sky"],
+[data-sky-page] [class*="bg-violet"] {
+  background-color: rgba(16, 185, 129, 0.12) !important;
+}
+[data-sky-page] [class*="border-blue"],
+[data-sky-page] [class*="border-sky"],
+[data-sky-page] [class*="border-violet"] {
+  border-color: rgba(16, 185, 129, 0.24) !important;
 }

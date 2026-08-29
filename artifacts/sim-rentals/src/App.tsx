@@ -45,14 +45,14 @@ const queryClient = new QueryClient();
 
 function LoadingSpinner() {
   return (
-    <div className="min-h-screen premium-shell flex items-center justify-center">
+    <div className="loading-screen min-h-screen flex items-center justify-center">
       <div className="flex flex-col items-center gap-5">
-        <div className="h-12 w-12 rounded-2xl bg-white/20 border border-white/40 flex items-center justify-center shadow-lg backdrop-blur-sm">
+        <div className="h-12 w-12 rounded-2xl bg-[#111827] border border-[#374151] flex items-center justify-center shadow-lg">
           <SkySmsLogoMark className="h-7 w-7" />
         </div>
-        <div className="h-0.5 w-32 rounded-full bg-white/20 overflow-hidden">
+        <div className="h-0.5 w-32 rounded-full bg-[#374151] overflow-hidden">
           <div
-            className="h-full bg-[#0a1628] rounded-full"
+            className="h-full bg-[#9ca3af] rounded-full"
             style={{
               width: "60%",
               animation: "loading-bar 1.4s ease-in-out infinite",
