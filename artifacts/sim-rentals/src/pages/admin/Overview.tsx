@@ -88,8 +88,8 @@ function ReferralSettingsCard() {
   return (
     <div className="rounded-2xl border border-white/[0.07] bg-white/[0.02] overflow-hidden">
       <div className="px-5 py-4 border-b border-white/[0.06] flex items-center gap-3">
-        <div className="h-8 w-8 rounded-lg bg-[#4574FF]/10 border border-[#4574FF]/20 flex items-center justify-center shrink-0">
-          <Gift className="h-4 w-4 text-[#4574FF]" />
+        <div className="h-8 w-8 rounded-lg bg-[#10b981]/10 border border-[#10b981]/20 flex items-center justify-center shrink-0">
+          <Gift className="h-4 w-4 text-[#10b981]" />
         </div>
         <div>
           <div className="font-bold text-slate-900 dark:text-white text-[14px]">
@@ -105,7 +105,7 @@ function ReferralSettingsCard() {
             className="transition-colors"
           >
             {enabled ? (
-              <ToggleRight className="h-8 w-8 text-sky-400" />
+              <ToggleRight className="h-8 w-8 text-emerald-400" />
             ) : (
               <ToggleLeft className="h-8 w-8 text-slate-600" />
             )}
@@ -159,7 +159,7 @@ function ReferralSettingsCard() {
               </div>
             </div>
             <div
-              className={`flex items-center gap-2 p-3 rounded-xl border text-[12px] ${enabled ? "border-sky-500/20 bg-sky-500/[0.05] text-sky-300" : "border-white/[0.06] bg-white/[0.02] text-slate-600"}`}
+              className={`flex items-center gap-2 p-3 rounded-xl border text-[12px] ${enabled ? "border-emerald-500/20 bg-emerald-500/[0.05] text-emerald-300" : "border-white/[0.06] bg-white/[0.02] text-slate-600"}`}
             >
               {enabled ? (
                 <CheckCircle2 className="h-3.5 w-3.5 shrink-0" />
@@ -173,13 +173,76 @@ function ReferralSettingsCard() {
             <button
               onClick={save}
               disabled={saving}
-              className="flex items-center gap-2 h-9 px-4 rounded-xl bg-sky-500/15 border border-sky-500/25 text-[12.5px] font-semibold text-sky-300 hover:bg-sky-500/25 transition-all disabled:opacity-60"
+              className="flex items-center gap-2 h-9 px-4 rounded-xl bg-emerald-500/15 border border-emerald-500/25 text-[12.5px] font-semibold text-emerald-300 hover:bg-emerald-500/25 transition-all disabled:opacity-60"
             >
               <Save className="h-3.5 w-3.5" />
               {saving ? "Saving…" : "Save Settings"}
             </button>
           </>
         )}
+      </div>
+    </div>
+  );
+}
+
+function SupportClaimSettingsCard() {
+  const { toast } = useToast();
+  const [enabled, setEnabled] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/admin/support/settings`, { credentials: "include" })
+      .then((response) => response.json())
+      .then((data) => setEnabled(data.claimingEnabled !== false))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  const save = async (nextEnabled = enabled) => {
+    setSaving(true);
+    try {
+      const response = await fetch(`${API_URL}/api/admin/support/settings`, {
+        method: "PATCH",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ claimingEnabled: nextEnabled }),
+      });
+      if (!response.ok) throw new Error();
+      toast({ title: "Support claiming updated" });
+    } catch {
+      toast({
+        title: "Could not update support claiming",
+        variant: "destructive",
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="rounded-2xl border border-emerald-500/15 bg-emerald-500/[0.04] p-5">
+      <div className="flex items-start gap-3">
+        <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-emerald-500/20 bg-emerald-500/10 text-emerald-400">
+          <Shield className="h-4 w-4" />
+        </div>
+        <div className="flex-1">
+          <p className="font-bold text-white">Support ticket claiming</p>
+          <p className="mt-1 text-xs text-slate-500">
+            When enabled, support staff must claim a ticket before replying.
+          </p>
+        </div>
+        <button
+          disabled={loading || saving}
+          onClick={() => {
+            const next = !enabled;
+            setEnabled(next);
+            void save(next);
+          }}
+          className={`rounded-xl px-3 py-2 text-xs font-bold ${enabled ? "bg-emerald-500 text-[#052e16]" : "bg-slate-700 text-slate-200"}`}
+        >
+          {enabled ? "Enabled" : "Disabled"}
+        </button>
       </div>
     </div>
   );
@@ -265,30 +328,31 @@ export default function AdminOverview() {
       value: String(data.totalUsers),
       sub: "Registered accounts",
       icon: Users,
-      iconCls: "bg-blue-400/10 border-blue-400/20 text-blue-400",
+      iconCls: "bg-emerald-400/10 border-emerald-400/20 text-emerald-400",
       valueCls: "text-white",
       trend: TrendingUp,
-      trendCls: "text-blue-500",
+      trendCls: "text-emerald-500",
     },
     {
       label: "Active Rentals",
       value: String(data.activeRentals),
       sub: "Currently processing",
       icon: Phone,
-      iconCls: "bg-violet-400/10 border-violet-400/20 text-violet-400",
+      iconCls: "bg-teal-400/10 border-teal-400/20 text-teal-400",
       valueCls: "text-white",
       trend: data.activeRentals > 0 ? TrendingUp : TrendingDown,
-      trendCls: data.activeRentals > 0 ? "text-violet-500" : "text-slate-700",
+      trendCls: data.activeRentals > 0 ? "text-teal-500" : "text-slate-700",
     },
     {
       label: "Pending Payments",
       value: String(data.pendingPayments),
       sub: "Awaiting confirmation",
       icon: Activity,
-      iconCls: "bg-sky-400/10 border-sky-400/20 text-sky-400",
-      valueCls: data.pendingPayments > 0 ? "text-sky-400" : "text-white",
+      iconCls: "bg-emerald-400/10 border-emerald-400/20 text-emerald-400",
+      valueCls: data.pendingPayments > 0 ? "text-emerald-400" : "text-white",
       trend: data.pendingPayments > 0 ? TrendingUp : TrendingDown,
-      trendCls: data.pendingPayments > 0 ? "text-sky-500" : "text-slate-700",
+      trendCls:
+        data.pendingPayments > 0 ? "text-emerald-500" : "text-slate-700",
     },
   ];
 
@@ -297,6 +361,7 @@ export default function AdminOverview() {
       className="space-y-6 page-enter sky-page"
       data-sky-page="admin-overview"
     >
+      <SupportClaimSettingsCard />
       {/* Header */}
       <div>
         <h1 className="text-[22px] font-bold text-slate-900 dark:text-white tracking-tight">
@@ -350,8 +415,8 @@ export default function AdminOverview() {
         {/* Provider status */}
         <div className="rounded-2xl border border-white/[0.07] bg-white/[0.02] overflow-hidden">
           <div className="px-5 py-4 border-b border-white/[0.06] flex items-center gap-3">
-            <div className="h-8 w-8 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0">
-              <Activity className="h-4 w-4 text-blue-400" />
+            <div className="h-8 w-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
+              <Activity className="h-4 w-4 text-emerald-400" />
             </div>
             <div>
               <div className="font-bold text-slate-900 dark:text-white text-[14px]">
@@ -372,7 +437,7 @@ export default function AdminOverview() {
                   {provider.mode === "live" ? (
                     <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
                   ) : (
-                    <AlertCircle className="h-4 w-4 text-sky-400 shrink-0 mt-0.5" />
+                    <AlertCircle className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
                   )}
                   <div>
                     <div className="font-semibold text-[13px] text-slate-900 dark:text-white">
@@ -385,7 +450,7 @@ export default function AdminOverview() {
                 </div>
                 <Badge
                   variant="outline"
-                  className={`text-[10px] shrink-0 font-bold ${provider.mode === "live" ? "border-emerald-400/20 bg-emerald-400/10 text-emerald-300" : "border-sky-400/20 bg-sky-400/10 text-sky-300"}`}
+                  className={`text-[10px] shrink-0 font-bold ${provider.mode === "live" ? "border-emerald-400/20 bg-emerald-400/10 text-emerald-300" : "border-emerald-400/20 bg-emerald-400/10 text-emerald-300"}`}
                 >
                   {provider.mode}
                 </Badge>
@@ -427,7 +492,7 @@ export default function AdminOverview() {
             {/* Telegram */}
             <div className="space-y-1.5">
               <label className="flex items-center gap-1.5 text-[11.5px] font-semibold text-slate-400">
-                <MessageCircle className="h-3 w-3 text-sky-400" />
+                <MessageCircle className="h-3 w-3 text-emerald-400" />
                 Telegram Invite Link
               </label>
               <input
@@ -435,14 +500,14 @@ export default function AdminOverview() {
                 placeholder="https://t.me/your-channel"
                 value={telegramDraft}
                 onChange={(e) => setTelegramDraft(e.target.value)}
-                className="w-full h-10 rounded-xl border border-white/[0.08] bg-white/[0.03] px-3.5 text-[13px] text-white placeholder:text-slate-600 focus:outline-none focus:border-sky-500/40 transition-all"
+                className="w-full h-10 rounded-xl border border-white/[0.08] bg-white/[0.03] px-3.5 text-[13px] text-white placeholder:text-slate-600 focus:outline-none focus:border-emerald-500/40 transition-all"
               />
             </div>
             <div className="flex items-center justify-between">
               <button
                 onClick={saveLinks}
                 disabled={saving}
-                className="flex items-center gap-2 h-9 px-4 rounded-xl bg-blue-500/15 border border-blue-500/25 text-[12.5px] font-semibold text-blue-300 hover:bg-blue-500/25 transition-all disabled:opacity-60"
+                className="flex items-center gap-2 h-9 px-4 rounded-xl bg-emerald-500/15 border border-emerald-500/25 text-[12.5px] font-semibold text-emerald-300 hover:bg-emerald-500/25 transition-all disabled:opacity-60"
               >
                 <Save className="h-3.5 w-3.5" />
                 {saving ? "Saving…" : "Save Links"}
@@ -464,7 +529,7 @@ export default function AdminOverview() {
                       href={telegram}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[11px] text-sky-300 border border-sky-400/20 bg-sky-400/[0.08] rounded-full px-3 py-1 hover:bg-sky-400/15 transition-colors font-medium"
+                      className="text-[11px] text-emerald-300 border border-emerald-400/20 bg-emerald-400/[0.08] rounded-full px-3 py-1 hover:bg-emerald-400/15 transition-colors font-medium"
                     >
                       Telegram ✓
                     </a>

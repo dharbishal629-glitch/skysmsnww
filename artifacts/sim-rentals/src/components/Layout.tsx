@@ -106,8 +106,8 @@ function typeIcon(type: string) {
   if (type === "success")
     return <Check className="h-3.5 w-3.5 text-emerald-500" />;
   if (type === "warning")
-    return <AlertCircle className="h-3.5 w-3.5 text-sky-400" />;
-  return <Info className="h-3.5 w-3.5 text-[#4574FF]" />;
+    return <AlertCircle className="h-3.5 w-3.5 text-emerald-400" />;
+  return <Info className="h-3.5 w-3.5 text-[#10b981]" />;
 }
 
 function typeLabel(type: string) {
@@ -119,16 +119,16 @@ function typeLabel(type: string) {
   if (type === "warning")
     return {
       label: "Alert",
-      cls: "bg-sky-500/15 text-sky-400 border-sky-500/20",
+      cls: "bg-emerald-500/15 text-emerald-400 border-emerald-500/20",
     };
   if (type === "promo")
     return {
       label: "Promo",
-      cls: "bg-violet-500/15 text-violet-400 border-violet-500/20",
+      cls: "bg-teal-500/15 text-teal-400 border-teal-500/20",
     };
   return {
     label: "Info",
-    cls: "bg-[#4574FF]/15 text-[#7ba4ff] border-[#4574FF]/20",
+    cls: "bg-[#10b981]/15 text-[#34d399] border-[#10b981]/20",
   };
 }
 
@@ -138,8 +138,8 @@ function typeBg(type: string, read: boolean) {
   if (type === "success")
     return "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-700/40";
   if (type === "warning")
-    return "bg-sky-50 dark:bg-sky-900/20 border-sky-200 dark:border-sky-700/40";
-  return "bg-[#4574FF]/10 border-[#4574FF]/25 dark:bg-[#4574FF]/15 dark:border-[#4574FF]/30";
+    return "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-sky-700/40";
+  return "bg-[#10b981]/10 border-[#10b981]/25 dark:bg-[#10b981]/15 dark:border-[#10b981]/30";
 }
 
 function timeAgo(d: string) {
@@ -274,7 +274,7 @@ function NotificationPanel({
               Notifications
             </span>
             {unread > 0 && (
-              <span className="h-5 min-w-[20px] px-1.5 rounded-full bg-[#4574FF] text-[10px] font-bold text-white flex items-center justify-center">
+              <span className="h-5 min-w-[20px] px-1.5 rounded-full bg-[#10b981] text-[10px] font-bold text-white flex items-center justify-center">
                 {unread}
               </span>
             )}
@@ -284,7 +284,7 @@ function NotificationPanel({
               <button
                 onClick={markAllRead}
                 disabled={markingAll}
-                className="flex items-center gap-1 h-7 px-2 rounded-lg text-[11px] font-semibold text-slate-400 hover:text-[#4574FF] transition-all disabled:opacity-50"
+                className="flex items-center gap-1 h-7 px-2 rounded-lg text-[11px] font-semibold text-slate-400 hover:text-[#10b981] transition-all disabled:opacity-50"
                 title="Mark all as read"
               >
                 <CheckCheck className="h-3.5 w-3.5" />
@@ -384,7 +384,7 @@ function NotificationPanel({
                 {/* Sound waves */}
                 <path
                   d="M74 42 Q80 50 74 58"
-                  stroke="#4574FF"
+                  stroke="#10b981"
                   strokeWidth="2"
                   strokeLinecap="round"
                   fill="none"
@@ -392,7 +392,7 @@ function NotificationPanel({
                 />
                 <path
                   d="M78 37 Q88 50 78 63"
-                  stroke="#4574FF"
+                  stroke="#10b981"
                   strokeWidth="2"
                   strokeLinecap="round"
                   fill="none"
@@ -405,7 +405,7 @@ function NotificationPanel({
                     y1="28"
                     x2="20"
                     y2="34"
-                    stroke="#4574FF"
+                    stroke="#10b981"
                     strokeWidth="1.5"
                     strokeLinecap="round"
                   />
@@ -414,7 +414,7 @@ function NotificationPanel({
                     y1="31"
                     x2="23"
                     y2="31"
-                    stroke="#4574FF"
+                    stroke="#10b981"
                     strokeWidth="1.5"
                     strokeLinecap="round"
                   />
@@ -426,7 +426,7 @@ function NotificationPanel({
                     y1="70"
                     x2="74"
                     y2="74"
-                    stroke="#7ba4ff"
+                    stroke="#34d399"
                     strokeWidth="1.5"
                     strokeLinecap="round"
                   />
@@ -435,14 +435,14 @@ function NotificationPanel({
                     y1="72"
                     x2="76"
                     y2="72"
-                    stroke="#7ba4ff"
+                    stroke="#34d399"
                     strokeWidth="1.5"
                     strokeLinecap="round"
                   />
                 </g>
                 {/* Small dot accent */}
-                <circle cx="26" cy="24" r="2" fill="#4574FF" opacity="0.5" />
-                <circle cx="76" cy="30" r="1.5" fill="#7ba4ff" opacity="0.4" />
+                <circle cx="26" cy="24" r="2" fill="#10b981" opacity="0.5" />
+                <circle cx="76" cy="30" r="1.5" fill="#34d399" opacity="0.4" />
               </svg>
               <div className="space-y-1.5">
                 <p className="text-[15px] font-semibold text-white">
@@ -462,7 +462,7 @@ function NotificationPanel({
                   className={`w-full text-left flex gap-3 p-3.5 rounded-xl transition-all active:scale-[0.99] ${
                     n.read
                       ? "hover:bg-[#232f45]"
-                      : "bg-[#232f45] border border-[#4574FF]/20"
+                      : "bg-[#232f45] border border-[#10b981]/20"
                   }`}
                 >
                   <div
@@ -479,7 +479,7 @@ function NotificationPanel({
                       </span>
                       <div className="flex items-center gap-1.5 shrink-0 mt-0.5">
                         {!n.read && (
-                          <span className="h-1.5 w-1.5 rounded-full bg-[#4574FF]" />
+                          <span className="h-1.5 w-1.5 rounded-full bg-[#10b981]" />
                         )}
                         <span className="text-[11px] text-slate-500 whitespace-nowrap">
                           {timeAgo(n.createdAt)}
@@ -499,7 +499,7 @@ function NotificationPanel({
                       {n.message}
                     </p>
                     {n.link && (
-                      <span className="inline-block mt-1 text-[11px] font-semibold text-[#4574FF]">
+                      <span className="inline-block mt-1 text-[11px] font-semibold text-[#10b981]">
                         View →
                       </span>
                     )}
@@ -547,7 +547,7 @@ function NotificationBell({ onOpen }: { onOpen: () => void }) {
     >
       <Bell className="h-4 w-4" />
       {unreadCount > 0 && (
-        <span className="absolute -top-0.5 -right-0.5 h-4 w-4 rounded-full bg-[#4574FF] text-[9px] font-bold text-white flex items-center justify-center leading-none">
+        <span className="absolute -top-0.5 -right-0.5 h-4 w-4 rounded-full bg-[#10b981] text-[9px] font-bold text-white flex items-center justify-center leading-none">
           {unreadCount > 9 ? "9+" : unreadCount}
         </span>
       )}
@@ -634,7 +634,7 @@ function LanguageDropdown() {
                 setLang(l.code as LangCode);
                 setOpen(false);
               }}
-              className={`w-full flex items-center gap-2.5 px-3 py-2 text-[12px] transition-colors ${lang === l.code ? "text-[#4574FF] bg-blue-50 dark:bg-blue-900/20" : "text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800"}`}
+              className={`w-full flex items-center gap-2.5 px-3 py-2 text-[12px] transition-colors ${lang === l.code ? "text-[#10b981] bg-emerald-50 dark:bg-emerald-900/20" : "text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800"}`}
             >
               <span className="text-base leading-none">{l.flag}</span>
               <span className="flex-1 text-left font-medium">{l.label}</span>
@@ -642,7 +642,7 @@ function LanguageDropdown() {
                 {l.nativeName}
               </span>
               {lang === l.code && (
-                <Check className="h-3 w-3 text-[#4574FF] shrink-0" />
+                <Check className="h-3 w-3 text-[#10b981] shrink-0" />
               )}
             </button>
           ))}
@@ -673,12 +673,12 @@ function NavItem({
         onClick={onClick}
         className={`app-nav-item group flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-150 cursor-pointer select-none ${
           active
-            ? "app-nav-item-active bg-[#4574FF]/10 dark:bg-[#4574FF]/15 text-[#4574FF] shadow-sm"
+            ? "app-nav-item-active bg-[#10b981]/10 dark:bg-[#10b981]/15 text-[#10b981] shadow-sm"
             : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
         }`}
       >
         <Icon
-          className={`h-[15px] w-[15px] shrink-0 transition-colors ${active ? "text-[#4574FF]" : "text-slate-400 dark:text-slate-500 group-hover:text-slate-600 dark:group-hover:text-slate-300"}`}
+          className={`h-[15px] w-[15px] shrink-0 transition-colors ${active ? "text-[#10b981]" : "text-slate-400 dark:text-slate-500 group-hover:text-slate-600 dark:group-hover:text-slate-300"}`}
         />
         <span className="flex-1 leading-none">{label}</span>
         {badge && (
@@ -709,7 +709,6 @@ function SidebarContent({
   const hasCommunity = discord || telegram;
   const userRole = String(user?.role ?? "user");
   const isAdmin = userRole === "admin";
-  const isSupportAdmin = userRole === "support_admin";
 
   return (
     <div className="app-sidebar-inner flex flex-col h-full overflow-hidden bg-white dark:bg-slate-900">
@@ -722,7 +721,7 @@ function SidebarContent({
           >
             <SkySmsLogoMark className="h-8 w-8 shrink-0" />
             <span className="font-display text-[16px] font-extrabold tracking-tight text-[#0a1628] dark:text-white">
-              SKY<span className="text-[#4574FF] ml-1">SMS</span>
+              SKY<span className="text-[#10b981] ml-1">SMS</span>
             </span>
           </span>
         </Link>
@@ -772,14 +771,12 @@ function SidebarContent({
           );
         })}
 
-        {(isAdmin || isSupportAdmin) && (
+        {isAdmin && (
           <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800">
             <div className="mb-1.5 px-3 text-[9.5px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.22em]">
               {t("admin")}
             </div>
-            {adminItems
-              .filter((item) => isAdmin || item.href === "/admin/support")
-              .map((item) => {
+            {adminItems.map((item) => {
                 const active =
                   location === item.href ||
                   (item.href !== "/admin" &&
@@ -844,7 +841,7 @@ function SidebarContent({
               target="_blank"
               rel="noopener noreferrer"
               onClick={onNav}
-              className="flex-1 flex items-center justify-center gap-1.5 h-8 rounded-xl border border-sky-200 dark:border-sky-800/50 bg-sky-50 dark:bg-sky-900/20 text-[11px] font-semibold text-sky-600 dark:text-sky-400 hover:bg-sky-100 dark:hover:bg-sky-900/40 transition-all duration-150"
+              className="flex-1 flex items-center justify-center gap-1.5 h-8 rounded-xl border border-emerald-200 dark:border-sky-800/50 bg-emerald-50 dark:bg-emerald-900/20 text-[11px] font-semibold text-sky-600 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-all duration-150"
             >
               <svg
                 className="h-3 w-3 shrink-0"
@@ -869,7 +866,7 @@ function SidebarContent({
         <Link href="/payments">
           <span
             onClick={onNav}
-            className="flex items-center gap-2 w-full h-11 px-4 rounded-xl bg-[#4574FF]/10 hover:bg-[#4574FF]/18 border border-[#4574FF]/20 text-[13px] font-bold text-[#4574FF] transition-all cursor-pointer"
+            className="flex items-center gap-2 w-full h-11 px-4 rounded-xl bg-[#10b981]/10 hover:bg-[#10b981]/18 border border-[#10b981]/20 text-[13px] font-bold text-[#10b981] transition-all cursor-pointer"
             data-testid="link-buy-credits"
           >
             <Plus className="h-4 w-4 shrink-0" />
@@ -902,7 +899,7 @@ function SidebarContent({
           <div className="flex items-center gap-2.5 px-1">
             <Avatar className="h-8 w-8 border border-slate-200 dark:border-slate-700 shrink-0">
               <AvatarImage src={user.avatarUrl} />
-              <AvatarFallback className="text-[11px] font-bold bg-[#4574FF]/10 text-[#4574FF]">
+              <AvatarFallback className="text-[11px] font-bold bg-[#10b981]/10 text-[#10b981]">
                 {user.name?.charAt(0).toUpperCase() || "U"}
               </AvatarFallback>
             </Avatar>
@@ -1025,7 +1022,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </button>
           <div className="flex items-center gap-2 cursor-pointer">
             <span className="font-display text-[15px] font-extrabold tracking-tight text-[#0a1628] dark:text-white">
-              SKY<span className="text-[#4574FF] ml-0.5">SMS</span>
+              SKY<span className="text-[#10b981] ml-0.5">SMS</span>
             </span>
           </div>
           <div className="flex items-center gap-1 ml-auto">

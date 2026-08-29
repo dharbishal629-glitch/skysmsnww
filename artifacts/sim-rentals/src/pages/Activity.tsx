@@ -45,9 +45,9 @@ const EVENT_CONFIG: Record<
   login: {
     icon: LogIn,
     label: "Sign In",
-    color: "text-blue-600",
-    bg: "bg-blue-50 border-blue-200",
-    darkBg: "dark:bg-blue-900/20 dark:border-blue-700/40",
+    color: "text-emerald-600",
+    bg: "bg-emerald-50 border-emerald-200",
+    darkBg: "dark:bg-emerald-900/20 dark:border-blue-700/40",
   },
   rental_created: {
     icon: Phone,
@@ -88,8 +88,8 @@ const EVENT_CONFIG: Record<
     icon: Key,
     label: "API Key Created",
     color: "text-violet-600",
-    bg: "bg-violet-50 border-violet-200",
-    darkBg: "dark:bg-violet-900/20 dark:border-violet-700/40",
+    bg: "bg-teal-50 border-teal-200",
+    darkBg: "dark:bg-teal-900/20 dark:border-violet-700/40",
   },
   api_key_deleted: {
     icon: Key,
@@ -115,9 +115,9 @@ const EVENT_CONFIG: Record<
   profile_updated: {
     icon: User,
     label: "Profile Updated",
-    color: "text-blue-600",
-    bg: "bg-blue-50 border-blue-200",
-    darkBg: "dark:bg-blue-900/20 dark:border-blue-700/40",
+    color: "text-emerald-600",
+    bg: "bg-emerald-50 border-emerald-200",
+    darkBg: "dark:bg-emerald-900/20 dark:border-blue-700/40",
   },
   password_changed: {
     icon: Shield,
@@ -283,7 +283,7 @@ export default function Activity() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-[#4574FF] mb-1">
+          <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-[#10b981] mb-1">
             Account History
           </p>
           <h1 className="font-display text-[22px] font-bold tracking-tight text-slate-900 dark:text-white">
@@ -312,7 +312,7 @@ export default function Activity() {
             onClick={() => setFilter(ft.value)}
             className={`h-8 px-3.5 rounded-lg text-[12px] font-semibold transition-all ${
               filter === ft.value
-                ? "bg-[#4574FF] text-white shadow-sm"
+                ? "bg-[#10b981] text-white shadow-sm"
                 : "bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-slate-600"
             }`}
           >

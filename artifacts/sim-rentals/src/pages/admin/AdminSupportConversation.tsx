@@ -117,13 +117,13 @@ const statusMap: Record<
 > = {
   open: {
     label: "Open",
-    cls: "text-sky-400 border-sky-500/20 bg-sky-500/10",
+    cls: "text-emerald-400 border-emerald-500/20 bg-emerald-500/10",
     icon: Clock,
     glow: "rgba(245,158,11,0.3)",
   },
   in_progress: {
     label: "In Progress",
-    cls: "text-blue-400 border-blue-500/20 bg-blue-500/10",
+    cls: "text-emerald-400 border-emerald-500/20 bg-emerald-500/10",
     icon: Clock,
     glow: "rgba(59,130,246,0.3)",
   },
@@ -143,14 +143,16 @@ const statusMap: Record<
 
 const priorityCls: Record<string, string> = {
   low: "text-slate-500 border-white/10",
-  normal: "text-blue-400 border-blue-500/20",
-  high: "text-sky-400 border-sky-500/20",
+  normal: "text-emerald-400 border-emerald-500/20",
+  high: "text-emerald-400 border-emerald-500/20",
   urgent: "text-red-400 border-red-500/20",
 };
 
 export default function AdminSupportConversation() {
   const { id } = useParams<{ id: string }>();
-  const [, setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
+  const portalPath = location.startsWith("/supportportal");
+  const supportListPath = portalPath ? "/supportportal" : "/admin/support";
   const { toast } = useToast();
   const qc = useQueryClient();
   const [reply, setReply] = useState("");
@@ -269,7 +271,7 @@ export default function AdminSupportConversation() {
     return (
       <div className="max-w-2xl mx-auto space-y-4 page-enter">
         <button
-          onClick={() => setLocation("/admin/support")}
+           onClick={() => setLocation(supportListPath)}
           className="flex items-center gap-2 text-[13px] text-slate-500 hover:text-white transition-colors"
         >
           <ArrowLeft className="h-4 w-4" /> Back to Support
@@ -296,7 +298,7 @@ export default function AdminSupportConversation() {
     >
       {/* Back */}
       <button
-        onClick={() => setLocation("/admin/support")}
+         onClick={() => setLocation(supportListPath)}
         className="flex items-center gap-2 text-[12px] text-slate-500 hover:text-white transition-colors mb-4 self-start"
       >
         <ArrowLeft className="h-3.5 w-3.5" /> Back to Support
@@ -304,16 +306,16 @@ export default function AdminSupportConversation() {
 
       {/* Ticket info card */}
       <div className="rounded-2xl border border-white/[0.08] bg-[#0d1117] overflow-hidden mb-4 shrink-0">
-        <div className="h-px bg-blue-500/30" />
+        <div className="h-px bg-emerald-500/30" />
         <div className="p-4 flex items-start gap-3">
-          <div className="h-10 w-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0">
-            <User className="h-4.5 w-4.5 text-blue-400" />
+          <div className="h-10 w-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
+            <User className="h-4.5 w-4.5 text-emerald-400" />
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap mb-0.5">
               <span className="text-[14px] font-bold text-white">
                 {ticket.displayId || ticket.ticketNumber ? (
-                  <span className="font-mono text-[10px] text-blue-400 mr-2">
+                  <span className="font-mono text-[10px] text-emerald-400 mr-2">
                     #{ticket.displayId ?? ticket.ticketNumber}
                   </span>
                 ) : null}
@@ -370,7 +372,7 @@ export default function AdminSupportConversation() {
                     isAdmin
                       ? {
                           background:
-                            "linear-gradient(135deg, #2563eb, #1d4ed8)",
+                            "linear-gradient(135deg, #10b981, #059669)",
                           boxShadow:
                             "0 4px 16px rgba(37,99,235,0.35), inset 0 1px 0 rgba(255,255,255,0.12)",
                         }
@@ -379,8 +381,8 @@ export default function AdminSupportConversation() {
                 >
                   {isAdmin && (
                     <div className="flex items-center gap-1.5 mb-1.5">
-                      <Shield className="h-3 w-3 text-blue-300/80" />
-                      <span className="text-[10px] font-bold text-blue-300/80 uppercase tracking-wide">
+                      <Shield className="h-3 w-3 text-emerald-300/80" />
+                      <span className="text-[10px] font-bold text-emerald-300/80 uppercase tracking-wide">
                         Admin
                       </span>
                     </div>
@@ -468,7 +470,7 @@ export default function AdminSupportConversation() {
           <button
             type="button"
             onClick={() => fileRef.current?.click()}
-            className="h-12 w-12 self-end rounded-xl border border-white/[0.08] bg-white/[0.04] text-slate-500 hover:text-blue-300 flex items-center justify-center"
+            className="h-12 w-12 self-end rounded-xl border border-white/[0.08] bg-white/[0.04] text-slate-500 hover:text-emerald-300 flex items-center justify-center"
           >
             <ImageIcon className="h-4 w-4" />
           </button>
@@ -484,14 +486,14 @@ export default function AdminSupportConversation() {
             }}
             placeholder="Type a reply… (Enter to send, Shift+Enter for newline)"
             rows={3}
-            className="flex-1 rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-3 text-[12.5px] text-white placeholder:text-slate-700 outline-none focus:border-blue-500/40 focus:ring-2 focus:ring-blue-500/[0.06] resize-none transition-all"
+            className="flex-1 rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-3 text-[12.5px] text-white placeholder:text-slate-700 outline-none focus:border-emerald-500/40 focus:ring-2 focus:ring-emerald-500/[0.06] resize-none transition-all"
           />
           <button
             onClick={sendReply}
             disabled={(!reply.trim() && !pendingImage) || mutation.isPending}
             className="w-12 self-end flex items-center justify-center rounded-xl text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all active:scale-95 shrink-0 aspect-square"
             style={{
-              background: "linear-gradient(135deg, #2563eb, #1d4ed8)",
+              background: "linear-gradient(135deg, #10b981, #059669)",
               boxShadow: reply.trim()
                 ? "0 4px 14px rgba(37,99,235,0.5), inset 0 1px 0 rgba(255,255,255,0.15)"
                 : "none",
@@ -506,7 +508,7 @@ export default function AdminSupportConversation() {
           </button>
         </div>
         {pendingImage && (
-          <div className="mt-2 flex items-center gap-2 text-[11px] text-blue-300">
+          <div className="mt-2 flex items-center gap-2 text-[11px] text-emerald-300">
             <img
               src={pendingImage}
               alt="Pending attachment"
@@ -522,7 +524,7 @@ export default function AdminSupportConversation() {
             <button
               type="button"
               onClick={sendAttachment}
-              className="ml-auto text-blue-300 font-semibold"
+              className="ml-auto text-emerald-300 font-semibold"
             >
               Send image
             </button>

@@ -60,12 +60,12 @@ const statusMap: Record<
 > = {
   open: {
     label: "Open",
-    cls: "text-sky-400 border-sky-500/20 bg-sky-500/10",
+    cls: "text-emerald-400 border-emerald-500/20 bg-emerald-500/10",
     icon: Clock,
   },
   in_progress: {
     label: "In Progress",
-    cls: "text-blue-400 border-blue-500/20 bg-blue-500/10",
+    cls: "text-emerald-400 border-emerald-500/20 bg-emerald-500/10",
     icon: Clock,
   },
   resolved: {
@@ -101,12 +101,12 @@ function TicketRow({ ticket }: { ticket: AdminTicket }) {
             {ticket.subject}
           </span>
           {(ticket.displayId || ticket.ticketNumber) && (
-            <span className="font-mono text-[10px] text-blue-400 shrink-0">
+            <span className="font-mono text-[10px] text-emerald-400 shrink-0">
               #{ticket.displayId ?? ticket.ticketNumber}
             </span>
           )}
           {hasUserReplies && (
-            <span className="h-1.5 w-1.5 rounded-full bg-blue-400 shrink-0 animate-pulse" />
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shrink-0 animate-pulse" />
           )}
         </div>
         <div className="flex items-center gap-1.5 text-[11px] text-slate-500">
@@ -208,7 +208,7 @@ export default function AdminSupport() {
             placeholder="Search tickets…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full h-9 rounded-xl border border-white/[0.08] bg-white/[0.03] pl-9 pr-4 text-[12px] text-white placeholder:text-slate-700 outline-none focus:border-blue-500/40 transition-all"
+            className="w-full h-9 rounded-xl border border-white/[0.08] bg-white/[0.03] pl-9 pr-4 text-[12px] text-white placeholder:text-slate-700 outline-none focus:border-emerald-500/40 transition-all"
           />
         </div>
         <div className="flex items-center gap-1 rounded-xl border border-white/[0.06] bg-white/[0.02] p-0.5">
@@ -218,14 +218,14 @@ export default function AdminSupport() {
               onClick={() => setStatusFilter(key)}
               className={`px-3 py-1.5 rounded-lg text-[11px] font-semibold transition-all ${
                 statusFilter === key
-                  ? "bg-blue-600 text-white"
+                  ? "bg-emerald-600 text-white"
                   : "text-slate-500 hover:text-slate-300"
               }`}
             >
               {label}{" "}
               {count > 0 && (
                 <span
-                  className={`ml-0.5 text-[10px] ${statusFilter === key ? "text-blue-100/70" : "text-slate-700"}`}
+                  className={`ml-0.5 text-[10px] ${statusFilter === key ? "text-emerald-100/70" : "text-slate-700"}`}
                 >
                   {count}
                 </span>

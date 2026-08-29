@@ -30,7 +30,7 @@ const statusCls = (status: string) =>
   status === "completed" || status === "paid"
     ? "text-emerald-400 border-emerald-500/20 bg-emerald-500/10"
     : status === "pending"
-      ? "text-blue-400 border-blue-500/20 bg-blue-500/10"
+      ? "text-emerald-400 border-emerald-500/20 bg-emerald-500/10"
       : "text-red-400 border-red-500/20 bg-red-500/10";
 
 function TxModal({ tx, onClose }: { tx: Tx; onClose: () => void }) {
@@ -125,12 +125,12 @@ function TxModal({ tx, onClose }: { tx: Tx; onClose: () => void }) {
         onClick={(e) => e.stopPropagation()}
       >
         <div
-          className={`h-px ${isDeposit ? "bg-emerald-500/30" : "bg-blue-500/30"}`}
+          className={`h-px ${isDeposit ? "bg-emerald-500/30" : "bg-emerald-500/30"}`}
         />
         <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.05]">
           <div className="flex items-center gap-3">
             <div
-              className={`h-9 w-9 rounded-xl flex items-center justify-center shrink-0 ${isDeposit ? "bg-emerald-400/10 border border-emerald-400/20 text-emerald-400" : "bg-blue-400/10 border border-blue-400/20 text-blue-400"}`}
+              className={`h-9 w-9 rounded-xl flex items-center justify-center shrink-0 ${isDeposit ? "bg-emerald-400/10 border border-emerald-400/20 text-emerald-400" : "bg-emerald-400/10 border border-emerald-400/20 text-emerald-400"}`}
             >
               {isDeposit ? (
                 <ArrowUpRight className="h-4 w-4" />
@@ -296,7 +296,7 @@ export default function AdminTransactions() {
             {
               label: "Pending",
               value: String(stats.pending),
-              color: "text-blue-400",
+              color: "text-emerald-400",
             },
             {
               label: "Failed",
@@ -322,7 +322,7 @@ export default function AdminTransactions() {
           placeholder="Search by email, transaction ID, or type…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="h-10 w-full rounded-xl border border-white/[0.08] bg-white/[0.03] pl-9 pr-4 text-[13px] text-white placeholder:text-slate-600 outline-none focus:border-blue-500/30 transition-all"
+          className="h-10 w-full rounded-xl border border-white/[0.08] bg-white/[0.03] pl-9 pr-4 text-[13px] text-white placeholder:text-slate-600 outline-none focus:border-emerald-500/30 transition-all"
         />
       </div>
 
@@ -334,7 +334,7 @@ export default function AdminTransactions() {
             onClick={() => setFilter(key)}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-[11.5px] font-semibold transition-all ${
               filter === key
-                ? "bg-blue-600 border-blue-500/50 text-white"
+                ? "bg-emerald-600 border-emerald-500/50 text-white"
                 : "border-white/[0.07] bg-white/[0.02] text-slate-500 hover:text-slate-300 hover:border-white/[0.12]"
             }`}
           >
@@ -342,7 +342,7 @@ export default function AdminTransactions() {
             {label}
             {count > 0 && (
               <span
-                className={`text-[10px] rounded-full px-1.5 py-0 font-bold ${filter === key ? "bg-blue-500/40 text-blue-100" : "bg-white/[0.06] text-slate-600"}`}
+                className={`text-[10px] rounded-full px-1.5 py-0 font-bold ${filter === key ? "bg-emerald-500/40 text-emerald-100" : "bg-white/[0.06] text-slate-600"}`}
               >
                 {count}
               </span>
@@ -398,7 +398,7 @@ export default function AdminTransactions() {
                       className={`h-9 w-9 rounded-xl flex items-center justify-center shrink-0 border ${
                         isCredit
                           ? "bg-emerald-400/10 border-emerald-400/20 text-emerald-400"
-                          : "bg-blue-400/10 border-blue-400/20 text-blue-400"
+                          : "bg-emerald-400/10 border-emerald-400/20 text-emerald-400"
                       }`}
                     >
                       {isCredit ? (
@@ -430,7 +430,7 @@ export default function AdminTransactions() {
                         isFailed
                           ? "text-red-400/60 line-through"
                           : isPending
-                            ? "text-blue-400"
+                            ? "text-emerald-400"
                             : isCredit
                               ? "text-emerald-400"
                               : "text-white"

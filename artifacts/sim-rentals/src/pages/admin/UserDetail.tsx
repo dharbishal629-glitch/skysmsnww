@@ -349,7 +349,7 @@ export default function AdminUserDetail() {
           </p>
           <button
             onClick={() => setLocation("/admin/users")}
-            className="mt-4 text-[12px] text-sky-400 hover:text-sky-300 transition-colors"
+            className="mt-4 text-[12px] text-emerald-400 hover:text-emerald-300 transition-colors"
           >
             ← Back to Users
           </button>
@@ -358,9 +358,9 @@ export default function AdminUserDetail() {
         <>
           {/* Profile card */}
           <div className="rounded-2xl border border-white/[0.08] bg-[#0d1117] overflow-hidden">
-            <div className="h-px bg-blue-500/30" />
+            <div className="h-px bg-emerald-500/30" />
             <div className="p-5 flex items-start gap-4">
-              <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-blue-500/20 to-blue-600/10 border border-blue-500/20 flex items-center justify-center shrink-0 text-blue-400 font-black text-[22px] uppercase">
+              <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-emerald-600/10 border border-emerald-500/20 flex items-center justify-center shrink-0 text-emerald-400 font-black text-[22px] uppercase">
                 {data.name.charAt(0)}
               </div>
               <div className="flex-1 min-w-0">
@@ -374,7 +374,7 @@ export default function AdminUserDetail() {
                     {data.status}
                   </span>
                   <span
-                    className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${data.role === "admin" ? "text-blue-400 border-blue-500/20 bg-blue-500/10" : "text-slate-500 border-white/10 bg-white/[0.04]"}`}
+                    className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${data.role === "admin" ? "text-emerald-400 border-emerald-500/20 bg-emerald-500/10" : "text-slate-500 border-white/10 bg-white/[0.04]"}`}
                   >
                     {data.role}
                   </span>
@@ -397,7 +397,7 @@ export default function AdminUserDetail() {
                 label: "Rentals",
                 value: String(data.rentals),
                 icon: Phone,
-                color: "text-blue-400",
+                color: "text-emerald-400",
               },
               {
                 label: "Joined",
@@ -496,13 +496,13 @@ export default function AdminUserDetail() {
                 placeholder="+10 or -5"
                 value={creditInput}
                 onChange={(e) => setCreditInput(e.target.value)}
-                className="flex-1 h-10 rounded-xl border border-white/[0.08] bg-white/[0.03] px-3 text-[13px] text-white text-right placeholder:text-slate-600 outline-none focus:border-blue-500/30 transition-all"
+                className="flex-1 h-10 rounded-xl border border-white/[0.08] bg-white/[0.03] px-3 text-[13px] text-white text-right placeholder:text-slate-600 outline-none focus:border-emerald-500/30 transition-all"
                 onKeyDown={(e) => e.key === "Enter" && addCredits()}
               />
               <button
                 onClick={addCredits}
                 disabled={saving}
-                className="h-10 px-5 rounded-xl bg-blue-600 text-[13px] font-bold text-white hover:bg-blue-500 transition-all disabled:opacity-50 flex items-center gap-2"
+                className="h-10 px-5 rounded-xl bg-emerald-600 text-[13px] font-bold text-white hover:bg-emerald-500 transition-all disabled:opacity-50 flex items-center gap-2"
                 style={{
                   boxShadow: "0 4px 14px rgba(37,99,235,0.4)",
                   transform: "translateY(0)",
@@ -562,7 +562,7 @@ export default function AdminUserDetail() {
             <button
               onClick={changeRole}
               disabled={roleLoading}
-              className="flex-1 h-11 flex items-center justify-center gap-2 rounded-xl border border-blue-500/20 bg-blue-500/[0.06] text-[13px] font-semibold text-blue-400 hover:bg-blue-500/[0.12] transition-all disabled:opacity-50"
+              className="flex-1 h-11 flex items-center justify-center gap-2 rounded-xl border border-emerald-500/20 bg-emerald-500/[0.06] text-[13px] font-semibold text-emerald-400 hover:bg-emerald-500/[0.12] transition-all disabled:opacity-50"
               style={{ boxShadow: "0 4px 14px rgba(59,130,246,0.15)" }}
             >
               {data.role === "admin" ? (

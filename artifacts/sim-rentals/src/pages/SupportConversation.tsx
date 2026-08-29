@@ -88,12 +88,12 @@ const STATUS_CONFIG: Record<
 > = {
   open: {
     label: "Open",
-    cls: "text-sky-400 border-sky-500/25 bg-sky-500/10",
+    cls: "text-emerald-400 border-emerald-500/25 bg-emerald-500/10",
     icon: Clock,
   },
   in_progress: {
     label: "In Progress",
-    cls: "text-blue-400 border-blue-500/25 bg-blue-500/10",
+    cls: "text-emerald-400 border-emerald-500/25 bg-emerald-500/10",
     icon: AlertCircle,
   },
   resolved: {
@@ -233,7 +233,7 @@ export default function SupportConversation() {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-24 gap-4">
-        <div className="h-10 w-10 animate-spin rounded-full border-2 border-sky-500 border-t-transparent" />
+        <div className="h-10 w-10 animate-spin rounded-full border-2 border-emerald-500 border-t-transparent" />
         <p className="text-[12px] text-slate-600">Loading conversation…</p>
       </div>
     );
@@ -247,7 +247,7 @@ export default function SupportConversation() {
         </p>
         <button
           onClick={() => setLocation("/support")}
-          className="h-10 px-5 rounded-xl bg-sky-500 text-[13px] font-bold text-white hover:bg-sky-400 transition-all"
+          className="h-10 px-5 rounded-xl bg-emerald-500 text-[13px] font-bold text-white hover:bg-emerald-400 transition-all"
           style={{
             boxShadow:
               "0 4px 14px rgba(14,165,233,0.35), inset 0 1px 0 rgba(255,255,255,0.15)",
@@ -293,7 +293,7 @@ export default function SupportConversation() {
         <div className="flex-1 min-w-0">
           <div className="text-[14px] font-bold text-white truncate">
             {ticket.displayId || ticket.ticketNumber ? (
-              <span className="font-mono text-[10px] text-sky-400 mr-2">
+              <span className="font-mono text-[10px] text-emerald-400 mr-2">
                 #{ticket.displayId ?? ticket.ticketNumber}
               </span>
             ) : null}
@@ -340,7 +340,7 @@ export default function SupportConversation() {
                     !fromAdmin
                       ? {
                           background:
-                            "linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%)",
+                            "linear-gradient(135deg, #0ea5e9 0%, #10b981 100%)",
                           boxShadow:
                             "0 4px 16px rgba(14,165,233,0.25), inset 0 1px 0 rgba(255,255,255,0.15)",
                         }
@@ -404,7 +404,7 @@ export default function SupportConversation() {
             </div>
             <button
               onClick={() => setLocation("/support")}
-              className="h-9 px-3.5 rounded-xl border border-sky-500/25 bg-sky-500/[0.08] text-[12px] font-semibold text-sky-400 hover:bg-sky-500/[0.15] transition-all flex items-center gap-1.5 shrink-0"
+              className="h-9 px-3.5 rounded-xl border border-emerald-500/25 bg-emerald-500/[0.08] text-[12px] font-semibold text-emerald-400 hover:bg-emerald-500/[0.15] transition-all flex items-center gap-1.5 shrink-0"
               style={{
                 boxShadow:
                   "0 2px 8px rgba(14,165,233,0.15), inset 0 1px 0 rgba(255,255,255,0.06)",
@@ -460,7 +460,7 @@ export default function SupportConversation() {
               placeholder="Type a message… (Enter to send)"
               rows={1}
               maxLength={3000}
-              className="flex-1 rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-2.5 text-[13px] text-white placeholder:text-slate-600 outline-none focus:border-sky-500/35 transition-all resize-none leading-relaxed min-h-[40px] max-h-32"
+              className="flex-1 rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-2.5 text-[13px] text-white placeholder:text-slate-600 outline-none focus:border-emerald-500/35 transition-all resize-none leading-relaxed min-h-[40px] max-h-32"
               style={{ boxShadow: "inset 0 1px 3px rgba(0,0,0,0.2)" }}
               onInput={(e) => {
                 const el = e.currentTarget;
@@ -473,7 +473,7 @@ export default function SupportConversation() {
               disabled={sending || (!message.trim() && !pendingImage)}
               className="h-10 w-10 rounded-xl flex items-center justify-center text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed shrink-0 active:scale-95"
               style={{
-                background: "linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%)",
+                background: "linear-gradient(135deg, #0ea5e9 0%, #10b981 100%)",
                 boxShadow:
                   "0 4px 14px rgba(14,165,233,0.4), inset 0 1px 0 rgba(255,255,255,0.2), 0 0 0 1px rgba(14,165,233,0.3)",
               }}

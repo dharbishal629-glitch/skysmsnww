@@ -139,9 +139,9 @@ export function SearchableSelect({
           "h-11 w-full flex items-center gap-2.5 px-3.5 rounded-xl border border-white/[0.08] bg-white/[0.03]",
           "text-[13.5px] text-left transition-all duration-150",
           "hover:bg-white/[0.06] hover:border-white/[0.12]",
-          "focus:outline-none focus:border-[#4574FF]/40 focus:bg-[#4574FF]/[0.03]",
+          "focus:outline-none focus:border-[#10b981]/40 focus:bg-[#10b981]/[0.03]",
           "disabled:opacity-50 disabled:cursor-not-allowed",
-          open && "border-[#4574FF]/40 bg-[#4574FF]/[0.03]",
+          open && "border-[#10b981]/40 bg-[#10b981]/[0.03]",
           triggerClassName
         )}
         aria-expanded={open}
@@ -207,11 +207,11 @@ export function SearchableSelect({
                     className={cn(
                       "w-full flex items-center gap-2.5 px-3.5 py-2.5 text-left transition-colors duration-100",
                       "hover:bg-white/[0.05]",
-                      isSelected && "bg-[#4574FF]/[0.08]",
+                      isSelected && "bg-[#10b981]/[0.08]",
                       opt.disabled && "opacity-40 cursor-not-allowed"
                     )}
                   >
-                    <Check className={cn("h-3.5 w-3.5 shrink-0 text-[#4574FF] transition-opacity", isSelected ? "opacity-100" : "opacity-0")} />
+                    <Check className={cn("h-3.5 w-3.5 shrink-0 text-[#10b981] transition-opacity", isSelected ? "opacity-100" : "opacity-0")} />
                     <IconDisplay icon={opt.icon} />
                     {!opt.icon && <span className="h-4 w-4 shrink-0 rounded-sm bg-white/[0.06]" />}
                     <span className={cn("flex-1 text-[13px] truncate min-w-0", isSelected ? "text-white font-semibold" : "text-slate-300")}>

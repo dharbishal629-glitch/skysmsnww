@@ -32,7 +32,7 @@ function typeIcon(type: string) {
   if (type === "success") return <Check className="h-4 w-4 text-emerald-500" />;
   if (type === "warning")
     return <AlertCircle className="h-4 w-4 text-orange-400" />;
-  return <Info className="h-4 w-4 text-[#4574FF]" />;
+  return <Info className="h-4 w-4 text-[#10b981]" />;
 }
 
 function typeBg(type: string, read: boolean) {
@@ -42,7 +42,7 @@ function typeBg(type: string, read: boolean) {
     return "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-700/40";
   if (type === "warning")
     return "bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-700/40";
-  return "bg-[#4574FF]/10 border-[#4574FF]/25 dark:bg-[#4574FF]/15 dark:border-[#4574FF]/30";
+  return "bg-[#10b981]/10 border-[#10b981]/25 dark:bg-[#10b981]/15 dark:border-[#10b981]/30";
 }
 
 function timeAgo(d: string) {
@@ -170,13 +170,13 @@ export default function Notifications() {
 
           <Link href="/dashboard">
             <span className="flex items-center gap-2 cursor-pointer select-none">
-              <div className="h-7 w-7 rounded-lg bg-[#0a1628] dark:bg-[#4574FF]/20 dark:border dark:border-[#4574FF]/40 flex items-center justify-center shadow-md shrink-0">
+              <div className="h-7 w-7 rounded-lg bg-[#0a1628] dark:bg-[#10b981]/20 dark:border dark:border-[#10b981]/40 flex items-center justify-center shadow-md shrink-0">
                 <span className="text-white font-black text-[12px] tracking-tighter">
                   S
                 </span>
               </div>
               <span className="font-display text-[15px] font-extrabold tracking-tight text-[#0a1628] dark:text-white">
-                SKY<span className="text-[#4574FF] ml-0.5">SMS</span>
+                SKY<span className="text-[#10b981] ml-0.5">SMS</span>
               </span>
             </span>
           </Link>
@@ -189,7 +189,7 @@ export default function Notifications() {
               <button
                 onClick={markAllRead}
                 disabled={markingAll}
-                className="flex items-center gap-1.5 h-9 px-3 rounded-xl text-[12px] font-semibold text-slate-500 dark:text-slate-400 hover:text-[#4574FF] hover:bg-[#4574FF]/8 dark:hover:bg-[#4574FF]/15 transition-all disabled:opacity-50"
+                className="flex items-center gap-1.5 h-9 px-3 rounded-xl text-[12px] font-semibold text-slate-500 dark:text-slate-400 hover:text-[#10b981] hover:bg-[#10b981]/8 dark:hover:bg-[#10b981]/15 transition-all disabled:opacity-50"
                 title="Mark all as read"
               >
                 <CheckCheck className="h-3.5 w-3.5" />
@@ -213,7 +213,7 @@ export default function Notifications() {
       <div className="max-w-2xl mx-auto w-full px-4 pt-6 pb-2">
         <div className="flex items-end justify-between">
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-[#4574FF] mb-1">
+            <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-[#10b981] mb-1">
               Inbox
             </p>
             <h1 className="text-[22px] font-bold tracking-tight text-slate-900 dark:text-white">
@@ -269,7 +269,7 @@ export default function Notifications() {
                 className={`w-full text-left flex gap-3.5 p-4 rounded-2xl border transition-all hover:shadow-sm active:scale-[0.99] ${
                   n.read
                     ? "border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800/60"
-                    : "border-[#4574FF]/20 bg-[#4574FF]/[0.04] dark:bg-[#4574FF]/10 hover:bg-[#4574FF]/[0.07] dark:hover:bg-[#4574FF]/[0.15]"
+                    : "border-[#10b981]/20 bg-[#10b981]/[0.04] dark:bg-[#10b981]/10 hover:bg-[#10b981]/[0.07] dark:hover:bg-[#10b981]/[0.15]"
                 }`}
               >
                 {/* Icon */}
@@ -289,7 +289,7 @@ export default function Notifications() {
                     </span>
                     <div className="flex items-center gap-2 shrink-0 mt-0.5">
                       {!n.read && (
-                        <span className="h-2 w-2 rounded-full bg-[#4574FF]" />
+                        <span className="h-2 w-2 rounded-full bg-[#10b981]" />
                       )}
                       <span className="text-[11px] text-slate-400 dark:text-slate-500 whitespace-nowrap">
                         {timeAgo(n.createdAt)}
@@ -302,7 +302,7 @@ export default function Notifications() {
                     {n.message}
                   </p>
                   {n.link && (
-                    <span className="inline-block mt-1.5 text-[11px] font-semibold text-[#4574FF]">
+                    <span className="inline-block mt-1.5 text-[11px] font-semibold text-[#10b981]">
                       View →
                     </span>
                   )}

@@ -92,11 +92,11 @@ function ActiveTimer({ expiresAt }: { expiresAt: string }) {
       track: "bg-slate-200 dark:bg-slate-700",
     },
     sky: {
-      border: "border-sky-200 dark:border-sky-700/40",
-      bg: "bg-sky-50 dark:bg-sky-900/20",
-      icon: "text-sky-500",
-      text: "text-sky-700 dark:text-sky-400",
-      bar: "bg-sky-500",
+      border: "border-emerald-200 dark:border-sky-700/40",
+      bg: "bg-emerald-50 dark:bg-emerald-900/20",
+      icon: "text-emerald-500",
+      text: "text-sky-700 dark:text-emerald-400",
+      bar: "bg-emerald-500",
       track: "bg-slate-200 dark:bg-slate-700",
     },
     emerald: {
@@ -506,7 +506,7 @@ function PastRentalRow({ rental }: { rental: any }) {
           <Link
             href={`/rent?service=${rental.serviceCode}&country=${rental.countryCode}`}
           >
-            <button className="w-full h-8 rounded-xl bg-[#4574FF]/8 dark:bg-[#4574FF]/10 border border-[#4574FF]/20 text-[12px] font-semibold text-[#4574FF] hover:bg-[#4574FF]/15 transition-all flex items-center justify-center gap-1.5">
+            <button className="w-full h-8 rounded-xl bg-[#10b981]/8 dark:bg-[#10b981]/10 border border-[#10b981]/20 text-[12px] font-semibold text-[#10b981] hover:bg-[#10b981]/15 transition-all flex items-center justify-center gap-1.5">
               <ArrowRight className="h-3.5 w-3.5" /> Rent Again
             </button>
           </Link>
@@ -605,7 +605,7 @@ export default function Rentals() {
             Rent a temporary number to receive SMS verification codes.
           </p>
           <Link href="/rent">
-            <span className="inline-flex items-center gap-1.5 rounded-xl bg-[#4574FF] px-4 py-2.5 text-[12.5px] font-bold text-white hover:bg-[#3361e8] transition-colors cursor-pointer shadow-sm">
+            <span className="inline-flex items-center gap-1.5 rounded-xl bg-[#10b981] px-4 py-2.5 text-[12.5px] font-bold text-white hover:bg-[#059669] transition-colors cursor-pointer shadow-sm">
               <ArrowRight className="h-3.5 w-3.5" /> Rent Now
             </span>
           </Link>

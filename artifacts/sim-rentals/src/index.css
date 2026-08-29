@@ -7,6 +7,40 @@ html {
   overscroll-behavior: none;
 }
 
+/* Legacy utility aliases: every authenticated screen now uses the green
+   workspace palette, including older page-specific class names. */
+[data-sky-page] [class*="text-blue"],
+[data-sky-page] [class*="text-sky"],
+[data-sky-page] [class*="text-violet"] {
+  color: #34d399 !important;
+}
+
+[data-sky-page] [class*="bg-blue"],
+[data-sky-page] [class*="bg-sky"],
+[data-sky-page] [class*="bg-violet"] {
+  background-color: rgba(16, 185, 129, 0.12) !important;
+}
+
+[data-sky-page] [class*="border-blue"],
+[data-sky-page] [class*="border-sky"],
+[data-sky-page] [class*="border-violet"] {
+  border-color: rgba(16, 185, 129, 0.24) !important;
+}
+
+[data-sky-page] input,
+[data-sky-page] textarea,
+[data-sky-page] select {
+  color: #ecfdf5;
+  background-color: #0d1915;
+  border-color: rgba(16, 185, 129, 0.18);
+}
+
+[data-sky-page] button:not([class*="bg-red"]):not([class*="destructive"]),
+[data-sky-page] a[class*="bg-blue"],
+[data-sky-page] a[class*="bg-sky"] {
+  --tw-ring-color: rgba(16, 185, 129, 0.35);
+}
+
 body {
   background-color: #ffffff;
   overflow-x: clip;
@@ -1471,5 +1505,84 @@ body {
 
   .dark ::-webkit-scrollbar-thumb:hover {
     background: rgba(16, 185, 129, 0.35);
+  }
+}
+
+@media (max-width: 800px) {
+  .landing-container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .landing-header nav {
+    display: none;
+  }
+
+  .hero-section {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    padding-top: 8rem;
+    min-height: auto;
+  }
+
+  .hero-copy h1 {
+    font-size: 2.75rem;
+  }
+
+  .signal-preview {
+    max-width: 100%;
+  }
+
+  .steps,
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-intro h2,
+  .cta-section h2 {
+    font-size: 1.875rem;
+  }
+
+  .content-section,
+  #faq {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  .platform-list {
+    padding: 0 1rem;
+  }
+
+  .hero-actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-actions {
+    gap: 0.25rem;
+  }
+
+  .nav-signin {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .nav-cta {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .hero-copy h1 {
+    font-size: 2.35rem;
+  }
+
+  .preview-content {
+    padding: 1rem;
+  }
+
+  .number-tile strong {
+    font-size: 0.75rem;
   }
 }
