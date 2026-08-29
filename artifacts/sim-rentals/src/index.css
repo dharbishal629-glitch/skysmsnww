@@ -27,6 +27,73 @@ html {
   border-color: rgba(16, 185, 129, 0.24) !important;
 }
 
+/* New application skin: opaque, restrained, and shared by every page. */
+.app-shell {
+  background: #080f12 !important;
+}
+.app-sidebar,
+.app-sidebar-inner {
+  background: #0b1720 !important;
+}
+.app-content {
+  background-color: #080f12 !important;
+}
+.app-mobile-header {
+  background: #0b1720 !important;
+}
+.page-grid {
+  background-image:
+    linear-gradient(rgba(139, 179, 93, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 179, 93, 0.045) 1px, transparent 1px) !important;
+  background-size: 48px 48px !important;
+}
+[data-sky-page] {
+  background: transparent;
+}
+[data-sky-page] > * {
+  max-width: 100%;
+}
+[data-sky-page] .bg-white {
+  background-color: #0d202a !important;
+}
+[data-sky-page] .rounded-2xl,
+[data-sky-page] .rounded-xl {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+.app-nav-item {
+  min-height: 40px;
+  border: 1px solid transparent;
+}
+.app-nav-item:hover {
+  background: #102c28 !important;
+  border-color: #244047;
+}
+.app-nav-item-active {
+  background: #102c28 !important;
+  border-color: #31534f !important;
+  color: #b9d98b !important;
+  box-shadow: none !important;
+}
+.app-nav-item-active::before {
+  background: #8bb35d;
+}
+.app-sidebar-inner .bg-\[\#10b981\]\/10 {
+  background: #102c28 !important;
+}
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+button:not(.nav-cta):not(.primary-cta):not(.dash-primary-button):not(
+    .dash-outline-button
+  ) {
+  transition:
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
 /* Shared page surface: the dashboard is the source of truth for every
    authenticated screen. These rules normalize legacy page-specific markup. */
 .app-shell,
@@ -113,27 +180,85 @@ html {
 [data-sky-page] [class*="border-slate-"] {
   border-color: #244047 !important;
 }
-[data-sky-page] button:not([class*="bg-red"]):not([class*="destructive"]):not([class*="bg-emerald-5"]):not([class*="bg-emerald-6"]) {
+[data-sky-page]
+  button:not([class*="bg-red"]):not([class*="destructive"]):not(
+    [class*="bg-emerald-5"]
+  ):not([class*="bg-emerald-6"]) {
   background-color: #102c28 !important;
   border: 1px solid #31534f;
   color: #dce8e3 !important;
 }
-[data-sky-page] button:not([class*="bg-red"]):not([class*="destructive"]):hover {
+[data-sky-page]
+  button:not([class*="bg-red"]):not([class*="destructive"]):hover {
   background-color: #164238 !important;
   border-color: #8bb35d;
 }
 
 /* Smooth mobile navigation opening and closing. */
-@keyframes nav-overlay-in { from { opacity: 0; } to { opacity: 1; } }
-@keyframes nav-overlay-out { from { opacity: 1; } to { opacity: 0; } }
-@keyframes nav-drawer-in { from { transform: translateX(-100%); opacity: .6; } to { transform: translateX(0); opacity: 1; } }
-@keyframes nav-drawer-out { from { transform: translateX(0); opacity: 1; } to { transform: translateX(-100%); opacity: .6; } }
-.overlay-fade-in { animation: nav-overlay-in .22s ease-out both; }
-.overlay-fade-out { animation: nav-overlay-out .22s ease-in both; }
-.sidebar-slide-in { animation: nav-drawer-in .28s cubic-bezier(.22,1,.36,1) both; }
-.sidebar-slide-out { animation: nav-drawer-out .22s ease-in both; }
-.app-nav-item-active { position: relative; background: #102c28 !important; color: #8bb35d !important; border-radius: .75rem; }
-.app-nav-item-active::before { content: ""; position: absolute; left: 0; top: 22%; bottom: 22%; width: 3px; border-radius: 0 3px 3px 0; background: #8bb35d; }
+@keyframes nav-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes nav-overlay-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes nav-drawer-in {
+  from {
+    transform: translateX(-100%);
+    opacity: 0.6;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes nav-drawer-out {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0.6;
+  }
+}
+.overlay-fade-in {
+  animation: nav-overlay-in 0.22s ease-out both;
+}
+.overlay-fade-out {
+  animation: nav-overlay-out 0.22s ease-in both;
+}
+.sidebar-slide-in {
+  animation: nav-drawer-in 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.sidebar-slide-out {
+  animation: nav-drawer-out 0.22s ease-in both;
+}
+.app-nav-item-active {
+  position: relative;
+  background: #102c28 !important;
+  color: #8bb35d !important;
+  border-radius: 0.75rem;
+}
+.app-nav-item-active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 22%;
+  bottom: 22%;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: #8bb35d;
+}
 
 /* Dashboard layout */
 .dashboard-page {
