@@ -214,7 +214,7 @@ function IncidentCard({
             <button
               onClick={() => addUpdate.mutate()}
               disabled={!updateBody.trim() || addUpdate.isPending}
-              className="flex items-center gap-1.5 h-8 px-4 rounded-lg bg-sky-600 hover:bg-emerald-500 disabled:opacity-40 text-[12px] font-semibold text-white transition-colors"
+              className="flex items-center gap-1.5 h-8 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 text-[12px] font-semibold text-white transition-colors"
             >
               <Send className="h-3 w-3" /> Post
             </button>
@@ -385,7 +385,7 @@ export default function AdminStatusIncidents() {
             disabled={
               !form.title.trim() || !form.body.trim() || createInc.isPending
             }
-            className="h-10 px-6 rounded-xl text-[13px] font-bold text-white bg-sky-600 hover:bg-emerald-500 disabled:opacity-40 transition-colors"
+            className="h-10 px-6 rounded-xl text-[13px] font-bold text-white bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 transition-colors"
           >
             {createInc.isPending ? "Creating…" : "Create Incident"}
           </button>

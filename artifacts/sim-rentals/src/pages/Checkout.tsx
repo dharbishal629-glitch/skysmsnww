@@ -381,7 +381,7 @@ export default function Checkout() {
                 }}
               />
               <span
-                className={`text-[10px] font-bold ${selectedCoin === coin ? "text-sky-600 dark:text-emerald-400" : "text-slate-600 dark:text-slate-400"}`}
+                className={`text-[10px] font-bold ${selectedCoin === coin ? "text-emerald-600 dark:text-emerald-400" : "text-slate-600 dark:text-slate-400"}`}
               >
                 {coin}
               </span>
@@ -392,7 +392,7 @@ export default function Checkout() {
           ))}
         </div>
         {selectedCoin && (
-          <div className="mt-2 text-[11px] text-sky-600 dark:text-emerald-400/80 flex items-center gap-1.5">
+          <div className="mt-2 text-[11px] text-emerald-600 dark:text-emerald-400/80 flex items-center gap-1.5">
             <CheckCircle2 className="h-3 w-3" /> Paying with {selectedCoin} —
             OxaPay will show the exact amount
           </div>

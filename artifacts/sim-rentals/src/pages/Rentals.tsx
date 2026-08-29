@@ -92,10 +92,10 @@ function ActiveTimer({ expiresAt }: { expiresAt: string }) {
       track: "bg-slate-200 dark:bg-slate-700",
     },
     sky: {
-      border: "border-emerald-200 dark:border-sky-700/40",
+      border: "border-emerald-200 dark:border-emerald-700/40",
       bg: "bg-emerald-50 dark:bg-emerald-900/20",
       icon: "text-emerald-500",
-      text: "text-sky-700 dark:text-emerald-400",
+      text: "text-emerald-700 dark:text-emerald-400",
       bar: "bg-emerald-500",
       track: "bg-slate-200 dark:bg-slate-700",
     },

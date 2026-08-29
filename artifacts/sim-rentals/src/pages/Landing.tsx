@@ -171,7 +171,7 @@ export default function Landing() {
   }, []);
 
   return (
-    <div className="landing-page">
+    <div className="landing-page green-dashboard-theme">
       <div className="landing-noise" aria-hidden />
       <header className={`landing-header ${scrolled ? "is-scrolled" : ""}`}>
         <div className="landing-container nav-inner">

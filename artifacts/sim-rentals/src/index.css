@@ -27,6 +27,79 @@ html {
   border-color: rgba(16, 185, 129, 0.24) !important;
 }
 
+/* Shared page surface: the dashboard is the source of truth for every
+   authenticated screen. These rules normalize legacy page-specific markup. */
+.app-shell,
+.app-content,
+.app-sidebar,
+.app-mobile-header {
+  color: #e5eee9;
+}
+.app-content {
+  background-color: #080f12 !important;
+}
+.app-sidebar-inner,
+.app-mobile-header {
+  background: #0d1728 !important;
+}
+.app-sidebar {
+  border-color: rgba(112, 151, 154, 0.2) !important;
+}
+.app-mobile-header {
+  border-color: rgba(112, 151, 154, 0.2) !important;
+}
+
+[data-sky-page] {
+  color: #dce8e3;
+}
+[data-sky-page] h1,
+[data-sky-page] h2,
+[data-sky-page] h3,
+[data-sky-page] h4 {
+  color: #f2f8f4 !important;
+  font-family: var(--app-font-display);
+}
+[data-sky-page] p,
+[data-sky-page] label,
+[data-sky-page] small {
+  color: #91a09d;
+}
+[data-sky-page] [class~="rounded-2xl"],
+[data-sky-page] [class~="rounded-xl"] {
+  border-color: rgba(112, 151, 154, 0.24) !important;
+}
+[data-sky-page] [class~="bg-white"],
+[data-sky-page] [class~="bg-slate-50"],
+[data-sky-page] [class~="bg-slate-100"] {
+  background-color: #0d202a !important;
+}
+[data-sky-page] [class~="text-slate-900"],
+[data-sky-page] [class~="text-slate-800"],
+[data-sky-page] [class~="text-slate-700"] {
+  color: #e7f1ed !important;
+}
+[data-sky-page] [class~="text-slate-500"],
+[data-sky-page] [class~="text-slate-400"],
+[data-sky-page] [class~="text-slate-600"] {
+  color: #91a09d !important;
+}
+[data-sky-page] [class~="shadow-sm"],
+[data-sky-page] [class~="shadow-md"] {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18) !important;
+}
+[data-sky-page] button[class*="bg-slate-900"],
+[data-sky-page] button[class*="bg-emerald-500"],
+[data-sky-page] button[class*="bg-emerald-600"] {
+  background: #10b981 !important;
+  color: #052e16 !important;
+  border-color: #34d399 !important;
+}
+[data-sky-page] button[class*="bg-slate-900"]:hover,
+[data-sky-page] button[class*="bg-emerald-500"]:hover,
+[data-sky-page] button[class*="bg-emerald-600"]:hover {
+  background: #34d399 !important;
+}
+
 /* Dashboard layout */
 .dashboard-page {
   max-width: 1160px;

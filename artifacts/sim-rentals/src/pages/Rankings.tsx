@@ -49,9 +49,9 @@ const TIERS = [
     discount: 5,
     color: "#38bdf8",
     accentColor: "#38bdf8",
-    borderClass: "border-emerald-200 dark:border-sky-700/50",
+    borderClass: "border-emerald-200 dark:border-emerald-700/50",
     bgClass: "bg-emerald-50 dark:bg-emerald-900/20",
-    textClass: "text-sky-700 dark:text-emerald-300",
+    textClass: "text-emerald-700 dark:text-emerald-300",
     description: "5% off every number rental. Priority support access.",
   },
   {

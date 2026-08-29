@@ -35,7 +35,7 @@ function StatusBadge({ status }: { status: string }) {
     );
   if (status === "pending")
     return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-sky-600 dark:text-emerald-400 border border-emerald-400/30 dark:border-emerald-500/20">
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-400/30 dark:border-emerald-500/20">
         <Clock className="h-2.5 w-2.5" /> Processing
       </span>
     );
@@ -333,7 +333,7 @@ export default function Payments() {
                 disabled={checkingOut === amount}
                 className={`relative h-11 rounded-xl border text-[13px] font-bold transition-all active:scale-[0.97] ${
                   popular
-                    ? "border-emerald-500/40 bg-emerald-500/10 text-sky-600 dark:text-emerald-300 hover:bg-emerald-500/[0.18]"
+                    ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-600 dark:text-emerald-300 hover:bg-emerald-500/[0.18]"
                     : "border-slate-200 dark:border-white/[0.08] bg-white dark:bg-white/[0.03] text-slate-800 dark:text-white hover:border-slate-300 dark:hover:border-white/[0.16] hover:bg-slate-50 dark:hover:bg-white/[0.06]"
                 }`}
               >

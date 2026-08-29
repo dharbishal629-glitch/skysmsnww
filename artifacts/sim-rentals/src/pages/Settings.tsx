@@ -242,7 +242,7 @@ function ProfileSection() {
                 <button
                   onClick={save}
                   disabled={saving}
-                  className="h-10 px-4 rounded-xl bg-[#10b981] text-white text-[12.5px] font-bold hover:bg-blue-700 transition-all disabled:opacity-50 flex items-center gap-1.5"
+                  className="h-10 px-4 rounded-xl bg-[#10b981] text-white text-[12.5px] font-bold hover:bg-emerald-700 transition-all disabled:opacity-50 flex items-center gap-1.5"
                 >
                   {saving ? (
                     <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -396,7 +396,7 @@ function PasswordSection() {
         <button
           onClick={save}
           disabled={saving}
-          className="h-10 px-5 rounded-xl bg-[#10b981] text-white text-[13px] font-bold hover:bg-blue-700 transition-all disabled:opacity-50 flex items-center gap-2"
+          className="h-10 px-5 rounded-xl bg-[#10b981] text-white text-[13px] font-bold hover:bg-emerald-700 transition-all disabled:opacity-50 flex items-center gap-2"
         >
           {saving && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
           {saving ? "Saving…" : "Update password"}
@@ -654,7 +654,7 @@ function TwoFASection() {
               <button
                 onClick={verifySetup}
                 disabled={verifying || code.length !== 6}
-                className="h-11 px-5 rounded-xl bg-[#10b981] text-white text-[13px] font-bold hover:bg-blue-700 transition-all disabled:opacity-50 flex items-center gap-2"
+                className="h-11 px-5 rounded-xl bg-[#10b981] text-white text-[13px] font-bold hover:bg-emerald-700 transition-all disabled:opacity-50 flex items-center gap-2"
               >
                 {verifying && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
                 Activate 2FA
@@ -695,7 +695,7 @@ function TwoFASection() {
           </div>
           <button
             onClick={startSetup}
-            className="flex items-center gap-2 h-10 px-5 rounded-xl bg-[#10b981] text-white text-[13px] font-bold hover:bg-blue-700 transition-all shadow-sm"
+            className="flex items-center gap-2 h-10 px-5 rounded-xl bg-[#10b981] text-white text-[13px] font-bold hover:bg-emerald-700 transition-all shadow-sm"
           >
             <QrCode className="h-4 w-4" /> Enable 2FA
           </button>
@@ -871,7 +871,7 @@ function ApiKeysSection() {
               <button
                 onClick={createKey}
                 disabled={creating || !newName.trim()}
-                className="h-9 px-5 rounded-xl bg-[#10b981] text-[13px] font-semibold text-white hover:bg-blue-700 transition-colors disabled:opacity-40"
+                className="h-9 px-5 rounded-xl bg-[#10b981] text-[13px] font-semibold text-white hover:bg-emerald-700 transition-colors disabled:opacity-40"
               >
                 {creating ? "Generating…" : "Generate"}
               </button>

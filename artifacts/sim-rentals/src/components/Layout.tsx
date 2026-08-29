@@ -777,21 +777,21 @@ function SidebarContent({
               {t("admin")}
             </div>
             {adminItems.map((item) => {
-                const active =
-                  location === item.href ||
-                  (item.href !== "/admin" &&
-                    location.startsWith(item.href + "/"));
-                return (
-                  <NavItem
-                    key={item.href}
-                    href={item.href}
-                    label={item.label}
-                    icon={item.icon}
-                    active={active}
-                    onClick={onNav}
-                  />
-                );
-              })}
+              const active =
+                location === item.href ||
+                (item.href !== "/admin" &&
+                  location.startsWith(item.href + "/"));
+              return (
+                <NavItem
+                  key={item.href}
+                  href={item.href}
+                  label={item.label}
+                  icon={item.icon}
+                  active={active}
+                  onClick={onNav}
+                />
+              );
+            })}
           </div>
         )}
       </div>

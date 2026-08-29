@@ -82,7 +82,7 @@ const STATUS_CONFIG: Record<
   },
   in_progress: {
     label: "In Progress",
-    cls: "text-violet-700 bg-teal-50 border-teal-200",
+    cls: "text-teal-700 bg-teal-50 border-teal-200",
     icon: AlertCircle,
   },
   resolved: {

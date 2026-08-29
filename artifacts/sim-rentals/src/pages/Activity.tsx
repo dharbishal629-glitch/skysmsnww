@@ -47,7 +47,7 @@ const EVENT_CONFIG: Record<
     label: "Sign In",
     color: "text-emerald-600",
     bg: "bg-emerald-50 border-emerald-200",
-    darkBg: "dark:bg-emerald-900/20 dark:border-blue-700/40",
+    darkBg: "dark:bg-emerald-900/20 dark:border-emerald-700/40",
   },
   rental_created: {
     icon: Phone,
@@ -87,9 +87,9 @@ const EVENT_CONFIG: Record<
   api_key_created: {
     icon: Key,
     label: "API Key Created",
-    color: "text-violet-600",
+    color: "text-teal-600",
     bg: "bg-teal-50 border-teal-200",
-    darkBg: "dark:bg-teal-900/20 dark:border-violet-700/40",
+    darkBg: "dark:bg-teal-900/20 dark:border-teal-700/40",
   },
   api_key_deleted: {
     icon: Key,
@@ -117,7 +117,7 @@ const EVENT_CONFIG: Record<
     label: "Profile Updated",
     color: "text-emerald-600",
     bg: "bg-emerald-50 border-emerald-200",
-    darkBg: "dark:bg-emerald-900/20 dark:border-blue-700/40",
+    darkBg: "dark:bg-emerald-900/20 dark:border-emerald-700/40",
   },
   password_changed: {
     icon: Shield,

@@ -1,38 +1,42 @@
-import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
-import { cva, type VariantProps } from "class-variance-authority"
-import { cn } from "@/lib/utils"
+import * as React from "react";
+import { Slot } from "@radix-ui/react-slot";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 active:scale-[0.95] select-none ripple-container",
   {
     variants: {
       variant: {
-        default:     "bg-emerald-500 text-white border border-emerald-600 hover:bg-emerald-600",
+        default:
+          "bg-emerald-500 text-white border border-emerald-600 hover:bg-emerald-600",
         destructive: "bg-red-500 text-white shadow-sm border-red-600",
-        outline:     "border border-emerald-200 bg-white hover:bg-emerald-50 text-emerald-700",
-        secondary:   "border bg-emerald-50 text-emerald-700 border-emerald-200",
-        ghost:       "border border-transparent hover:bg-emerald-50 hover:text-emerald-700",
-        link:        "text-emerald-600 underline-offset-4 hover:underline",
+        outline:
+          "border border-emerald-200 bg-white hover:bg-emerald-50 text-emerald-700",
+        secondary: "border bg-emerald-50 text-emerald-700 border-emerald-200",
+        ghost:
+          "border border-transparent hover:bg-emerald-50 hover:text-emerald-700",
+        link: "text-emerald-600 underline-offset-4 hover:underline",
       },
       size: {
         default: "min-h-9 px-4 py-2",
-        sm:      "min-h-8 px-3 text-xs",
-        lg:      "min-h-10 px-8",
-        icon:    "h-9 w-9",
+        sm: "min-h-8 px-3 text-xs",
+        lg: "min-h-10 px-8",
+        icon: "h-9 w-9",
       },
     },
     defaultVariants: {
       variant: "default",
-      size:    "default",
+      size: "default",
     },
-  }
-)
+  },
+);
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
-  asChild?: boolean
+  asChild?: boolean;
 }
 
 function spawnRipple(e: React.MouseEvent<HTMLElement>) {
@@ -50,7 +54,7 @@ function spawnRipple(e: React.MouseEvent<HTMLElement>) {
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, onClick, ...props }, ref) => {
-    const Comp = asChild ? Slot : "button"
+    const Comp = asChild ? Slot : "button";
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
@@ -61,9 +65,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         }}
         {...props}
       />
-    )
-  }
-)
-Button.displayName = "Button"
+    );
+  },
+);
+Button.displayName = "Button";
 
-export { Button, buttonVariants }
+export { Button, buttonVariants };
