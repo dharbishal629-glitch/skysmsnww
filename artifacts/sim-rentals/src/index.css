@@ -3643,6 +3643,138 @@ textarea:focus-visible {
   line-height: 1.05 !important;
   letter-spacing: -3.1px !important;
 }
+
+/* API documentation workspace */
+.api-docs-page {
+  --docs-bg: #080c18;
+  --docs-surface: #0d1526;
+  --docs-code: #0f172a;
+  --docs-border: #1e293b;
+  --docs-lime: #c8f169;
+  min-height: calc(100vh - 56px) !important;
+  margin: -22px -32px -42px;
+  padding: 0 0 48px;
+  color: #f1f5f9 !important;
+  background: var(--docs-bg) !important;
+}
+.api-docs-page > aside {
+  width: 280px !important;
+  padding: 24px 20px;
+  border-right: 1px solid var(--docs-border);
+  background: var(--docs-bg);
+}
+.api-docs-page > aside nav a {
+  border-radius: 5px !important;
+  color: #94a3b8 !important;
+}
+.api-docs-page > aside nav a:hover {
+  color: #fff !important;
+  background: #0d1526 !important;
+}
+.api-docs-page > aside nav a[class*="bg-\["] {
+  color: var(--docs-lime) !important;
+  background: rgba(200, 241, 105, 0.1) !important;
+  border-color: rgba(200, 241, 105, 0.2) !important;
+}
+.api-docs-page > aside > div > div:last-child {
+  border-color: var(--docs-border) !important;
+  background: #0d1526 !important;
+  border-radius: 7px !important;
+}
+.api-docs-page > main {
+  max-width: 920px !important;
+  padding: 40px 48px;
+}
+.api-docs-page section {
+  scroll-margin-top: 90px;
+}
+.api-docs-page section > div,
+.api-docs-page section > div[class*="bg-"] {
+  border-color: var(--docs-border) !important;
+  border-radius: 7px !important;
+  background: var(--docs-surface) !important;
+  box-shadow: none !important;
+}
+.api-docs-page section > div > div[class*="bg-slate"],
+.api-docs-page section > div > div[class*="bg-white"] {
+  background: #101a2b !important;
+  border-color: var(--docs-border) !important;
+}
+.api-docs-page h1 {
+  color: #f1f5f9 !important;
+  font-size: 42px !important;
+  letter-spacing: -2.4px !important;
+}
+.api-docs-page h2 {
+  color: #f1f5f9 !important;
+  font-size: 26px !important;
+  letter-spacing: -1px !important;
+}
+.api-docs-page h3 {
+  color: #f1f5f9 !important;
+}
+.api-docs-page p,
+.api-docs-page td {
+  color: #94a3b8 !important;
+}
+.api-docs-page strong {
+  color: #f1f5f9 !important;
+}
+.api-docs-page code {
+  color: #78e2dc !important;
+  background: transparent;
+  font-family: "JetBrains Mono", monospace;
+}
+.api-docs-page pre {
+  color: #cbd5e1 !important;
+  background: var(--docs-code) !important;
+}
+.api-docs-page .code-block {
+  background: var(--docs-code) !important;
+  border-color: var(--docs-border) !important;
+  border-radius: 7px !important;
+}
+.api-docs-page input {
+  background: var(--docs-code) !important;
+  color: #fff !important;
+  border-color: var(--docs-border) !important;
+}
+.api-docs-page a[class*="text-\["] {
+  color: var(--docs-lime) !important;
+}
+.api-docs-page .text-\[\#c8f169\] {
+  color: var(--docs-lime) !important;
+}
+.api-docs-page .bg-\[\#c8f169\] {
+  background: var(--docs-lime) !important;
+  color: var(--docs-bg) !important;
+}
+.api-docs-page .border-t {
+  border-color: var(--docs-border) !important;
+}
+@media (max-width: 1023px) {
+  .api-docs-page {
+    margin: -16px -16px -22px;
+  }
+  .api-docs-page > main {
+    padding: 28px 22px;
+  }
+}
+@media (max-width: 640px) {
+  .api-docs-page > main {
+    padding: 22px 16px;
+  }
+  .api-docs-page h1 {
+    font-size: 32px !important;
+    letter-spacing: -1.7px !important;
+  }
+  .api-docs-page h2 {
+    font-size: 22px !important;
+  }
+  .api-docs-page table {
+    min-width: 620px;
+  }
+}
 .settings-page > div:first-child p:last-child,
 .settings-page p {
   color: var(--settings-muted) !important;
