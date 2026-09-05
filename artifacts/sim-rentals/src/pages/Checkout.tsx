@@ -181,7 +181,7 @@ export default function Checkout() {
   if (sessionLoading) {
     return (
       <div className="flex flex-col items-center justify-center py-24 gap-3">
-        <Loader2 className="h-7 w-7 text-emerald-500 animate-spin" />
+        <Loader2 className="h-7 w-7 text-sky-500 animate-spin" />
         <p className="text-[13px] text-slate-500">Loading checkout…</p>
       </div>
     );
@@ -368,7 +368,7 @@ export default function Checkout() {
               }
               className={`rounded-xl border py-2.5 px-2 flex flex-col items-center gap-1.5 transition-all text-center ${
                 selectedCoin === coin
-                  ? "border-emerald-500/40 bg-emerald-50 dark:bg-emerald-500/10"
+                  ? "border-sky-500/40 bg-sky-50 dark:bg-sky-500/10"
                   : "border-slate-200 dark:border-white/[0.07] bg-white dark:bg-white/[0.02] hover:border-slate-300 dark:hover:border-white/[0.14] hover:bg-slate-50 dark:hover:bg-white/[0.04]"
               }`}
             >
@@ -381,7 +381,7 @@ export default function Checkout() {
                 }}
               />
               <span
-                className={`text-[10px] font-bold ${selectedCoin === coin ? "text-emerald-600 dark:text-emerald-400" : "text-slate-600 dark:text-slate-400"}`}
+                className={`text-[10px] font-bold ${selectedCoin === coin ? "text-sky-600 dark:text-sky-400" : "text-slate-600 dark:text-slate-400"}`}
               >
                 {coin}
               </span>
@@ -392,7 +392,7 @@ export default function Checkout() {
           ))}
         </div>
         {selectedCoin && (
-          <div className="mt-2 text-[11px] text-emerald-600 dark:text-emerald-400/80 flex items-center gap-1.5">
+          <div className="mt-2 text-[11px] text-sky-600 dark:text-sky-400/80 flex items-center gap-1.5">
             <CheckCircle2 className="h-3 w-3" /> Paying with {selectedCoin} —
             OxaPay will show the exact amount
           </div>

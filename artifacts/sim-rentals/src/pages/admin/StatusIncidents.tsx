@@ -39,9 +39,9 @@ const STATUS_LABELS: Record<string, string> = {
   resolved: "Resolved",
 };
 const STATUS_COLOR: Record<string, string> = {
-  investigating: "text-emerald-400",
+  investigating: "text-sky-400",
   identified: "text-red-400",
-  monitoring: "text-emerald-400",
+  monitoring: "text-sky-400",
   resolved: "text-emerald-400",
 };
 
@@ -197,13 +197,13 @@ function IncidentCard({
             onChange={(e) => setUpdateBody(e.target.value)}
             placeholder="Describe the update…"
             rows={2}
-            className="w-full rounded-lg border border-white/[0.08] bg-white/[0.03] px-3 py-2 text-[12px] text-white placeholder:text-slate-700 outline-none focus:border-emerald-500/40 resize-none"
+            className="w-full rounded-lg border border-white/[0.08] bg-white/[0.03] px-3 py-2 text-[12px] text-white placeholder:text-slate-700 outline-none focus:border-sky-500/40 resize-none"
           />
           <div className="flex items-center gap-3">
             <select
               value={updateStatus}
               onChange={(e) => setUpdateStatus(e.target.value)}
-              className="h-8 rounded-lg border border-white/[0.08] bg-white/[0.03] px-2 text-[12px] text-white outline-none focus:border-emerald-500/40"
+              className="h-8 rounded-lg border border-white/[0.08] bg-white/[0.03] px-2 text-[12px] text-white outline-none focus:border-sky-500/40"
             >
               {["update", ...STATUSES].map((s) => (
                 <option key={s} value={s}>
@@ -214,7 +214,7 @@ function IncidentCard({
             <button
               onClick={() => addUpdate.mutate()}
               disabled={!updateBody.trim() || addUpdate.isPending}
-              className="flex items-center gap-1.5 h-8 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 text-[12px] font-semibold text-white transition-colors"
+              className="flex items-center gap-1.5 h-8 px-4 rounded-lg bg-sky-600 hover:bg-sky-500 disabled:opacity-40 text-[12px] font-semibold text-white transition-colors"
             >
               <Send className="h-3 w-3" /> Post
             </button>
@@ -277,7 +277,7 @@ export default function AdminStatusIncidents() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-emerald-500 mb-1">
+          <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-sky-500 mb-1">
             Admin
           </p>
           <h1 className="text-xl font-bold text-white">Status Incidents</h1>
@@ -303,7 +303,7 @@ export default function AdminStatusIncidents() {
 
       {/* New incident form */}
       {showNew && (
-        <div className="rounded-xl border border-emerald-500/15 bg-emerald-500/[0.03] p-5 space-y-4">
+        <div className="rounded-xl border border-sky-500/15 bg-sky-500/[0.03] p-5 space-y-4">
           <div className="text-[12px] font-bold text-slate-300 uppercase tracking-wider">
             Create Incident
           </div>
@@ -319,7 +319,7 @@ export default function AdminStatusIncidents() {
               }
               placeholder="e.g. Payments experiencing delays"
               maxLength={200}
-              className="w-full h-10 rounded-lg border border-white/[0.08] bg-white/[0.03] px-3 text-[13px] text-white placeholder:text-slate-700 outline-none focus:border-emerald-500/40"
+              className="w-full h-10 rounded-lg border border-white/[0.08] bg-white/[0.03] px-3 text-[13px] text-white placeholder:text-slate-700 outline-none focus:border-sky-500/40"
             />
           </div>
 
@@ -333,7 +333,7 @@ export default function AdminStatusIncidents() {
               placeholder="Describe what's happening…"
               rows={3}
               maxLength={2000}
-              className="w-full rounded-lg border border-white/[0.08] bg-white/[0.03] px-3 py-2 text-[13px] text-white placeholder:text-slate-700 outline-none focus:border-emerald-500/40 resize-none"
+              className="w-full rounded-lg border border-white/[0.08] bg-white/[0.03] px-3 py-2 text-[13px] text-white placeholder:text-slate-700 outline-none focus:border-sky-500/40 resize-none"
             />
           </div>
 
@@ -347,7 +347,7 @@ export default function AdminStatusIncidents() {
                 onChange={(e) =>
                   setForm((f) => ({ ...f, status: e.target.value }))
                 }
-                className="h-9 rounded-lg border border-white/[0.08] bg-white/[0.03] px-3 text-[13px] text-white outline-none focus:border-emerald-500/40"
+                className="h-9 rounded-lg border border-white/[0.08] bg-white/[0.03] px-3 text-[13px] text-white outline-none focus:border-sky-500/40"
               >
                 {STATUSES.map((s) => (
                   <option key={s} value={s}>
@@ -370,7 +370,7 @@ export default function AdminStatusIncidents() {
                   onClick={() => toggleComp(c)}
                   className={`h-7 px-3 rounded-full text-[11px] font-semibold border transition-all ${
                     form.components.includes(c)
-                      ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
+                      ? "bg-sky-500/10 border-sky-500/30 text-sky-400"
                       : "bg-white/[0.03] border-white/[0.08] text-slate-500 hover:text-slate-300"
                   }`}
                 >
@@ -385,7 +385,7 @@ export default function AdminStatusIncidents() {
             disabled={
               !form.title.trim() || !form.body.trim() || createInc.isPending
             }
-            className="h-10 px-6 rounded-xl text-[13px] font-bold text-white bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 transition-colors"
+            className="h-10 px-6 rounded-xl text-[13px] font-bold text-white bg-sky-600 hover:bg-sky-500 disabled:opacity-40 transition-colors"
           >
             {createInc.isPending ? "Creating…" : "Create Incident"}
           </button>

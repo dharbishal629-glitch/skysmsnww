@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { UserPlus, Wallet, Smartphone, MessageSquare, Check } from "lucide-react";
 
 const PALETTE: Record<string, { accent: string; bg: string; text: string; border: string; darkBg: string; darkBorder: string }> = {
-  blue:    { accent: "bg-emerald-500",    bg: "bg-emerald-50",    text: "text-emerald-600",    border: "border-emerald-200", darkBg: "bg-emerald-500/10",    darkBorder: "border-emerald-400/25" },
-  violet:  { accent: "bg-teal-500",  bg: "bg-teal-50",  text: "text-violet-600",  border: "border-teal-200", darkBg: "bg-teal-500/10",  darkBorder: "border-teal-400/25" },
-  sky:     { accent: "bg-emerald-400",     bg: "bg-emerald-50",     text: "text-sky-600",     border: "border-emerald-200", darkBg: "bg-emerald-400/10",     darkBorder: "border-emerald-400/25" },
+  blue:    { accent: "bg-blue-500",    bg: "bg-blue-50",    text: "text-blue-600",    border: "border-blue-200", darkBg: "bg-blue-500/10",    darkBorder: "border-blue-400/25" },
+  violet:  { accent: "bg-violet-500",  bg: "bg-violet-50",  text: "text-violet-600",  border: "border-violet-200", darkBg: "bg-violet-500/10",  darkBorder: "border-violet-400/25" },
+  sky:     { accent: "bg-sky-400",     bg: "bg-sky-50",     text: "text-sky-600",     border: "border-sky-200", darkBg: "bg-sky-400/10",     darkBorder: "border-sky-400/25" },
   emerald: { accent: "bg-emerald-500", bg: "bg-emerald-50", text: "text-emerald-600", border: "border-emerald-200", darkBg: "bg-emerald-500/10", darkBorder: "border-emerald-400/25" },
 };
 
@@ -27,9 +27,9 @@ function SignUpMockup() {
     <div className="rounded-2xl border border-slate-700 bg-[#0f172a] p-4 w-full select-none">
       <div className="text-[10px] font-bold text-white mb-3 text-center">Sign in to SKY SMS</div>
       <div className="h-8 rounded-xl border border-white/[0.1] bg-white/[0.04] flex items-center px-3 mb-2.5">
-        <span className="text-[10.5px] text-slate-400 font-mono">{typed}<span className={`inline-block w-0.5 h-2.5 bg-emerald-400 ml-0.5 ${done ? "opacity-0" : "animate-pulse"}`} /></span>
+        <span className="text-[10.5px] text-slate-400 font-mono">{typed}<span className={`inline-block w-0.5 h-2.5 bg-blue-400 ml-0.5 ${done ? "opacity-0" : "animate-pulse"}`} /></span>
       </div>
-      <div className={`h-7 rounded-xl text-[10.5px] font-bold flex items-center justify-center transition-all duration-500 ${done ? "bg-emerald-600 text-white" : "bg-white/[0.05] text-slate-600"}`}>
+      <div className={`h-7 rounded-xl text-[10.5px] font-bold flex items-center justify-center transition-all duration-500 ${done ? "bg-blue-600 text-white" : "bg-white/[0.05] text-slate-600"}`}>
         {done ? <><Check className="h-3 w-3 mr-1" />Continue</> : "Continue →"}
       </div>
       <div className="mt-2.5 text-center">
@@ -60,11 +60,11 @@ function WalletMockup() {
       <div className="text-[9.5px] text-slate-500 mb-1">Current Balance</div>
       <div className="text-[22px] font-black text-white mb-3 font-mono tabular-nums">${amount.toFixed(2)}</div>
       <div className="h-1.5 rounded-full bg-white/[0.06] mb-3 overflow-hidden">
-        <div className="h-full rounded-full bg-gradient-to-r from-teal-500 to-emerald-500 transition-all duration-100" style={{ width: `${pct}%` }} />
+        <div className="h-full rounded-full bg-gradient-to-r from-violet-500 to-blue-500 transition-all duration-100" style={{ width: `${pct}%` }} />
       </div>
       <div className="grid grid-cols-3 gap-1.5">
         {["BTC", "ETH", "USDT"].map((c, i) => (
-          <div key={c} className={`rounded-xl border p-2 text-center ${i === 2 ? "border-teal-500/30 bg-teal-500/10" : "border-white/[0.06] bg-white/[0.02]"}`}>
+          <div key={c} className={`rounded-xl border p-2 text-center ${i === 2 ? "border-violet-500/30 bg-violet-500/10" : "border-white/[0.06] bg-white/[0.02]"}`}>
             <div className="text-[9px] font-bold text-slate-400">{c}</div>
           </div>
         ))}
@@ -86,13 +86,13 @@ function RentMockup() {
   return (
     <div className="rounded-2xl border border-slate-700 bg-[#0f172a] p-4 w-full select-none">
       <div className="text-[9.5px] text-slate-500 mb-2.5">Pick your setup</div>
-      <div className={`h-7 rounded-xl border mb-2 flex items-center px-3 transition-all duration-300 ${step >= 1 ? "border-emerald-500/30 bg-emerald-500/10" : "border-white/[0.06] bg-white/[0.03]"}`}>
+      <div className={`h-7 rounded-xl border mb-2 flex items-center px-3 transition-all duration-300 ${step >= 1 ? "border-sky-500/30 bg-sky-500/10" : "border-white/[0.06] bg-white/[0.03]"}`}>
         <span className="text-[10.5px] font-semibold text-white">{step >= 1 ? "📱 Telegram" : <span className="text-slate-600">Select service…</span>}</span>
       </div>
-      <div className={`h-7 rounded-xl border mb-3 flex items-center px-3 transition-all duration-300 ${step >= 2 ? "border-emerald-500/30 bg-emerald-500/10" : "border-white/[0.06] bg-white/[0.03]"}`}>
+      <div className={`h-7 rounded-xl border mb-3 flex items-center px-3 transition-all duration-300 ${step >= 2 ? "border-sky-500/30 bg-sky-500/10" : "border-white/[0.06] bg-white/[0.03]"}`}>
         <span className="text-[10.5px] font-semibold text-white">{step >= 2 ? countries[country] : <span className="text-slate-600">Select country…</span>}</span>
       </div>
-      <div className={`h-8 rounded-xl text-[10.5px] font-bold flex items-center justify-center transition-all duration-500 ${step >= 2 ? "bg-[#10b981] text-white" : "bg-white/[0.05] text-slate-600"}`}>
+      <div className={`h-8 rounded-xl text-[10.5px] font-bold flex items-center justify-center transition-all duration-500 ${step >= 2 ? "bg-[#4574FF] text-white" : "bg-white/[0.05] text-slate-600"}`}>
         {step >= 3 ? "✓ Number rented!" : "Rent number →"}
       </div>
     </div>
@@ -146,7 +146,7 @@ export default function HowItWorks() {
           </div>
           <h2 className="text-[2.2rem] sm:text-[2.8rem] font-black text-[#0a1628] tracking-tight leading-tight">
             Up and running in{" "}
-            <span className="text-[#10b981]">minutes</span>
+            <span className="text-[#4574FF]">minutes</span>
           </h2>
           <p className="mt-4 text-[15px] text-slate-700 max-w-md mx-auto">
             No apps to install, no contracts to sign. Four simple steps and you're done.

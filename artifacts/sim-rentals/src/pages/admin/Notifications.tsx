@@ -35,8 +35,8 @@ const typeOptions = [
   {
     value: "info",
     label: "Info",
-    color: "text-emerald-400",
-    bg: "bg-[#10b981]/10 border-[#10b981]/20",
+    color: "text-sky-400",
+    bg: "bg-[#4574FF]/10 border-[#4574FF]/20",
   },
   {
     value: "success",
@@ -57,7 +57,7 @@ function typeIcon(type: string, className = "h-4 w-4") {
     return <CheckCircle2 className={`${className} text-emerald-400`} />;
   if (type === "warning")
     return <AlertCircle className={`${className} text-orange-400`} />;
-  return <Info className={`${className} text-emerald-400`} />;
+  return <Info className={`${className} text-sky-400`} />;
 }
 
 export default function AdminNotifications() {
@@ -146,7 +146,7 @@ export default function AdminNotifications() {
         </div>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="flex items-center gap-2 h-9 px-4 rounded-xl bg-[#10b981] text-[13px] font-semibold text-slate-900 hover:bg-emerald-500 transition-all active:scale-95"
+          className="flex items-center gap-2 h-9 px-4 rounded-xl bg-[#4574FF] text-[13px] font-semibold text-slate-900 hover:bg-blue-500 transition-all active:scale-95"
         >
           {showForm ? (
             <X className="h-3.5 w-3.5" />
@@ -159,7 +159,7 @@ export default function AdminNotifications() {
 
       {/* Compose form */}
       {showForm && (
-        <div className="rounded-2xl border border-[#10b981]/10 bg-[#10b981]/[0.03] p-6 space-y-4">
+        <div className="rounded-2xl border border-[#4574FF]/10 bg-[#4574FF]/[0.03] p-6 space-y-4">
           <h3 className="text-[14px] font-bold text-slate-900 dark:text-white">
             Compose notification
           </h3>
@@ -174,7 +174,7 @@ export default function AdminNotifications() {
                   setForm((f) => ({ ...f, title: e.target.value }))
                 }
                 placeholder="Notification title..."
-                className="w-full h-10 rounded-xl border border-white/[0.08] bg-white/[0.03] px-3.5 text-[13px] text-white placeholder-slate-600 focus:outline-none focus:border-[#10b981]/40 focus:bg-[#10b981]/[0.03] transition-all"
+                className="w-full h-10 rounded-xl border border-white/[0.08] bg-white/[0.03] px-3.5 text-[13px] text-white placeholder-slate-600 focus:outline-none focus:border-[#4574FF]/40 focus:bg-[#4574FF]/[0.03] transition-all"
               />
             </div>
             <div>
@@ -210,7 +210,7 @@ export default function AdminNotifications() {
               }
               placeholder="Notification message..."
               rows={3}
-              className="w-full rounded-xl border border-white/[0.08] bg-white/[0.03] px-3.5 py-2.5 text-[13px] text-white placeholder-slate-600 focus:outline-none focus:border-[#10b981]/40 focus:bg-[#10b981]/[0.03] transition-all resize-none"
+              className="w-full rounded-xl border border-white/[0.08] bg-white/[0.03] px-3.5 py-2.5 text-[13px] text-white placeholder-slate-600 focus:outline-none focus:border-[#4574FF]/40 focus:bg-[#4574FF]/[0.03] transition-all resize-none"
             />
           </div>
 
@@ -226,7 +226,7 @@ export default function AdminNotifications() {
                   setForm((f) => ({ ...f, userId: e.target.value }))
                 }
                 placeholder="Leave blank to broadcast to all..."
-                className="w-full h-10 rounded-xl border border-white/[0.08] bg-white/[0.03] px-3.5 text-[13px] text-white placeholder-slate-600 focus:outline-none focus:border-[#10b981]/40 transition-all"
+                className="w-full h-10 rounded-xl border border-white/[0.08] bg-white/[0.03] px-3.5 text-[13px] text-white placeholder-slate-600 focus:outline-none focus:border-[#4574FF]/40 transition-all"
               />
             </div>
             <div>
@@ -239,7 +239,7 @@ export default function AdminNotifications() {
                   setForm((f) => ({ ...f, link: e.target.value }))
                 }
                 placeholder="/payments or https://..."
-                className="w-full h-10 rounded-xl border border-white/[0.08] bg-white/[0.03] px-3.5 text-[13px] text-white placeholder-slate-600 focus:outline-none focus:border-[#10b981]/40 transition-all"
+                className="w-full h-10 rounded-xl border border-white/[0.08] bg-white/[0.03] px-3.5 text-[13px] text-white placeholder-slate-600 focus:outline-none focus:border-[#4574FF]/40 transition-all"
               />
             </div>
           </div>
@@ -248,7 +248,7 @@ export default function AdminNotifications() {
             <button
               onClick={sendNotification}
               disabled={sending}
-              className="flex items-center gap-2 h-9 px-5 rounded-xl bg-[#10b981] text-[13px] font-semibold text-slate-900 hover:bg-emerald-500 transition-all active:scale-95 disabled:opacity-50"
+              className="flex items-center gap-2 h-9 px-5 rounded-xl bg-[#4574FF] text-[13px] font-semibold text-slate-900 hover:bg-blue-500 transition-all active:scale-95 disabled:opacity-50"
             >
               {sending ? (
                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -267,7 +267,7 @@ export default function AdminNotifications() {
       {/* History */}
       <div className="rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
         <div className="flex items-center gap-2.5 px-5 py-4 border-b border-white/[0.05]">
-          <Bell className="h-4 w-4 text-emerald-400" />
+          <Bell className="h-4 w-4 text-sky-400" />
           <span className="text-[14px] font-bold text-slate-900 dark:text-white">
             Notification history
           </span>

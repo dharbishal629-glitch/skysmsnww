@@ -559,7 +559,7 @@ export default function AdminServices() {
         </p>
         <button
           onClick={() => loadServices()}
-          className="mt-4 text-sm text-emerald-400 hover:underline"
+          className="mt-4 text-sm text-sky-400 hover:underline"
         >
           Retry
         </button>
@@ -584,7 +584,7 @@ export default function AdminServices() {
           <div className="flex items-start justify-between gap-3">
             <div>
               <CardTitle className="flex items-center gap-2">
-                <ShieldCheck className="h-5 w-5 text-emerald-300" /> Enabled
+                <ShieldCheck className="h-5 w-5 text-sky-300" /> Enabled
                 Services Portal
               </CardTitle>
               <CardDescription>
@@ -592,7 +592,7 @@ export default function AdminServices() {
                 dropdowns, and rental flow.
               </CardDescription>
             </div>
-            <Badge className="bg-[#10b981]/10 text-emerald-200 border border-[#10b981]/20">
+            <Badge className="bg-[#4574FF]/10 text-sky-200 border border-[#4574FF]/20">
               {enabledCount} enabled
             </Badge>
           </div>
@@ -714,11 +714,11 @@ export default function AdminServices() {
                   >
                     Provider ${selectedService.basePrice.toFixed(2)}
                   </Badge>
-                  <Badge className="bg-[#10b981]/10 text-emerald-200 border border-[#10b981]/20">
+                  <Badge className="bg-[#4574FF]/10 text-sky-200 border border-[#4574FF]/20">
                     Current ${selectedService.price.toFixed(2)}
                   </Badge>
                   {selectedService.customPrice && (
-                    <Badge className="bg-[#10b981]/10 text-emerald-200 border border-[#10b981]/20">
+                    <Badge className="bg-[#4574FF]/10 text-sky-200 border border-[#4574FF]/20">
                       Fixed override active
                     </Badge>
                   )}
@@ -841,7 +841,7 @@ export default function AdminServices() {
                       Country: {marginService.countryMargin}%
                     </Badge>
                   )}
-                  <Badge className="bg-[#10b981]/10 text-emerald-200 border border-[#10b981]/20">
+                  <Badge className="bg-[#4574FF]/10 text-sky-200 border border-[#4574FF]/20">
                     Effective: {marginService.effectiveMargin}% → $
                     {(
                       marginService.basePrice *

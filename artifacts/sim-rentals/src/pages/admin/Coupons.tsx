@@ -324,9 +324,9 @@ export default function AdminCoupons() {
 
             {/* Preview */}
             {form.code && form.value && (
-              <div className="flex items-center gap-3 p-3 rounded-xl bg-[#10b981]/[0.06] border border-[#10b981]/20">
-                <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
-                <span className="text-sm text-emerald-200">
+              <div className="flex items-center gap-3 p-3 rounded-xl bg-[#4574FF]/[0.06] border border-[#4574FF]/20">
+                <CheckCircle2 className="h-4 w-4 text-sky-400 shrink-0" />
+                <span className="text-sm text-sky-200">
                   Code{" "}
                   <span className="font-mono font-semibold">{form.code}</span>{" "}
                   gives{" "}
@@ -419,7 +419,7 @@ export default function AdminCoupons() {
                         <td className="px-4 py-3">
                           <button
                             onClick={() => copyCode(c.code)}
-                            className="flex items-center gap-2 font-mono font-medium text-emerald-300 hover:text-emerald-200 transition-colors"
+                            className="flex items-center gap-2 font-mono font-medium text-sky-300 hover:text-sky-200 transition-colors"
                           >
                             {c.code}
                             {copiedCode === c.code ? (
@@ -436,7 +436,7 @@ export default function AdminCoupons() {
                         {/* Discount */}
                         <td className="px-4 py-3">
                           <span
-                            className={`font-medium text-sm ${c.type === "percentage" ? "text-emerald-300" : "text-emerald-300"}`}
+                            className={`font-medium text-sm ${c.type === "percentage" ? "text-sky-300" : "text-emerald-300"}`}
                           >
                             {c.type === "percentage"
                               ? `${c.value}% off`

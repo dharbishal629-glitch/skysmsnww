@@ -1,42 +1,38 @@
-import * as React from "react";
-import { Slot } from "@radix-ui/react-slot";
-import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "@/lib/utils";
+import * as React from "react"
+import { Slot } from "@radix-ui/react-slot"
+import { cva, type VariantProps } from "class-variance-authority"
+import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-semibold transition-all duration-150 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 active:translate-y-px select-none ripple-container",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 active:scale-[0.95] select-none ripple-container",
   {
     variants: {
       variant: {
-        default:
-          "bg-emerald-500 text-[#052e16] border border-emerald-400 hover:bg-emerald-400 shadow-sm",
-        destructive: "bg-red-500 text-white shadow-sm border-red-600",
-        outline:
-          "border border-[#31534f] bg-[#102c28] hover:bg-[#164238] text-[#dce8e3]",
-        secondary: "border bg-[#16352f] text-[#b9d98b] border-[#31534f]",
-        ghost:
-          "border border-transparent hover:bg-[#102c28] hover:text-[#b9d98b]",
-        link: "text-emerald-600 underline-offset-4 hover:underline",
+        default:     "bg-primary text-primary-foreground border border-primary-border",
+        destructive: "bg-destructive text-destructive-foreground shadow-sm border-destructive-border",
+        outline:     "border [border-color:var(--button-outline)] shadow-xs active:shadow-none",
+        secondary:   "border bg-secondary text-secondary-foreground border border-secondary-border",
+        ghost:       "border border-transparent",
+        link:        "text-primary underline-offset-4 hover:underline",
       },
       size: {
         default: "min-h-9 px-4 py-2",
-        sm: "min-h-8 px-3 text-xs",
-        lg: "min-h-10 px-8",
-        icon: "h-9 w-9",
+        sm:      "min-h-8 px-3 text-xs",
+        lg:      "min-h-10 px-8",
+        icon:    "h-9 w-9",
       },
     },
     defaultVariants: {
       variant: "default",
-      size: "default",
+      size:    "default",
     },
-  },
-);
+  }
+)
 
 export interface ButtonProps
-  extends
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
-  asChild?: boolean;
+  asChild?: boolean
 }
 
 function spawnRipple(e: React.MouseEvent<HTMLElement>) {
@@ -54,7 +50,7 @@ function spawnRipple(e: React.MouseEvent<HTMLElement>) {
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, onClick, ...props }, ref) => {
-    const Comp = asChild ? Slot : "button";
+    const Comp = asChild ? Slot : "button"
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
@@ -65,9 +61,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         }}
         {...props}
       />
-    );
-  },
-);
-Button.displayName = "Button";
+    )
+  }
+)
+Button.displayName = "Button"
 
-export { Button, buttonVariants };
+export { Button, buttonVariants }

@@ -49,9 +49,9 @@ const TIERS = [
     discount: 5,
     color: "#38bdf8",
     accentColor: "#38bdf8",
-    borderClass: "border-emerald-200 dark:border-emerald-700/50",
-    bgClass: "bg-emerald-50 dark:bg-emerald-900/20",
-    textClass: "text-emerald-700 dark:text-emerald-300",
+    borderClass: "border-sky-200 dark:border-sky-700/50",
+    bgClass: "bg-sky-50 dark:bg-sky-900/20",
+    textClass: "text-sky-700 dark:text-sky-300",
     description: "5% off every number rental. Priority support access.",
   },
   {
@@ -60,11 +60,11 @@ const TIERS = [
     sublabel: "Gold",
     minDeposit: 500,
     discount: 10,
-    color: "#10b981",
-    accentColor: "#10b981",
-    borderClass: "border-[#10b981]/30 dark:border-[#10b981]/40",
-    bgClass: "bg-[#10b981]/5 dark:bg-[#10b981]/10",
-    textClass: "text-[#10b981]",
+    color: "#4574FF",
+    accentColor: "#4574FF",
+    borderClass: "border-[#4574FF]/30 dark:border-[#4574FF]/40",
+    bgClass: "bg-[#4574FF]/5 dark:bg-[#4574FF]/10",
+    textClass: "text-[#4574FF]",
     description: "10% off all rentals and early access to new services.",
   },
   {
@@ -123,7 +123,7 @@ export default function Rankings() {
       {/* Header */}
       <div>
         <h1 className="font-display text-[22px] font-bold tracking-tight">
-          <span className="bg-gradient-to-r from-white to-emerald-300 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-white to-sky-300 bg-clip-text text-transparent">
             Ranking System
           </span>
         </h1>
@@ -348,13 +348,13 @@ export default function Rankings() {
       {/* Info note */}
       <div className="rounded-xl border border-white/[0.06] bg-white/[0.015] px-4 py-3">
         <div className="flex items-start gap-3">
-          <TrendingUp className="h-4 w-4 text-[#10b981] shrink-0 mt-0.5" />
+          <TrendingUp className="h-4 w-4 text-[#4574FF] shrink-0 mt-0.5" />
           <div className="text-[12px] text-slate-400 leading-relaxed">
             Monthly deposits include all completed top-ups in the current
             calendar month. Discounts apply automatically at checkout — no code
             needed.{" "}
             <Link href="/payments">
-              <span className="text-[#10b981] font-semibold cursor-pointer hover:underline">
+              <span className="text-[#4574FF] font-semibold cursor-pointer hover:underline">
                 Add funds <ChevronRight className="h-3 w-3 inline" />
               </span>
             </Link>

@@ -203,10 +203,10 @@ export default function Referral() {
 
       {/* Stats banner */}
       <Reveal variant="up" delay={40}>
-        <div className="rounded-2xl border border-emerald-500/15 bg-emerald-500/[0.04] overflow-hidden">
-          <div className="flex items-center gap-3 px-6 py-4 border-b border-emerald-900/10">
-            <div className="h-9 w-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
-              <Gift className="h-4 w-4 text-emerald-400" />
+        <div className="rounded-2xl border border-sky-500/15 bg-sky-500/[0.04] overflow-hidden">
+          <div className="flex items-center gap-3 px-6 py-4 border-b border-sky-900/10">
+            <div className="h-9 w-9 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center shrink-0">
+              <Gift className="h-4 w-4 text-sky-400" />
             </div>
             <div>
               <div className="text-[14px] font-bold text-white">
@@ -218,7 +218,7 @@ export default function Referral() {
                   : "Both you and your friend get the bonus instantly when they sign up"}
               </div>
             </div>
-            <span className="ml-auto text-[11px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/15 rounded-full px-3 py-1 shrink-0">
+            <span className="ml-auto text-[11px] font-bold text-sky-400 bg-sky-500/10 border border-sky-500/15 rounded-full px-3 py-1 shrink-0">
               ${loading ? "..." : bonus.toFixed(2)} each
             </span>
           </div>
@@ -237,7 +237,7 @@ export default function Referral() {
                     label: "Total referrals",
                     value: data.totalReferrals,
                     icon: Users2,
-                    color: "text-emerald-400",
+                    color: "text-sky-400",
                   },
                   {
                     label: "Total earned",
@@ -254,7 +254,7 @@ export default function Referral() {
                 ].map((s, i) => (
                   <div
                     key={s.label}
-                    className={`flex flex-col items-center gap-2 py-5 px-4 ${i < 2 ? "border-r border-emerald-900/10" : ""}`}
+                    className={`flex flex-col items-center gap-2 py-5 px-4 ${i < 2 ? "border-r border-sky-900/10" : ""}`}
                   >
                     <s.icon className={`h-4 w-4 ${s.color}`} />
                     <div
@@ -276,8 +276,8 @@ export default function Referral() {
       {/* Deposit requirement notice */}
       {!loading && hasMinDeposit && (
         <Reveal variant="up" delay={55}>
-          <div className="flex items-start gap-3 p-4 rounded-2xl border border-emerald-500/15 bg-emerald-500/[0.04]">
-            <AlertCircle className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
+          <div className="flex items-start gap-3 p-4 rounded-2xl border border-sky-500/15 bg-sky-500/[0.04]">
+            <AlertCircle className="h-4 w-4 text-sky-400 shrink-0 mt-0.5" />
             <div>
               <div className="text-[13px] font-semibold text-white mb-0.5">
                 How to claim your reward
@@ -285,11 +285,11 @@ export default function Referral() {
               <div className="text-[12px] text-slate-400 leading-relaxed">
                 After your friend signs up using your referral link, they must
                 make a deposit of at least{" "}
-                <span className="text-emerald-300 font-semibold">
+                <span className="text-sky-300 font-semibold">
                   ${minDeposit.toFixed(2)}
                 </span>{" "}
                 to unlock the bonus. Once their deposit is confirmed,{" "}
-                <span className="text-emerald-300 font-semibold">
+                <span className="text-sky-300 font-semibold">
                   ${bonus.toFixed(2)}
                 </span>{" "}
                 credit is automatically added to both accounts — no manual
@@ -304,7 +304,7 @@ export default function Referral() {
       <Reveal variant="up" delay={80}>
         <section className="rounded-2xl border border-white/[0.07] bg-white/[0.02] overflow-hidden">
           <div className="flex items-center gap-2.5 px-6 py-4 border-b border-white/[0.05]">
-            <Link2 className="h-4 w-4 text-emerald-400" />
+            <Link2 className="h-4 w-4 text-sky-400" />
             <span className="font-semibold text-white text-[14px]">
               Your Referral Link
             </span>
@@ -393,7 +393,7 @@ export default function Referral() {
                 value={applyCode}
                 onChange={(e) => setApplyCode(e.target.value.toUpperCase())}
                 placeholder="SKY-XXXXXX"
-                className="flex-1 h-10 rounded-xl border border-white/[0.08] bg-white/[0.03] px-3.5 text-[13px] font-mono text-white placeholder-slate-700 focus:outline-none focus:border-emerald-500/35 transition-all"
+                className="flex-1 h-10 rounded-xl border border-white/[0.08] bg-white/[0.03] px-3.5 text-[13px] font-mono text-white placeholder-slate-700 focus:outline-none focus:border-sky-500/35 transition-all"
                 onKeyDown={(e) => e.key === "Enter" && applyReferralCode()}
                 maxLength={12}
               />
@@ -442,8 +442,8 @@ export default function Referral() {
             <div className="divide-y divide-white/[0.04]">
               {data.referrals.map((r) => (
                 <div key={r.id} className="flex items-center gap-3 px-6 py-4">
-                  <div className="h-9 w-9 shrink-0 rounded-full bg-emerald-500/10 border border-emerald-500/15 flex items-center justify-center">
-                    <span className="text-[13px] font-bold text-emerald-400">
+                  <div className="h-9 w-9 shrink-0 rounded-full bg-sky-500/10 border border-sky-500/15 flex items-center justify-center">
+                    <span className="text-[13px] font-bold text-sky-400">
                       {r.referredName.charAt(0).toUpperCase()}
                     </span>
                   </div>
@@ -460,7 +460,7 @@ export default function Referral() {
                       +${r.bonusAmount.toFixed(2)}
                     </span>
                     <span
-                      className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${r.credited ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/15" : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/15"}`}
+                      className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${r.credited ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/15" : "bg-sky-500/10 text-sky-400 border border-sky-500/15"}`}
                     >
                       {r.credited
                         ? "Credited"

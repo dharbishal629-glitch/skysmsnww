@@ -22,7 +22,6 @@ import SupportConversation from "@/pages/SupportConversation";
 import ApiDocs from "@/pages/ApiDocs";
 import Referral from "@/pages/Referral";
 import Rankings from "@/pages/Rankings";
-import SupportPortal from "@/pages/SupportPortal";
 import { useAuth } from "@/hooks/useAuth";
 import { useGetMe } from "@workspace/api-client-react";
 import { Switch, Route, Redirect } from "wouter";
@@ -30,10 +29,10 @@ import { Ban, AlertTriangle, LogOut } from "lucide-react";
 
 function LoadingScreen() {
   return (
-    <div className="loading-screen min-h-screen flex items-center justify-center">
+    <div className="min-h-screen premium-shell flex items-center justify-center">
       <div className="flex flex-col items-center gap-4">
-        <div className="h-11 w-11 animate-spin rounded-full border-2 border-[#9ca3af] border-t-transparent" />
-        <div className="text-[12px] text-[#9ca3af] font-medium">Loading…</div>
+        <div className="h-11 w-11 animate-spin rounded-full border-2 border-[#4574FF] border-t-transparent" />
+        <div className="text-[12px] text-slate-600 font-medium">Loading…</div>
       </div>
     </div>
   );
@@ -83,8 +82,8 @@ function SuspensionScreen({
             "Wait for your appeal to be reviewed",
           ].map((item, i) => (
             <div key={i} className="flex items-start gap-2.5">
-              <div className="h-5 w-5 rounded-full bg-[#10b981]/10 border border-[#10b981]/20 flex items-center justify-center shrink-0 mt-0.5">
-                <span className="text-[9px] font-black text-[#10b981]">
+              <div className="h-5 w-5 rounded-full bg-[#4574FF]/10 border border-[#4574FF]/20 flex items-center justify-center shrink-0 mt-0.5">
+                <span className="text-[9px] font-black text-[#4574FF]">
                   {i + 1}
                 </span>
               </div>
@@ -160,7 +159,7 @@ function AdminRoute({
     login();
     return null;
   }
-  if (user && String(user.role) !== "admin")
+  if (user && !["admin", "support_admin"].includes(String(user.role)))
     return <Redirect to="/dashboard" />;
 
   return (
@@ -168,24 +167,6 @@ function AdminRoute({
       <Component />
     </Layout>
   );
-}
-
-function SupportPortalRoute({
-  component: Component,
-}: {
-  component: React.ComponentType;
-}) {
-  const { isLoading: authLoading, isAuthenticated, login } = useAuth();
-  const { data: user, isLoading: userLoading } = useGetMe();
-
-  if (authLoading || (isAuthenticated && userLoading)) return <LoadingScreen />;
-  if (!isAuthenticated) {
-    login();
-    return null;
-  }
-  if (String(user?.role) !== "support_admin")
-    return <Redirect to="/dashboard" />;
-  return <Component />;
 }
 
 export function AppRoutes() {
@@ -226,13 +207,6 @@ export function AppRoutes() {
       </Route>
       <Route path="/rankings">
         <ProtectedRoute component={Rankings} />
-      </Route>
-
-      <Route path="/supportportal/conversation/:id">
-        <SupportPortalRoute component={AdminSupportConversation} />
-      </Route>
-      <Route path="/supportportal">
-        <SupportPortalRoute component={SupportPortal} />
       </Route>
 
       <Route path="/admin">

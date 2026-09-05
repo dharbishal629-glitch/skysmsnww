@@ -120,7 +120,7 @@ function SortPill({
       onClick={onClick}
       className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11.5px] font-semibold transition-all duration-150 ${
         active
-          ? "bg-[#10b981]/15 border border-[#10b981]/25 text-[#10b981]"
+          ? "bg-[#4574FF]/15 border border-[#4574FF]/25 text-[#4574FF]"
           : "border border-slate-200 dark:border-white/[0.07] text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 hover:border-slate-300 dark:hover:border-white/[0.12]"
       }`}
     >
@@ -145,8 +145,8 @@ function ServiceIcon({ name }: { name: string }) {
     );
   }
   return (
-    <div className="h-7 w-7 rounded-lg bg-[#10b981]/15 border border-[#10b981]/20 flex items-center justify-center">
-      <span className="text-[9px] font-black text-[#10b981]">{initials}</span>
+    <div className="h-7 w-7 rounded-lg bg-[#4574FF]/15 border border-[#4574FF]/20 flex items-center justify-center">
+      <span className="text-[9px] font-black text-[#4574FF]">{initials}</span>
     </div>
   );
 }
@@ -309,7 +309,7 @@ export default function Rent() {
             <div className="font-semibold text-slate-900 dark:text-white text-[14px]">
               1 — Select Service
               {selectedService && (
-                <span className="ml-2 text-[#10b981] text-[13px] font-medium">
+                <span className="ml-2 text-[#4574FF] text-[13px] font-medium">
                   ✓ {selectedService.name}
                 </span>
               )}
@@ -337,7 +337,7 @@ export default function Rent() {
 
         {/* Search bar */}
         <div className="px-3 pt-3 pb-2">
-          <div className="flex items-center gap-2 h-9 px-3 rounded-xl border border-slate-200 dark:border-white/[0.07] bg-white dark:bg-white/[0.03] focus-within:border-[#10b981]/40 focus-within:bg-[#10b981]/[0.03] transition-all">
+          <div className="flex items-center gap-2 h-9 px-3 rounded-xl border border-slate-200 dark:border-white/[0.07] bg-white dark:bg-white/[0.03] focus-within:border-[#4574FF]/40 focus-within:bg-[#4574FF]/[0.03] transition-all">
             <Search className="h-3.5 w-3.5 text-slate-400 dark:text-slate-600 shrink-0" />
             <input
               type="text"
@@ -400,7 +400,7 @@ export default function Rent() {
                     }}
                     className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all duration-100 ${
                       isSelected
-                        ? "bg-[#10b981]/12 border border-[#10b981]/25 text-slate-900 dark:text-white"
+                        ? "bg-[#4574FF]/12 border border-[#4574FF]/25 text-slate-900 dark:text-white"
                         : "hover:bg-slate-100 dark:hover:bg-white/[0.04] border border-transparent text-slate-700 dark:text-slate-300"
                     }`}
                   >
@@ -412,7 +412,7 @@ export default function Rent() {
                       ${service.price.toFixed(2)}
                     </span>
                     {isSelected && (
-                      <CheckCircle2 className="h-4 w-4 text-[#10b981] shrink-0" />
+                      <CheckCircle2 className="h-4 w-4 text-[#4574FF] shrink-0" />
                     )}
                   </button>
                 );
@@ -430,7 +430,7 @@ export default function Rent() {
               <div className="font-semibold text-slate-900 dark:text-white text-[14px]">
                 2 — Select Country
                 {countryCode && (
-                  <span className="ml-2 text-[#10b981] text-[13px] font-medium">
+                  <span className="ml-2 text-[#4574FF] text-[13px] font-medium">
                     ✓ {liveCountries.find((c) => c.code === countryCode)?.name}
                   </span>
                 )}
@@ -536,7 +536,7 @@ export default function Rent() {
                 <div>
                   {/* Search input */}
                   <div className="px-3 pt-3 pb-2">
-                    <div className="flex items-center gap-2 h-9 px-3 rounded-xl border border-slate-200 dark:border-white/[0.07] bg-white dark:bg-white/[0.03] focus-within:border-[#10b981]/40 focus-within:bg-[#10b981]/[0.03] transition-all">
+                    <div className="flex items-center gap-2 h-9 px-3 rounded-xl border border-slate-200 dark:border-white/[0.07] bg-white dark:bg-white/[0.03] focus-within:border-[#4574FF]/40 focus-within:bg-[#4574FF]/[0.03] transition-all">
                       <Search className="h-3.5 w-3.5 text-slate-400 dark:text-slate-600 shrink-0" />
                       <input
                         ref={countrySearchRef}
@@ -580,7 +580,7 @@ export default function Rent() {
                             }}
                             className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all duration-100 ${
                               isSelected
-                                ? "bg-[#10b981]/12 border border-[#10b981]/25 text-slate-900 dark:text-white"
+                                ? "bg-[#4574FF]/12 border border-[#4574FF]/25 text-slate-900 dark:text-white"
                                 : "hover:bg-slate-100 dark:hover:bg-white/[0.04] border border-transparent text-slate-700 dark:text-slate-300"
                             }`}
                           >
@@ -614,7 +614,7 @@ export default function Rent() {
                                 : ""}
                             </span>
                             {isSelected && (
-                              <CheckCircle2 className="h-4 w-4 text-[#10b981] shrink-0" />
+                              <CheckCircle2 className="h-4 w-4 text-[#4574FF] shrink-0" />
                             )}
                           </button>
                         );
@@ -715,7 +715,7 @@ export default function Rent() {
                 <button
                   className={`w-full h-12 rounded-xl text-[14.5px] font-bold transition-all duration-200 flex items-center justify-center gap-2 active:scale-[0.98] ${
                     canRent
-                      ? "bg-[#10b981] text-white hover:bg-emerald-500 shadow-[0_2px_16px_rgba(69,116,255,0.3)]"
+                      ? "bg-[#4574FF] text-white hover:bg-blue-500 shadow-[0_2px_16px_rgba(69,116,255,0.3)]"
                       : "bg-slate-100 dark:bg-white/[0.04] border border-slate-200 dark:border-white/[0.07] text-slate-400 dark:text-slate-600 cursor-not-allowed"
                   }`}
                   disabled={!canRent}

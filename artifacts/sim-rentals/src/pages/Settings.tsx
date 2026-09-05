@@ -59,16 +59,16 @@ function SectionCard({
 }) {
   return (
     <section
-      className={`rounded-2xl border overflow-hidden shadow-sm ${accent ? "border-[#10b981]/15 bg-[#10b981]/2" : "border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900"}`}
+      className={`rounded-2xl border overflow-hidden shadow-sm ${accent ? "border-[#4574FF]/15 bg-[#4574FF]/2" : "border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900"}`}
     >
       <div
-        className={`flex items-center gap-3 px-5 py-4 border-b ${accent ? "border-[#10b981]/10" : "border-slate-100 dark:border-slate-700/80"}`}
+        className={`flex items-center gap-3 px-5 py-4 border-b ${accent ? "border-[#4574FF]/10" : "border-slate-100 dark:border-slate-700/80"}`}
       >
         <div
-          className={`h-9 w-9 rounded-xl border flex items-center justify-center shrink-0 ${accent ? "bg-[#10b981]/10 border-[#10b981]/20" : "bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700"}`}
+          className={`h-9 w-9 rounded-xl border flex items-center justify-center shrink-0 ${accent ? "bg-[#4574FF]/10 border-[#4574FF]/20" : "bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700"}`}
         >
           <Icon
-            className={`h-4 w-4 ${accent ? "text-[#10b981]" : "text-slate-500 dark:text-slate-400"}`}
+            className={`h-4 w-4 ${accent ? "text-[#4574FF]" : "text-slate-500 dark:text-slate-400"}`}
           />
         </div>
         <div>
@@ -130,7 +130,7 @@ function FieldInput({
           className={`w-full h-11 rounded-xl border text-[13.5px] outline-none transition-all ${Icon ? "pl-10" : "pl-4"} ${right ? "pr-10" : "pr-4"} ${
             readOnly || disabled
               ? "bg-slate-50 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700 text-slate-400 dark:text-slate-500 cursor-default"
-              : "bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:border-[#10b981]/50 focus:ring-2 focus:ring-[#10b981]/10 placeholder:text-slate-400 dark:placeholder:text-slate-600"
+              : "bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:border-[#4574FF]/50 focus:ring-2 focus:ring-[#4574FF]/10 placeholder:text-slate-400 dark:placeholder:text-slate-600"
           }`}
         />
         {right && (
@@ -196,7 +196,7 @@ function ProfileSection() {
             <div className="flex items-center gap-4">
               <Avatar className="h-14 w-14 border border-slate-200 dark:border-slate-700 shrink-0">
                 <AvatarImage src={user.avatarUrl} />
-                <AvatarFallback className="text-lg bg-[#10b981]/10 text-[#10b981] font-bold">
+                <AvatarFallback className="text-lg bg-[#4574FF]/10 text-[#4574FF] font-bold">
                   {user.name?.charAt(0).toUpperCase() || "U"}
                 </AvatarFallback>
               </Avatar>
@@ -229,7 +229,7 @@ function ProfileSection() {
                   onChange={(e) => setName(e.target.value)}
                   maxLength={64}
                   autoFocus
-                  className="flex-1 h-10 px-3 rounded-xl border border-[#10b981]/50 bg-white dark:bg-slate-800 text-[13.5px] text-slate-900 dark:text-white outline-none ring-2 ring-[#10b981]/10 transition-all"
+                  className="flex-1 h-10 px-3 rounded-xl border border-[#4574FF]/50 bg-white dark:bg-slate-800 text-[13.5px] text-slate-900 dark:text-white outline-none ring-2 ring-[#4574FF]/10 transition-all"
                   placeholder="Display name"
                   onKeyDown={(e) => {
                     if (e.key === "Enter") save();
@@ -242,7 +242,7 @@ function ProfileSection() {
                 <button
                   onClick={save}
                   disabled={saving}
-                  className="h-10 px-4 rounded-xl bg-[#10b981] text-white text-[12.5px] font-bold hover:bg-emerald-700 transition-all disabled:opacity-50 flex items-center gap-1.5"
+                  className="h-10 px-4 rounded-xl bg-[#4574FF] text-white text-[12.5px] font-bold hover:bg-blue-700 transition-all disabled:opacity-50 flex items-center gap-1.5"
                 >
                   {saving ? (
                     <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -396,7 +396,7 @@ function PasswordSection() {
         <button
           onClick={save}
           disabled={saving}
-          className="h-10 px-5 rounded-xl bg-[#10b981] text-white text-[13px] font-bold hover:bg-emerald-700 transition-all disabled:opacity-50 flex items-center gap-2"
+          className="h-10 px-5 rounded-xl bg-[#4574FF] text-white text-[13px] font-bold hover:bg-blue-700 transition-all disabled:opacity-50 flex items-center gap-2"
         >
           {saving && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
           {saving ? "Saving…" : "Update password"}
@@ -649,12 +649,12 @@ function TwoFASection() {
                   setErr("");
                 }}
                 placeholder="000000"
-                className="w-32 h-11 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-center font-mono text-[18px] text-slate-900 dark:text-white tracking-widest outline-none focus:border-[#10b981]/50 focus:ring-2 focus:ring-[#10b981]/10 transition-all"
+                className="w-32 h-11 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-center font-mono text-[18px] text-slate-900 dark:text-white tracking-widest outline-none focus:border-[#4574FF]/50 focus:ring-2 focus:ring-[#4574FF]/10 transition-all"
               />
               <button
                 onClick={verifySetup}
                 disabled={verifying || code.length !== 6}
-                className="h-11 px-5 rounded-xl bg-[#10b981] text-white text-[13px] font-bold hover:bg-emerald-700 transition-all disabled:opacity-50 flex items-center gap-2"
+                className="h-11 px-5 rounded-xl bg-[#4574FF] text-white text-[13px] font-bold hover:bg-blue-700 transition-all disabled:opacity-50 flex items-center gap-2"
               >
                 {verifying && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
                 Activate 2FA
@@ -684,7 +684,7 @@ function TwoFASection() {
             Google Authenticator app when signing in.
           </p>
           <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
-            <Smartphone className="h-5 w-5 text-[#10b981] shrink-0" />
+            <Smartphone className="h-5 w-5 text-[#4574FF] shrink-0" />
             <div className="text-[12px] text-slate-600 dark:text-slate-400">
               You'll need the{" "}
               <strong className="text-slate-800 dark:text-slate-200">
@@ -695,7 +695,7 @@ function TwoFASection() {
           </div>
           <button
             onClick={startSetup}
-            className="flex items-center gap-2 h-10 px-5 rounded-xl bg-[#10b981] text-white text-[13px] font-bold hover:bg-emerald-700 transition-all shadow-sm"
+            className="flex items-center gap-2 h-10 px-5 rounded-xl bg-[#4574FF] text-white text-[13px] font-bold hover:bg-blue-700 transition-all shadow-sm"
           >
             <QrCode className="h-4 w-4" /> Enable 2FA
           </button>
@@ -822,7 +822,7 @@ function ApiKeysSection() {
         {revealedKey && (
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[10.5px] font-bold text-[#10b981] uppercase tracking-wider">
+              <span className="text-[10.5px] font-bold text-[#4574FF] uppercase tracking-wider">
                 Copy now — won't be shown again
               </span>
               <button
@@ -864,14 +864,14 @@ function ApiKeysSection() {
               onChange={(e) => setNewName(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && createKey()}
               maxLength={64}
-              className="w-full h-10 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-3.5 text-[13px] text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-[#10b981]/50 transition-all"
+              className="w-full h-10 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-3.5 text-[13px] text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-[#4574FF]/50 transition-all"
               autoFocus
             />
             <div className="flex gap-2">
               <button
                 onClick={createKey}
                 disabled={creating || !newName.trim()}
-                className="h-9 px-5 rounded-xl bg-[#10b981] text-[13px] font-semibold text-white hover:bg-emerald-700 transition-colors disabled:opacity-40"
+                className="h-9 px-5 rounded-xl bg-[#4574FF] text-[13px] font-semibold text-white hover:bg-blue-700 transition-colors disabled:opacity-40"
               >
                 {creating ? "Generating…" : "Generate"}
               </button>
@@ -1066,7 +1066,7 @@ export default function Settings() {
       data-sky-page="settings"
     >
       <div>
-        <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-[#10b981] mb-1">
+        <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-[#4574FF] mb-1">
           Account
         </p>
         <h1 className="font-display text-[22px] font-bold tracking-tight text-slate-900 dark:text-white">
@@ -1083,11 +1083,11 @@ export default function Settings() {
       <ApiKeysSection />
 
       {/* Referral */}
-      <section className="rounded-2xl border border-[#10b981]/15 bg-white dark:bg-slate-900 overflow-hidden shadow-sm">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-[#10b981]/10">
+      <section className="rounded-2xl border border-[#4574FF]/15 bg-white dark:bg-slate-900 overflow-hidden shadow-sm">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-[#4574FF]/10">
           <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-xl border border-[#10b981]/20 bg-[#10b981]/8 flex items-center justify-center shrink-0">
-              <Gift className="h-4 w-4 text-[#10b981]" />
+            <div className="h-9 w-9 rounded-xl border border-[#4574FF]/20 bg-[#4574FF]/8 flex items-center justify-center shrink-0">
+              <Gift className="h-4 w-4 text-[#4574FF]" />
             </div>
             <div>
               <div className="text-[14px] font-semibold text-slate-900 dark:text-white">
@@ -1098,7 +1098,7 @@ export default function Settings() {
               </div>
             </div>
           </div>
-          <span className="text-[10px] font-bold text-[#10b981] bg-[#10b981]/10 border border-[#10b981]/20 rounded-full px-2.5 py-0.5 shrink-0">
+          <span className="text-[10px] font-bold text-[#4574FF] bg-[#4574FF]/10 border border-[#4574FF]/20 rounded-full px-2.5 py-0.5 shrink-0">
             $0.50
           </span>
         </div>
@@ -1108,7 +1108,7 @@ export default function Settings() {
             through your link.
           </p>
           <Link href="/referral">
-            <span className="inline-flex items-center gap-2 h-9 px-4 rounded-xl border border-[#10b981]/20 bg-[#10b981]/8 text-[12.5px] font-semibold text-[#10b981] hover:bg-[#10b981]/15 transition-all cursor-pointer">
+            <span className="inline-flex items-center gap-2 h-9 px-4 rounded-xl border border-[#4574FF]/20 bg-[#4574FF]/8 text-[12.5px] font-semibold text-[#4574FF] hover:bg-[#4574FF]/15 transition-all cursor-pointer">
               View Referral Dashboard <ChevronRight className="h-3.5 w-3.5" />
             </span>
           </Link>

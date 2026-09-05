@@ -35,7 +35,7 @@ function StatusBadge({ status }: { status: string }) {
     );
   if (status === "pending")
     return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-400/30 dark:border-emerald-500/20">
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-400/30 dark:border-sky-500/20">
         <Clock className="h-2.5 w-2.5" /> Processing
       </span>
     );
@@ -249,7 +249,7 @@ export default function Payments() {
     >
       {/* Header */}
       <div>
-        <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-[#10b981] mb-1">
+        <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-[#4574FF] mb-1">
           Billing
         </p>
         <h1 className="font-display text-[22px] font-bold tracking-tight text-slate-900 dark:text-white">
@@ -268,7 +268,7 @@ export default function Payments() {
             <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-500 mb-2">
               Top-up amount
             </p>
-            <div className="flex items-center gap-0 rounded-xl border border-slate-300 dark:border-white/[0.1] bg-white dark:bg-white/[0.03] overflow-hidden focus-within:border-emerald-500/60 dark:focus-within:border-emerald-500/40 transition-all">
+            <div className="flex items-center gap-0 rounded-xl border border-slate-300 dark:border-white/[0.1] bg-white dark:bg-white/[0.03] overflow-hidden focus-within:border-sky-500/60 dark:focus-within:border-sky-500/40 transition-all">
               <span className="h-12 flex items-center px-4 text-[16px] font-bold text-slate-400 border-r border-slate-200 dark:border-white/[0.07] bg-slate-50 dark:bg-white/[0.02] shrink-0">
                 $
               </span>
@@ -286,7 +286,7 @@ export default function Payments() {
               <button
                 onClick={handleCustom}
                 disabled={!customAmount || !!checkingOut}
-                className="h-12 w-12 flex items-center justify-center bg-emerald-500 hover:bg-emerald-400 disabled:opacity-40 disabled:cursor-not-allowed transition-colors shrink-0"
+                className="h-12 w-12 flex items-center justify-center bg-sky-500 hover:bg-sky-400 disabled:opacity-40 disabled:cursor-not-allowed transition-colors shrink-0"
               >
                 {checkingOut && customAmount ? (
                   <Loader2 className="h-4 w-4 text-white animate-spin" />
@@ -333,7 +333,7 @@ export default function Payments() {
                 disabled={checkingOut === amount}
                 className={`relative h-11 rounded-xl border text-[13px] font-bold transition-all active:scale-[0.97] ${
                   popular
-                    ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-600 dark:text-emerald-300 hover:bg-emerald-500/[0.18]"
+                    ? "border-sky-500/40 bg-sky-500/10 text-sky-600 dark:text-sky-300 hover:bg-sky-500/[0.18]"
                     : "border-slate-200 dark:border-white/[0.08] bg-white dark:bg-white/[0.03] text-slate-800 dark:text-white hover:border-slate-300 dark:hover:border-white/[0.16] hover:bg-slate-50 dark:hover:bg-white/[0.06]"
                 }`}
               >
@@ -343,7 +343,7 @@ export default function Payments() {
                   <>${amount}</>
                 )}
                 {popular && (
-                  <span className="absolute -top-2 left-1/2 -translate-x-1/2 text-[8px] font-black uppercase bg-emerald-500 text-white rounded-full px-1.5 py-0 leading-4">
+                  <span className="absolute -top-2 left-1/2 -translate-x-1/2 text-[8px] font-black uppercase bg-sky-500 text-white rounded-full px-1.5 py-0 leading-4">
                     Popular
                   </span>
                 )}

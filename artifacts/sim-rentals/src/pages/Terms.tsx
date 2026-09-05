@@ -76,7 +76,7 @@ export default function Terms() {
         <div className="mx-auto flex max-w-4xl items-center justify-between px-4 h-14">
           <Link href="/">
             <span className="font-display text-[15px] font-extrabold tracking-tight text-[#0a1628] dark:text-white cursor-pointer">
-              SKY<span className="text-[#10b981] ml-1">SMS</span>
+              SKY<span className="text-[#4574FF] ml-1">SMS</span>
             </span>
           </Link>
           <Link href="/">
@@ -90,7 +90,7 @@ export default function Terms() {
       <main className="mx-auto max-w-4xl px-4 pb-24 pt-14 sm:px-6 lg:px-8">
         <Reveal variant="up">
           <div className="mb-12 text-center">
-            <div className="mx-auto mb-5 w-fit rounded-full border border-[#10b981]/20 bg-[#10b981]/[0.08] px-4 py-2 text-xs font-bold uppercase tracking-[0.22em] text-[#10b981]">
+            <div className="mx-auto mb-5 w-fit rounded-full border border-[#4574FF]/20 bg-[#4574FF]/[0.08] px-4 py-2 text-xs font-bold uppercase tracking-[0.22em] text-[#4574FF]">
               Legal
             </div>
             <h1 className="text-5xl font-black tracking-tight text-slate-900 dark:text-white mb-4">
@@ -103,8 +103,8 @@ export default function Terms() {
         </Reveal>
 
         <Reveal variant="up" delay={60}>
-          <div className="rounded-2xl p-6 mb-8 flex items-start gap-4 border-l-4 border-l-[#10b981] border border-slate-200 dark:border-slate-700/50 bg-slate-50 dark:bg-slate-800/40">
-            <Scale className="h-5 w-5 text-[#10b981] shrink-0 mt-0.5" />
+          <div className="rounded-2xl p-6 mb-8 flex items-start gap-4 border-l-4 border-l-[#4574FF] border border-slate-200 dark:border-slate-700/50 bg-slate-50 dark:bg-slate-800/40">
+            <Scale className="h-5 w-5 text-[#4574FF] shrink-0 mt-0.5" />
             <div>
               <div className="font-bold text-slate-900 dark:text-white mb-1">
                 Please read these terms carefully
@@ -140,7 +140,7 @@ export default function Terms() {
               these Terms of Service.
             </p>
             <Link href="/refund-policy">
-              <span className="inline-flex items-center gap-2 text-[#10b981] text-sm font-semibold hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer">
+              <span className="inline-flex items-center gap-2 text-[#4574FF] text-sm font-semibold hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
                 View Refund Policy <ChevronRight className="h-4 w-4" />
               </span>
             </Link>

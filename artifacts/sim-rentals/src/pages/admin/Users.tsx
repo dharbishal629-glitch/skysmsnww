@@ -248,12 +248,12 @@ function UserProfileModal({
         className="relative w-full max-w-[min(384px,calc(100vw-16px))] rounded-2xl border border-white/[0.08] bg-[#070c1a] shadow-2xl max-h-[86vh] flex flex-col overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="h-px bg-emerald-500/30 shrink-0" />
+        <div className="h-px bg-blue-500/30 shrink-0" />
 
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-3.5 border-b border-white/[0.05] sticky top-0 bg-[#070c1a] z-10">
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-emerald-500/20 to-emerald-600/10 border border-emerald-500/20 flex items-center justify-center shrink-0 text-emerald-400 font-black text-[15px] uppercase">
+            <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-600/10 border border-blue-500/20 flex items-center justify-center shrink-0 text-blue-400 font-black text-[15px] uppercase">
               {user.name.charAt(0)}
             </div>
             <div>
@@ -267,7 +267,7 @@ function UserProfileModal({
                   {user.status}
                 </span>
                 <span
-                  className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full border ${user.role === "admin" ? "text-emerald-400 border-emerald-500/20 bg-emerald-500/10" : "text-slate-500 border-white/10 bg-white/[0.04]"}`}
+                  className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full border ${user.role === "admin" ? "text-blue-400 border-blue-500/20 bg-blue-500/10" : "text-slate-500 border-white/10 bg-white/[0.04]"}`}
                 >
                   {user.role}
                 </span>
@@ -296,7 +296,7 @@ function UserProfileModal({
                 label: "Rentals",
                 value: String(user.rentals),
                 icon: Phone,
-                color: "text-emerald-400",
+                color: "text-blue-400",
               },
               {
                 label: "Joined",
@@ -392,13 +392,13 @@ function UserProfileModal({
                 placeholder="+10 or -5"
                 value={creditInput}
                 onChange={(e) => setCreditInput(e.target.value)}
-                className="flex-1 h-9 rounded-xl border border-white/[0.08] bg-white/[0.03] px-3 text-[13px] text-white text-right placeholder:text-slate-600 outline-none focus:border-emerald-500/30 transition-all"
+                className="flex-1 h-9 rounded-xl border border-white/[0.08] bg-white/[0.03] px-3 text-[13px] text-white text-right placeholder:text-slate-600 outline-none focus:border-blue-500/30 transition-all"
                 onKeyDown={(e) => e.key === "Enter" && handleCredit()}
               />
               <button
                 onClick={handleCredit}
                 disabled={saving}
-                className="h-9 px-4 rounded-xl bg-emerald-600 text-[12.5px] font-bold text-white hover:bg-emerald-500 transition-all disabled:opacity-50"
+                className="h-9 px-4 rounded-xl bg-blue-600 text-[12.5px] font-bold text-white hover:bg-blue-500 transition-all disabled:opacity-50"
               >
                 {saving ? (
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -452,7 +452,7 @@ function UserProfileModal({
             <button
               onClick={handleRole}
               disabled={roleLoading}
-              className="flex-1 h-9 flex items-center justify-center gap-1.5 rounded-xl border border-emerald-500/20 bg-emerald-500/[0.06] text-[12.5px] font-semibold text-emerald-400 hover:bg-emerald-500/[0.1] transition-all disabled:opacity-50"
+              className="flex-1 h-9 flex items-center justify-center gap-1.5 rounded-xl border border-blue-500/20 bg-blue-500/[0.06] text-[12.5px] font-semibold text-blue-400 hover:bg-blue-500/[0.1] transition-all disabled:opacity-50"
             >
               {user.role === "admin" ? (
                 <User className="h-3.5 w-3.5" />
@@ -677,7 +677,7 @@ export default function AdminUsers() {
               value: counts.suspended,
               color: "text-red-400",
             },
-            { label: "Admins", value: counts.admin, color: "text-emerald-400" },
+            { label: "Admins", value: counts.admin, color: "text-blue-400" },
           ].map(({ label, value, color }) => (
             <div
               key={label}
@@ -698,7 +698,7 @@ export default function AdminUsers() {
             placeholder="Search by name, email, or IP…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="h-10 w-full rounded-xl border border-white/[0.08] bg-white/[0.03] pl-9 pr-4 text-[13px] text-white placeholder:text-slate-600 outline-none focus:border-emerald-500/30 transition-all"
+            className="h-10 w-full rounded-xl border border-white/[0.08] bg-white/[0.03] pl-9 pr-4 text-[13px] text-white placeholder:text-slate-600 outline-none focus:border-blue-500/30 transition-all"
           />
         </div>
         <div className="flex items-center gap-1 rounded-xl border border-white/[0.06] bg-white/[0.02] p-0.5 h-10 shrink-0">
@@ -708,14 +708,14 @@ export default function AdminUsers() {
               onClick={() => setFilter(key)}
               className={`px-3 py-1.5 rounded-lg text-[11px] font-semibold transition-all ${
                 filter === key
-                  ? "bg-emerald-600 text-white"
+                  ? "bg-blue-600 text-white"
                   : "text-slate-500 hover:text-slate-300"
               }`}
             >
               {label}
               {counts[key] > 0 && (
                 <span
-                  className={`ml-1 text-[10px] ${filter === key ? "text-emerald-100/70" : "text-slate-700"}`}
+                  className={`ml-1 text-[10px] ${filter === key ? "text-blue-100/70" : "text-slate-700"}`}
                 >
                   {counts[key]}
                 </span>
@@ -760,7 +760,7 @@ export default function AdminUsers() {
                   >
                     {/* Avatar */}
                     <div
-                      className={`h-10 w-10 rounded-xl border flex items-center justify-center text-[13px] font-black shrink-0 uppercase transition-colors ${isSuspended ? "bg-red-500/10 border-red-500/15 text-red-400" : user.role === "admin" ? "bg-emerald-500/10 border-emerald-500/15 text-emerald-400" : "bg-white/[0.05] border-white/[0.08] text-slate-400"}`}
+                      className={`h-10 w-10 rounded-xl border flex items-center justify-center text-[13px] font-black shrink-0 uppercase transition-colors ${isSuspended ? "bg-red-500/10 border-red-500/15 text-red-400" : user.role === "admin" ? "bg-blue-500/10 border-blue-500/15 text-blue-400" : "bg-white/[0.05] border-white/[0.08] text-slate-400"}`}
                     >
                       {user.name.charAt(0)}
                     </div>
@@ -775,7 +775,7 @@ export default function AdminUsers() {
                           {user.name}
                         </span>
                         {user.role === "admin" && (
-                          <span className="inline-flex items-center text-[9.5px] font-bold px-1.5 py-0 rounded-full border text-emerald-400 border-emerald-500/20 bg-emerald-500/10">
+                          <span className="inline-flex items-center text-[9.5px] font-bold px-1.5 py-0 rounded-full border text-blue-400 border-blue-500/20 bg-blue-500/10">
                             Admin
                           </span>
                         )}
@@ -842,7 +842,7 @@ export default function AdminUsers() {
                               [user.id]: e.target.value,
                             }))
                           }
-                          className="h-7 w-16 rounded-lg border border-white/[0.08] bg-white/[0.03] px-2 text-[12px] text-white text-right placeholder:text-slate-700 outline-none focus:border-emerald-500/30 transition-all"
+                          className="h-7 w-16 rounded-lg border border-white/[0.08] bg-white/[0.03] px-2 text-[12px] text-white text-right placeholder:text-slate-700 outline-none focus:border-blue-500/30 transition-all"
                           onKeyDown={(e) =>
                             e.key === "Enter" && addCredits(user.id)
                           }
@@ -850,7 +850,7 @@ export default function AdminUsers() {
                         <button
                           onClick={() => addCredits(user.id)}
                           disabled={savingUser === user.id}
-                          className="h-7 px-2.5 rounded-lg bg-emerald-500/15 border border-emerald-500/20 text-[11.5px] font-bold text-emerald-400 hover:bg-emerald-500/25 transition-all disabled:opacity-50"
+                          className="h-7 px-2.5 rounded-lg bg-blue-500/15 border border-blue-500/20 text-[11.5px] font-bold text-blue-400 hover:bg-blue-500/25 transition-all disabled:opacity-50"
                         >
                           {savingUser === user.id ? "…" : "Add"}
                         </button>

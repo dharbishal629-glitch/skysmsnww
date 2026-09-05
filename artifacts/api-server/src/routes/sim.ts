@@ -2871,9 +2871,7 @@ router.delete("/admin/support/:id/claim", async (req, res) => {
     return;
   }
   if (!actor.isAdmin && String(existing.claimed_by_user_id) !== actor.userId) {
-    res.status(403).json({
-      error: "Only the assigned support admin can release this ticket.",
-    });
+    res.status(403).json({ error: "Only the assigned support admin can release this ticket." });
     return;
   }
   const ticketId = String(existing.id);
@@ -3547,8 +3545,7 @@ router.put("/admin/users/:id/lien", async (req, res) => {
 
 // ─── Admin: Support (admin send with image) ──────────────────────────────────
 router.post("/admin/support/:id/messages", async (req, res) => {
-  const actor = await requireSupportAdmin(req, res);
-  if (!actor) return;
+  if (!(await requireSupportAdmin(req, res))) return;
   const { id } = req.params;
   const message = String(req.body?.message ?? "")
     .trim()
@@ -3567,16 +3564,6 @@ router.post("/admin/support/:id/messages", async (req, res) => {
     return;
   }
   const ticketId = String(existing.id);
-  if (
-    !actor.isAdmin &&
-    (await getSupportClaimingEnabled()) &&
-    String(existing.claimed_by_user_id ?? "") !== actor.userId
-  ) {
-    res.status(403).json({
-      error: "Claim this ticket before replying or changing its status.",
-    });
-    return;
-  }
   await pool.query(
     "INSERT INTO sim_support_messages (id, ticket_id, sender_role, sender_name, message, image_url) VALUES ($1, $2, 'admin', 'SKY SMS Support', $3, $4)",
     [crypto.randomUUID(), ticketId, message || "", imageData],

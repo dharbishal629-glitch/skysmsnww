@@ -38,7 +38,7 @@ function useMethodColors(isDark: boolean) {
           bg: "rgba(59,130,246,0.1)",
           border: "rgba(59,130,246,0.25)",
         }
-      : { text: "#10b981", bg: "#eff6ff", border: "#bfdbfe" },
+      : { text: "#2563eb", bg: "#eff6ff", border: "#bfdbfe" },
     POST: isDark
       ? {
           text: "#6ee7b7",
@@ -130,7 +130,7 @@ function CodeBlock({
         {copyText !== undefined && <CopyBtn text={copyText} small />}
       </div>
       <div className="relative rounded-xl border border-slate-800 dark:border-slate-700 bg-[#0d1117] dark:bg-[#080c18] overflow-hidden">
-        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-[#10b981]/40 via-[#10b981]/20 to-transparent" />
+        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-[#4574FF]/40 via-[#4574FF]/20 to-transparent" />
         <pre
           style={{
             padding: "14px 18px",
@@ -190,7 +190,7 @@ function Endpoint({
     <div className="space-y-1">
       <div className="flex items-center gap-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 px-4 py-3 overflow-x-auto">
         <MethodBadge m={method} isDark={isDark} />
-        <code className="text-[13px] font-mono text-[#10b981] dark:text-[#7b9eff] whitespace-nowrap">
+        <code className="text-[13px] font-mono text-[#4574FF] dark:text-[#7b9eff] whitespace-nowrap">
           {path}
         </code>
       </div>
@@ -467,12 +467,12 @@ export default function ApiDocs() {
                   onClick={() => setActive(n.id)}
                   className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-[13px] font-medium transition-all ${
                     isActive
-                      ? "bg-[#10b981]/10 dark:bg-[#10b981]/15 text-[#10b981] border border-[#10b981]/15 dark:border-[#10b981]/25"
+                      ? "bg-[#4574FF]/10 dark:bg-[#4574FF]/15 text-[#4574FF] border border-[#4574FF]/15 dark:border-[#4574FF]/25"
                       : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800"
                   }`}
                 >
                   <n.icon
-                    className={`h-3.5 w-3.5 shrink-0 ${isActive ? "text-[#10b981]" : "text-slate-400 dark:text-slate-500"}`}
+                    className={`h-3.5 w-3.5 shrink-0 ${isActive ? "text-[#4574FF]" : "text-slate-400 dark:text-slate-500"}`}
                   />
                   {n.label}
                   {isActive && <ChevronRight className="h-3 w-3 ml-auto" />}
@@ -497,7 +497,7 @@ export default function ApiDocs() {
       <main className="flex-1 min-w-0 p-6 space-y-6 overflow-x-hidden">
         {/* Overview */}
         <section id="overview">
-          <div className="rounded-2xl border border-[#10b981]/15 dark:border-[#10b981]/20 bg-gradient-to-br from-[#10b981]/5 dark:from-[#10b981]/8 to-transparent overflow-hidden relative shadow-sm">
+          <div className="rounded-2xl border border-[#4574FF]/15 dark:border-[#4574FF]/20 bg-gradient-to-br from-[#4574FF]/5 dark:from-[#4574FF]/8 to-transparent overflow-hidden relative shadow-sm">
             <div
               className="absolute inset-0 pointer-events-none"
               style={{
@@ -509,11 +509,11 @@ export default function ApiDocs() {
             <div className="relative p-7">
               {/* Header */}
               <div className="flex items-start gap-4 mb-6">
-                <div className="h-12 w-12 rounded-2xl bg-[#10b981] flex items-center justify-center shadow-lg flex-shrink-0">
+                <div className="h-12 w-12 rounded-2xl bg-[#4574FF] flex items-center justify-center shadow-lg flex-shrink-0">
                   <Terminal className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <div className="text-[10px] font-bold text-[#10b981] uppercase tracking-[0.18em] mb-1">
+                  <div className="text-[10px] font-bold text-[#4574FF] uppercase tracking-[0.18em] mb-1">
                     Public API · v1
                   </div>
                   <h1 className="font-display text-[1.9rem] font-extrabold text-slate-900 dark:text-white leading-tight">
@@ -538,7 +538,7 @@ export default function ApiDocs() {
                     key={label}
                     className="flex items-center gap-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-1.5 text-[11px] font-semibold text-slate-600 dark:text-slate-300 shadow-sm"
                   >
-                    <Icon className="h-3 w-3 text-[#10b981]" />
+                    <Icon className="h-3 w-3 text-[#4574FF]" />
                     {label}
                   </div>
                 ))}
@@ -547,8 +547,8 @@ export default function ApiDocs() {
               {/* Auth box */}
               <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/60 p-4 shadow-sm">
                 <div className="flex items-start gap-3">
-                  <div className="h-8 w-8 rounded-lg bg-[#10b981]/10 border border-[#10b981]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <Lock className="h-4 w-4 text-[#10b981]" />
+                  <div className="h-8 w-8 rounded-lg bg-[#4574FF]/10 border border-[#4574FF]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Lock className="h-4 w-4 text-[#4574FF]" />
                   </div>
                   <div className="text-[13px] text-slate-700 dark:text-slate-300 leading-relaxed">
                     <p className="mb-1">
@@ -556,7 +556,7 @@ export default function ApiDocs() {
                         Authentication:
                       </strong>{" "}
                       Every request requires an{" "}
-                      <code className="bg-slate-100 dark:bg-slate-700 text-[#10b981] dark:text-[#7b9eff] px-1.5 py-0.5 rounded text-[12px] font-mono">
+                      <code className="bg-slate-100 dark:bg-slate-700 text-[#4574FF] dark:text-[#7b9eff] px-1.5 py-0.5 rounded text-[12px] font-mono">
                         X-API-Key
                       </code>{" "}
                       header. Generate yours in{" "}
@@ -569,7 +569,7 @@ export default function ApiDocs() {
                       <strong className="text-slate-900 dark:text-white">
                         Base URL:
                       </strong>{" "}
-                      <code className="bg-slate-100 dark:bg-slate-700 text-[#10b981] dark:text-[#7b9eff] px-1.5 py-0.5 rounded text-[12px] font-mono">
+                      <code className="bg-slate-100 dark:bg-slate-700 text-[#4574FF] dark:text-[#7b9eff] px-1.5 py-0.5 rounded text-[12px] font-mono">
                         {BASE}
                       </code>
                     </p>
@@ -586,7 +586,7 @@ export default function ApiDocs() {
             <div className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm overflow-hidden">
               {/* Section header */}
               <div className="flex items-center gap-3 px-6 py-4 border-b border-slate-100 dark:border-slate-700/80 bg-slate-50/50 dark:bg-slate-800/30">
-                <div className="w-1 h-5 rounded-full bg-gradient-to-b from-[#10b981] to-[#00c4c8] flex-shrink-0" />
+                <div className="w-1 h-5 rounded-full bg-gradient-to-b from-[#4574FF] to-[#00c4c8] flex-shrink-0" />
                 <h2 className="font-display text-[15px] font-bold text-slate-900 dark:text-white">
                   {sec.title}
                 </h2>
@@ -611,7 +611,7 @@ export default function ApiDocs() {
         <section id="errors">
           <div className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm overflow-hidden">
             <div className="flex items-center gap-3 px-6 py-4 border-b border-slate-100 dark:border-slate-700/80 bg-slate-50/50 dark:bg-slate-800/30">
-              <div className="w-1 h-5 rounded-full bg-gradient-to-b from-[#10b981] to-[#00c4c8] flex-shrink-0" />
+              <div className="w-1 h-5 rounded-full bg-gradient-to-b from-[#4574FF] to-[#00c4c8] flex-shrink-0" />
               <h2 className="font-display text-[15px] font-bold text-slate-900 dark:text-white">
                 Error Codes
               </h2>

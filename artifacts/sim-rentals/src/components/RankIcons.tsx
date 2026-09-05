@@ -46,17 +46,17 @@ export function RankOperative({ size = 32, className = "" }: RankIconProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 48 48" fill="none" className={className}>
       <path d="M24 5 L40 12 L40 27 C40 36 32 43 24 46 C16 43 8 36 8 27 L8 12 Z"
-        stroke="#10b981" strokeWidth="1.8" fill="rgba(69,116,255,0.06)" />
+        stroke="#4574FF" strokeWidth="1.8" fill="rgba(69,116,255,0.06)" />
       <path d="M24 13 L34 17 L34 27 C34 33 29 38 24 40 C19 38 14 33 14 27 L14 17 Z"
-        stroke="#10b981" strokeWidth="1" fill="rgba(69,116,255,0.08)" opacity="0.6" />
-      <circle cx="24" cy="24" r="4" stroke="#10b981" strokeWidth="1.5" fill="none" />
-      <circle cx="24" cy="24" r="1.8" fill="#10b981" />
-      <line x1="24" y1="20" x2="24" y2="15" stroke="#10b981" strokeWidth="1.2" />
-      <line x1="27.5" y1="24" x2="32" y2="24" stroke="#10b981" strokeWidth="1.2" />
-      <line x1="20.5" y1="24" x2="16" y2="24" stroke="#10b981" strokeWidth="1.2" />
-      <circle cx="24" cy="15" r="1.5" fill="#10b981" opacity="0.6" />
-      <circle cx="32" cy="24" r="1.5" fill="#10b981" opacity="0.6" />
-      <circle cx="16" cy="24" r="1.5" fill="#10b981" opacity="0.6" />
+        stroke="#4574FF" strokeWidth="1" fill="rgba(69,116,255,0.08)" opacity="0.6" />
+      <circle cx="24" cy="24" r="4" stroke="#4574FF" strokeWidth="1.5" fill="none" />
+      <circle cx="24" cy="24" r="1.8" fill="#4574FF" />
+      <line x1="24" y1="20" x2="24" y2="15" stroke="#4574FF" strokeWidth="1.2" />
+      <line x1="27.5" y1="24" x2="32" y2="24" stroke="#4574FF" strokeWidth="1.2" />
+      <line x1="20.5" y1="24" x2="16" y2="24" stroke="#4574FF" strokeWidth="1.2" />
+      <circle cx="24" cy="15" r="1.5" fill="#4574FF" opacity="0.6" />
+      <circle cx="32" cy="24" r="1.5" fill="#4574FF" opacity="0.6" />
+      <circle cx="16" cy="24" r="1.5" fill="#4574FF" opacity="0.6" />
     </svg>
   );
 }
@@ -142,8 +142,8 @@ export function RankLegend({ size = 32, className = "" }: RankIconProps) {
 /** Map of rank number → name + icon + color */
 export const RANKS = [
   { level: 1, name: "Initiate",   Icon: RankInitiate,  color: "#64748b", bgColor: "bg-slate-100",   textColor: "text-slate-600",   borderColor: "border-slate-200",   minRentals: 0   },
-  { level: 2, name: "Scout",      Icon: RankScout,     color: "#38bdf8", bgColor: "bg-emerald-50",      textColor: "text-sky-600",     borderColor: "border-emerald-200",     minRentals: 5   },
-  { level: 3, name: "Operative",  Icon: RankOperative, color: "#10b981", bgColor: "bg-emerald-50",     textColor: "text-emerald-600",    borderColor: "border-emerald-200",    minRentals: 20  },
+  { level: 2, name: "Scout",      Icon: RankScout,     color: "#38bdf8", bgColor: "bg-sky-50",      textColor: "text-sky-600",     borderColor: "border-sky-200",     minRentals: 5   },
+  { level: 3, name: "Operative",  Icon: RankOperative, color: "#4574FF", bgColor: "bg-blue-50",     textColor: "text-blue-600",    borderColor: "border-blue-200",    minRentals: 20  },
   { level: 4, name: "Specialist", Icon: RankSpecialist,color: "#818cf8", bgColor: "bg-indigo-50",   textColor: "text-indigo-600",  borderColor: "border-indigo-200",  minRentals: 50  },
   { level: 5, name: "Elite",      Icon: RankElite,     color: "#06b6d4", bgColor: "bg-cyan-50",     textColor: "text-cyan-600",    borderColor: "border-cyan-200",    minRentals: 100 },
   { level: 6, name: "Master",     Icon: RankMaster,    color: "#a855f7", bgColor: "bg-purple-50",   textColor: "text-purple-600",  borderColor: "border-purple-200",  minRentals: 250 },
