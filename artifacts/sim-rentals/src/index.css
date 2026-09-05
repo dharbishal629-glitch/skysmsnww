@@ -3050,3 +3050,95 @@ textarea:focus-visible {
 .support-attachment span svg {
   width: 13px;
 }
+
+/* Settings: olive-minimal account workspace. */
+.settings-page {
+  --settings-ink: #07111f;
+  --settings-muted: #5f6c7d;
+  --settings-olive: #839d45;
+  --settings-border: #d7e1dd;
+  max-width: 760px !important;
+  padding-bottom: 78px;
+  color: var(--settings-ink) !important;
+}
+.settings-page > div:first-child {
+  padding: 22px 0 14px;
+  border-bottom: 1px solid var(--settings-border);
+}
+.settings-page > div:first-child p:first-child {
+  color: var(--settings-olive) !important;
+  font-size: 13px !important;
+  letter-spacing: 0.14em !important;
+}
+.settings-page > div:first-child h1,
+.settings-page h2,
+.settings-page h3 {
+  color: var(--settings-ink) !important;
+}
+.settings-page > div:first-child h1 {
+  font-size: 52px !important;
+  line-height: 1.05 !important;
+  letter-spacing: -3.1px !important;
+}
+.settings-page > div:first-child p:last-child,
+.settings-page p {
+  color: var(--settings-muted) !important;
+}
+.settings-page section {
+  border: 1px solid var(--settings-border) !important;
+  border-radius: 7px !important;
+  background: #fff !important;
+  box-shadow: 0 3px 9px rgba(40, 70, 78, 0.06) !important;
+}
+.settings-page section > div:first-child {
+  border-color: var(--settings-border) !important;
+}
+.settings-page input,
+.settings-page textarea,
+.settings-page select {
+  color: var(--settings-ink) !important;
+  background: #f5f7f5 !important;
+  border: 1px solid var(--settings-border) !important;
+  border-radius: 5px !important;
+  box-shadow: none !important;
+}
+.settings-page input:focus,
+.settings-page textarea:focus,
+.settings-page select:focus {
+  border-color: var(--settings-olive) !important;
+  box-shadow: 0 0 0 4px #dff5de !important;
+}
+.settings-page button:not([class*="bg-red"]),
+.settings-page a[class*="inline-flex"] {
+  border-radius: 5px !important;
+  border: 1px solid var(--settings-border) !important;
+  background: #fff !important;
+  color: var(--settings-olive) !important;
+  box-shadow: none !important;
+}
+.settings-page button:not([class*="bg-red"]):hover,
+.settings-page a[class*="inline-flex"]:hover {
+  background: #f5f7f5 !important;
+  border-color: var(--settings-olive) !important;
+}
+.settings-page button[class*="bg-\[\#4574FF\]"],
+.settings-page button[class*="bg-emerald-500"] {
+  background: var(--settings-olive) !important;
+  color: #fff !important;
+  border-color: var(--settings-olive) !important;
+}
+.settings-page button[class*="bg-red"] {
+  border-radius: 5px !important;
+}
+.settings-page code {
+  color: var(--settings-ink) !important;
+  background: #f5f7f5;
+  padding: 3px 6px;
+  border-radius: 5px;
+}
+@media (max-width: 640px) {
+  .settings-page > div:first-child h1 {
+    font-size: 40px !important;
+    letter-spacing: -2.3px !important;
+  }
+}
