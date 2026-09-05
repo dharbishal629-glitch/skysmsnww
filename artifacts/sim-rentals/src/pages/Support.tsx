@@ -77,12 +77,12 @@ const STATUS_CONFIG: Record<
 > = {
   open: {
     label: "Open",
-    cls: "text-[#4574FF] bg-blue-50 border-blue-200",
+    cls: "text-[#839D45] bg-[#102c28] border-[#31534f]",
     icon: Clock,
   },
   in_progress: {
     label: "In Progress",
-    cls: "text-violet-700 bg-violet-50 border-violet-200",
+    cls: "text-amber-400 bg-amber-500/10 border-amber-500/20",
     icon: AlertCircle,
   },
   resolved: {
@@ -119,14 +119,14 @@ function TicketRow({ ticket }: { ticket: Ticket }) {
       <div
         className={`h-10 w-10 rounded-xl flex items-center justify-center shrink-0 border ${
           unread
-            ? "bg-[#4574FF]/10 border-[#4574FF]/20"
+            ? "bg-[#102c28] border-[#31534f]"
             : "bg-slate-100 border-slate-200"
         }`}
       >
         {isEnded ? (
           <XCircle className="h-4.5 w-4.5 text-slate-400" />
         ) : unread ? (
-          <MessageSquare className="h-4.5 w-4.5 text-[#4574FF]" />
+          <MessageSquare className="h-4.5 w-4.5 text-[#c8f169]" />
         ) : (
           <MessageSquare className="h-4.5 w-4.5 text-slate-400" />
         )}
@@ -135,7 +135,7 @@ function TicketRow({ ticket }: { ticket: Ticket }) {
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-0.5">
           {(ticket.displayId || ticket.ticketNumber) && (
-            <span className="font-mono text-[10px] text-[#4574FF] shrink-0">
+            <span className="font-mono text-[10px] text-[#c8f169] shrink-0">
               #{ticket.displayId ?? ticket.ticketNumber}
             </span>
           )}
@@ -145,14 +145,14 @@ function TicketRow({ ticket }: { ticket: Ticket }) {
             {ticket.subject}
           </span>
           {unread && (
-            <span className="h-2 w-2 rounded-full bg-[#4574FF] shrink-0 animate-pulse" />
+            <span className="h-2 w-2 rounded-full bg-[#c8f169] shrink-0 animate-pulse" />
           )}
         </div>
         <div className="text-[11px] text-slate-400 truncate">
           {lastMessage ? (
             <span
               className={
-                lastMessage.senderRole === "admin" ? "text-[#4574FF]/70" : ""
+                lastMessage.senderRole === "admin" ? "text-[#c8f169]" : ""
               }
             >
               {lastMessage.senderRole === "admin" ? "Support: " : "You: "}
@@ -233,19 +233,19 @@ export default function Support() {
 
   return (
     <div
-      className="max-w-2xl mx-auto space-y-5 pb-8 sky-page"
+      className="support-user-page max-w-2xl mx-auto space-y-5 pb-8 sky-page"
       data-sky-page="support"
     >
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-[#4574FF] mb-1">
+          <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-[#839D45] mb-1">
             Help Center
           </p>
           <h1 className="font-display text-[22px] font-bold tracking-tight text-slate-900 flex items-center gap-2.5">
             {t("supportTitle")}
             {unreadCount > 0 && (
-              <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-[#4574FF]/10 border border-[#4574FF]/20 text-[#4574FF]">
+              <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-[#839D45]/10 border border-[#839D45]/20 text-[#839D45]">
                 {unreadCount} new
               </span>
             )}
@@ -261,7 +261,7 @@ export default function Support() {
           className={`shrink-0 flex items-center gap-2 h-10 px-4 rounded-xl text-[12px] font-bold transition-all active:scale-95 ${
             showForm
               ? "bg-slate-100 border border-slate-200 text-slate-600 hover:text-slate-800"
-              : "bg-[#4574FF] text-white shadow-md hover:bg-[#3361e8]"
+              : "bg-[#839D45] text-white shadow-md hover:bg-[#6f853a]"
           }`}
         >
           {showForm ? (
@@ -283,11 +283,11 @@ export default function Support() {
           {showForm && (
             <form
               onSubmit={handleSubmit}
-              className="rounded-2xl border border-[#4574FF]/15 bg-blue-50/40 p-5 space-y-4 shadow-sm"
+              className="rounded-2xl border border-[#839D45]/15 bg-[#102c28] p-5 space-y-4 shadow-sm"
             >
               <div className="flex items-center gap-3 mb-1">
-                <div className="h-8 w-8 rounded-lg bg-[#4574FF]/10 border border-[#4574FF]/20 flex items-center justify-center">
-                  <LifeBuoy className="h-4 w-4 text-[#4574FF]" />
+                <div className="h-8 w-8 rounded-lg bg-[#839D45]/10 border border-[#839D45]/20 flex items-center justify-center">
+                  <LifeBuoy className="h-4 w-4 text-[#839D45]" />
                 </div>
                 <div>
                   <div className="text-[13px] font-bold text-slate-900">
@@ -310,7 +310,7 @@ export default function Support() {
                   placeholder="e.g. Balance not updated after payment"
                   maxLength={200}
                   required
-                  className="w-full h-11 rounded-xl border border-slate-200 bg-white px-4 text-[13px] text-slate-900 placeholder:text-slate-400 outline-none focus:border-[#4574FF]/50 focus:ring-2 focus:ring-[#4574FF]/10 transition-all shadow-sm"
+                  className="w-full h-11 rounded-xl border border-slate-200 bg-white px-4 text-[13px] text-slate-900 placeholder:text-slate-400 outline-none focus:border-[#839D45]/50 focus:ring-2 focus:ring-[#839D45]/10 transition-all shadow-sm"
                 />
               </div>
 
@@ -325,7 +325,7 @@ export default function Support() {
                   rows={5}
                   maxLength={2000}
                   required
-                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-[13px] text-slate-900 placeholder:text-slate-400 outline-none focus:border-[#4574FF]/50 focus:ring-2 focus:ring-[#4574FF]/10 transition-all resize-none leading-relaxed shadow-sm"
+                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-[13px] text-slate-900 placeholder:text-slate-400 outline-none focus:border-[#839D45]/50 focus:ring-2 focus:ring-[#839D45]/10 transition-all resize-none leading-relaxed shadow-sm"
                 />
                 <div className="text-right text-[10px] text-slate-400">
                   {message.length}/2000
@@ -337,7 +337,7 @@ export default function Support() {
                 disabled={
                   mutation.isPending || !subject.trim() || !message.trim()
                 }
-                className="w-full h-11 rounded-xl text-[13px] font-bold text-white bg-[#4574FF] hover:bg-[#3361e8] transition-all active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-md"
+                className="w-full h-11 rounded-xl text-[13px] font-bold text-white bg-[#839D45] hover:bg-[#6f853a] transition-all active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-md"
               >
                 {mutation.isPending ? (
                   <>
@@ -383,8 +383,8 @@ export default function Support() {
 
             {!isLoading && tickets.length === 0 && !showForm && (
               <div className="rounded-2xl border border-slate-200 bg-white py-14 flex flex-col items-center gap-4 text-center shadow-sm">
-                <div className="h-14 w-14 rounded-2xl bg-[#4574FF]/8 border border-[#4574FF]/12 flex items-center justify-center">
-                  <LifeBuoy className="h-6 w-6 text-[#4574FF]/60" />
+                <div className="h-14 w-14 rounded-2xl bg-[#839D45]/8 border border-[#839D45]/12 flex items-center justify-center">
+                  <LifeBuoy className="h-6 w-6 text-[#839D45]/60" />
                 </div>
                 <div>
                   <p className="text-[14px] font-bold text-slate-800 mb-1">
@@ -396,7 +396,7 @@ export default function Support() {
                 </div>
                 <button
                   onClick={() => setShowForm(true)}
-                  className="flex items-center gap-2 h-10 px-5 rounded-xl text-[12px] font-bold text-white bg-[#4574FF] hover:bg-[#3361e8] transition-all shadow-md"
+                  className="flex items-center gap-2 h-10 px-5 rounded-xl text-[12px] font-bold text-white bg-[#839D45] hover:bg-[#6f853a] transition-all shadow-md"
                 >
                   <Plus className="h-3.5 w-3.5" /> Open first ticket
                 </button>

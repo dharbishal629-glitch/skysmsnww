@@ -3705,3 +3705,79 @@ textarea:focus-visible {
     letter-spacing: -2.3px !important;
   }
 }
+
+/* User support inbox: same support-dashboard language, adapted for customer actions. */
+.support-user-page {
+  max-width: 860px !important;
+  color: #fff;
+}
+.support-user-page > div:first-child {
+  padding: 4px 0 18px;
+  border-bottom: 1px solid #1e293b;
+}
+.support-user-page > div:first-child p:first-child {
+  color: #839d45 !important;
+  font-size: 10px !important;
+  letter-spacing: 0.2em !important;
+}
+.support-user-page > div:first-child h1 {
+  margin: 5px 0;
+  color: #fff !important;
+  font:
+    800 28px/1.05 "Plus Jakarta Sans",
+    sans-serif;
+  letter-spacing: -0.05em;
+}
+.support-user-page > div:first-child p:last-child {
+  color: #738094 !important;
+}
+.support-user-page form,
+.support-user-page > div.rounded-2xl,
+.support-user-page > div > div.rounded-2xl {
+  border: 1px solid #1e293b !important;
+  border-radius: 9px !important;
+  background: #0d1526 !important;
+  box-shadow: none !important;
+}
+.support-user-page form input,
+.support-user-page form textarea {
+  border-radius: 5px !important;
+  border-color: #1e293b !important;
+  background: #080c18 !important;
+  color: #fff !important;
+}
+.support-user-page form button[type="submit"] {
+  border-radius: 5px !important;
+  background: #c8f169 !important;
+  color: #080c18 !important;
+}
+.support-user-page form button[type="submit"]:hover {
+  background: #d8f58d !important;
+}
+.support-user-page .divide-y > * {
+  border-color: #1e293b !important;
+}
+.support-user-page .divide-y button {
+  background: transparent !important;
+  color: #fff !important;
+  border-radius: 0 !important;
+}
+.support-user-page .divide-y button:hover {
+  background: #0d1526 !important;
+}
+.support-user-page .divide-y button > div:first-child {
+  border-color: #1e293b !important;
+  background: #162231 !important;
+}
+.support-user-page .divide-y button span.font-mono {
+  color: #c8f169 !important;
+}
+@media (max-width: 640px) {
+  .support-user-page {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .support-user-page > div:first-child h1 {
+    font-size: 24px;
+  }
+}
