@@ -1,16 +1,21 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useLocation } from "wouter";
-import { format } from "date-fns";
+import { formatDistanceToNow } from "date-fns";
 import {
-  LifeBuoy,
-  CheckCircle2,
-  Clock,
-  XCircle,
   AlertCircle,
-  User,
-  Search,
+  Bell,
+  CheckCircle2,
   ChevronRight,
+  CircleDot,
+  Clock3,
+  Filter,
+  Inbox,
+  LifeBuoy,
+  RefreshCw,
+  Search,
+  TrendingUp,
+  User,
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -46,93 +51,60 @@ const BASE =
   "";
 
 async function fetchAdminTickets(): Promise<AdminTicket[]> {
-  const res = await fetch(`${BASE}/api/admin/support`, {
+  const response = await fetch(`${BASE}/api/admin/support`, {
     credentials: "include",
   });
-  if (!res.ok) throw new Error("Failed to load tickets");
-  const data = (await res.json()) as { tickets: AdminTicket[] };
-  return data.tickets;
+  if (!response.ok) throw new Error("Failed to load tickets");
+  return ((await response.json()) as { tickets: AdminTicket[] }).tickets;
 }
 
-const statusMap: Record<
-  string,
-  { label: string; cls: string; icon: React.ElementType }
-> = {
-  open: {
-    label: "Open",
-    cls: "text-sky-400 border-sky-500/20 bg-sky-500/10",
-    icon: Clock,
-  },
-  in_progress: {
-    label: "In Progress",
-    cls: "text-blue-400 border-blue-500/20 bg-blue-500/10",
-    icon: Clock,
-  },
-  resolved: {
-    label: "Resolved",
-    cls: "text-emerald-400 border-emerald-500/20 bg-emerald-500/10",
-    icon: CheckCircle2,
-  },
-  closed: {
-    label: "Closed",
-    cls: "text-slate-500 border-white/10 bg-white/[0.03]",
-    icon: XCircle,
-  },
+const statusConfig: Record<string, { label: string; className: string }> = {
+  open: { label: "Open", className: "support-status-open" },
+  in_progress: { label: "In progress", className: "support-status-pending" },
+  resolved: { label: "Resolved", className: "support-status-resolved" },
+  closed: { label: "Closed", className: "support-status-closed" },
+};
+
+const priorityConfig: Record<string, { label: string; className: string }> = {
+  high: { label: "High", className: "support-priority-high" },
+  urgent: { label: "Urgent", className: "support-priority-high" },
+  medium: { label: "Medium", className: "support-priority-medium" },
+  normal: { label: "Normal", className: "support-priority-medium" },
+  low: { label: "Low", className: "support-priority-low" },
 };
 
 function TicketRow({ ticket }: { ticket: AdminTicket }) {
   const [, setLocation] = useLocation();
-  const st = statusMap[ticket.status] ?? statusMap.open;
-  const StIcon = st.icon;
-  const hasUserReplies = ticket.messages.some((m) => m.senderRole === "user");
-  const lastMsg = ticket.messages.at(-1);
+  const status = statusConfig[ticket.status] ?? statusConfig.open;
+  const priority = priorityConfig[ticket.priority] ?? priorityConfig.low;
+  const hasUserReply = ticket.messages.some(
+    (message) => message.senderRole === "user",
+  );
+  const lastMessage = ticket.messages.at(-1);
 
   return (
     <button
+      className="support-ticket-row"
       onClick={() => setLocation(`/admin/support/conversation/${ticket.id}`)}
-      className="w-full text-left flex items-center gap-3 px-4 py-3.5 hover:bg-white/[0.025] transition-colors border-b border-white/[0.04] last:border-0 group"
     >
-      <div className="h-9 w-9 rounded-xl bg-white/[0.04] border border-white/[0.06] flex items-center justify-center shrink-0 group-hover:border-white/[0.12] transition-colors">
-        <User className="h-4 w-4 text-slate-600" />
-      </div>
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 mb-0.5">
-          <span className="text-[13px] font-semibold text-slate-900 dark:text-white truncate">
-            {ticket.subject}
-          </span>
-          {(ticket.displayId || ticket.ticketNumber) && (
-            <span className="font-mono text-[10px] text-blue-400 shrink-0">
-              #{ticket.displayId ?? ticket.ticketNumber}
-            </span>
-          )}
-          {hasUserReplies && (
-            <span className="h-1.5 w-1.5 rounded-full bg-blue-400 shrink-0 animate-pulse" />
-          )}
-        </div>
-        <div className="flex items-center gap-1.5 text-[11px] text-slate-500">
-          <span className="truncate">{ticket.userName}</span>
-          <span className="text-slate-700">·</span>
-          <span className="capitalize">{ticket.category}</span>
-          <span className="text-slate-700">·</span>
-          <span>{format(new Date(ticket.createdAt), "MMM d")}</span>
-        </div>
-        {lastMsg && (
-          <p className="text-[11px] text-slate-600 truncate mt-0.5">
-            {lastMsg.senderRole === "admin"
-              ? "You: "
-              : `${lastMsg.senderName}: `}
-            {lastMsg.message || (lastMsg.imageUrl ? "Image attachment" : "")}
-          </p>
-        )}
-      </div>
-      <div className="flex items-center gap-2 shrink-0">
-        <span
-          className={`inline-flex items-center gap-1 px-2 py-1 rounded-full border text-[10px] font-bold ${st.cls}`}
-        >
-          <StIcon className="h-2.5 w-2.5" /> {st.label}
-        </span>
-        <ChevronRight className="h-3.5 w-3.5 text-slate-700 group-hover:text-slate-400 transition-colors" />
-      </div>
+      <span className="support-ticket-id">
+        #{ticket.displayId ?? ticket.ticketNumber ?? ticket.id.slice(0, 8)}
+      </span>
+      <span className="support-ticket-subject">
+        <strong>{ticket.subject}</strong>
+        <small>{lastMessage?.message || ticket.message}</small>
+      </span>
+      <span className={`support-status-badge ${status.className}`}>
+        {status.label}
+      </span>
+      <span className={`support-priority ${priority.className}`}>
+        <CircleDot /> {priority.label}
+      </span>
+      <span className="support-ticket-age">
+        {formatDistanceToNow(new Date(ticket.updatedAt), { addSuffix: true })}
+      </span>
+      <ChevronRight className="support-row-arrow" />
+      {hasUserReply && <span className="support-unread-dot" />}
     </button>
   );
 }
@@ -142,130 +114,231 @@ export default function AdminSupport() {
     data: tickets,
     isLoading,
     error,
+    refetch,
   } = useQuery({
     queryKey: ["admin-tickets"],
     queryFn: fetchAdminTickets,
     refetchInterval: 15_000,
   });
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [priorityFilter, setPriorityFilter] = useState("all");
 
   const all = tickets ?? [];
-  const filtered = all.filter((t) => {
-    const matchStatus = statusFilter === "all" || t.status === statusFilter;
-    const q = search.toLowerCase();
-    const matchSearch =
-      !q ||
-      t.subject.toLowerCase().includes(q) ||
-      t.userName.toLowerCase().includes(q) ||
-      t.userEmail.toLowerCase().includes(q);
-    return matchStatus && matchSearch;
-  });
-
-  const filterOpts = [
-    { key: "all", label: "All", count: all.length },
-    {
-      key: "open",
-      label: "Open",
-      count: all.filter((t) => t.status === "open").length,
-    },
-    {
-      key: "in_progress",
-      label: "In Progress",
-      count: all.filter((t) => t.status === "in_progress").length,
-    },
-    {
-      key: "resolved",
-      label: "Resolved",
-      count: all.filter((t) => t.status === "resolved").length,
-    },
-    {
-      key: "closed",
-      label: "Closed",
-      count: all.filter((t) => t.status === "closed").length,
-    },
-  ];
+  const filtered = useMemo(
+    () =>
+      all.filter((ticket) => {
+        const query = search.toLowerCase();
+        return (
+          (statusFilter === "all" || ticket.status === statusFilter) &&
+          (priorityFilter === "all" || ticket.priority === priorityFilter) &&
+          (!query ||
+            `${ticket.subject} ${ticket.userName} ${ticket.userEmail} ${ticket.displayId}`
+              .toLowerCase()
+              .includes(query))
+        );
+      }),
+    [all, priorityFilter, search, statusFilter],
+  );
+  const openCount = all.filter((ticket) => ticket.status === "open").length;
+  const pendingCount = all.filter(
+    (ticket) => ticket.status === "in_progress",
+  ).length;
+  const resolvedCount = all.filter((ticket) =>
+    ["resolved", "closed"].includes(ticket.status),
+  ).length;
 
   return (
     <div
-      className="max-w-3xl mx-auto space-y-6 page-enter sky-page"
+      className="support-dashboard page-enter sky-page"
       data-sky-page="admin-support"
     >
-      <div>
-        <h1 className="font-display text-[22px] font-bold text-slate-900 dark:text-white tracking-tight">
-          Support
-        </h1>
-        <p className="text-[13px] text-slate-500 mt-0.5">
-          Manage user support tickets. Click a ticket to open the full chat.
-        </p>
-      </div>
-
-      {/* Filters + Search */}
-      <div className="flex items-center gap-3 flex-wrap">
-        <div className="relative flex-1 min-w-[180px]">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-600" />
-          <input
-            placeholder="Search tickets…"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full h-9 rounded-xl border border-white/[0.08] bg-white/[0.03] pl-9 pr-4 text-[12px] text-white placeholder:text-slate-700 outline-none focus:border-blue-500/40 transition-all"
-          />
+      <header className="support-dashboard-header">
+        <div className="support-brand-lockup">
+          <div className="support-brand-mark">
+            <LifeBuoy />
+          </div>
+          <div>
+            <span>SKY SMS</span>
+            <small>Support operations</small>
+          </div>
         </div>
-        <div className="flex items-center gap-1 rounded-xl border border-white/[0.06] bg-white/[0.02] p-0.5">
-          {filterOpts.map(({ key, label, count }) => (
-            <button
-              key={key}
-              onClick={() => setStatusFilter(key)}
-              className={`px-3 py-1.5 rounded-lg text-[11px] font-semibold transition-all ${
-                statusFilter === key
-                  ? "bg-blue-600 text-white"
-                  : "text-slate-500 hover:text-slate-300"
-              }`}
-            >
-              {label}{" "}
-              {count > 0 && (
-                <span
-                  className={`ml-0.5 text-[10px] ${statusFilter === key ? "text-blue-100/70" : "text-slate-700"}`}
-                >
-                  {count}
-                </span>
-              )}
-            </button>
-          ))}
+        <div className="support-header-actions">
+          <button aria-label="Search">
+            <Search />
+          </button>
+          <button aria-label="Notifications" className="support-notification">
+            <Bell />
+            <i />
+          </button>
+          <div className="support-header-divider" />
+          <div className="support-agent">
+            <div>
+              <strong>Support Desk</strong>
+              <small>Admin workspace</small>
+            </div>
+            <span>SD</span>
+          </div>
         </div>
-      </div>
+      </header>
 
-      {/* Ticket list */}
-      <div className="rounded-2xl border border-white/[0.06] overflow-hidden">
-        {isLoading ? (
-          <div className="divide-y divide-white/[0.04]">
-            {[0, 1, 2, 3].map((i) => (
-              <div key={i} className="flex items-center gap-3 px-4 py-4">
-                <Skeleton className="h-9 w-9 rounded-xl bg-white/[0.04] shrink-0" />
-                <div className="flex-1 space-y-2">
-                  <Skeleton className="h-3 w-40 bg-white/[0.04]" />
-                  <Skeleton className="h-2.5 w-28 bg-white/[0.03]" />
-                </div>
-              </div>
+      <div className="support-dashboard-body">
+        <aside className="support-filter-rail">
+          <div>
+            <h5>Ticket views</h5>
+            {[
+              {
+                key: "all",
+                label: "All tickets",
+                icon: Inbox,
+                count: all.length,
+              },
+              { key: "open", label: "Open", icon: CircleDot, count: openCount },
+              {
+                key: "in_progress",
+                label: "Pending",
+                icon: Clock3,
+                count: pendingCount,
+              },
+              {
+                key: "resolved",
+                label: "Resolved",
+                icon: CheckCircle2,
+                count: resolvedCount,
+              },
+            ].map(({ key, label, icon: Icon, count }) => (
+              <button
+                key={key}
+                className={statusFilter === key ? "active" : ""}
+                onClick={() => setStatusFilter(key)}
+              >
+                <Icon />
+                <span>{label}</span>
+                <b>{count}</b>
+              </button>
             ))}
           </div>
-        ) : error ? (
-          <div className="py-12 text-center">
-            <AlertCircle className="h-7 w-7 text-red-400 mx-auto mb-2" />
-            <p className="text-[13px] text-slate-500">
-              Could not load tickets.
+          <div>
+            <h5>Priority filter</h5>
+            {[
+              { key: "high", label: "High priority", color: "high" },
+              { key: "medium", label: "Medium", color: "medium" },
+              { key: "low", label: "Low priority", color: "low" },
+            ].map(({ key, label, color }) => (
+              <button
+                key={key}
+                className={priorityFilter === key ? "active" : ""}
+                onClick={() =>
+                  setPriorityFilter(priorityFilter === key ? "all" : key)
+                }
+              >
+                <i className={`support-priority-dot ${color}`} />
+                <span>{label}</span>
+              </button>
+            ))}
+          </div>
+          <div className="support-live-note">
+            <p>
+              Need immediate help? Live support is available around the clock.
             </p>
+            <a href="/support">
+              Open support center <ChevronRight />
+            </a>
           </div>
-        ) : filtered.length === 0 ? (
-          <div className="py-12 text-center">
-            <LifeBuoy className="h-7 w-7 text-slate-700 mx-auto mb-2" />
-            <p className="text-[13px] text-slate-500">No tickets found.</p>
+        </aside>
+
+        <main className="support-dashboard-main">
+          <div className="support-stats-grid">
+            <div>
+              <div>
+                <span>Open tickets</span>
+                <strong>{String(openCount).padStart(2, "0")}</strong>
+              </div>
+              <AlertCircle />
+            </div>
+            <div>
+              <div>
+                <span>Pending action</span>
+                <strong>{String(pendingCount).padStart(2, "0")}</strong>
+              </div>
+              <Clock3 />
+            </div>
+            <div>
+              <div>
+                <span>Resolution rate</span>
+                <strong>
+                  {all.length
+                    ? `${Math.round((resolvedCount / all.length) * 100)}%`
+                    : "--"}
+                </strong>
+              </div>
+              <TrendingUp />
+            </div>
           </div>
-        ) : (
-          filtered.map((ticket) => (
-            <TicketRow key={ticket.id} ticket={ticket} />
-          ))
-        )}
+          <div className="support-queue-heading">
+            <div>
+              <span>Support workspace</span>
+              <h1>
+                Active <em>support queue</em>
+              </h1>
+            </div>
+            <div className="support-queue-actions">
+              <button>
+                <Filter /> Sort by
+              </button>
+              <button onClick={() => void refetch()}>
+                <RefreshCw /> Sync
+              </button>
+            </div>
+          </div>
+          <div className="support-search">
+            <Search />
+            <input
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder="Search tickets, users, or ticket IDs"
+            />
+          </div>
+          <section className="support-ticket-table">
+            <div className="support-table-head">
+              <span>ID</span>
+              <span>Ticket subject</span>
+              <span>Status</span>
+              <span>Priority</span>
+              <span>Updated</span>
+              <span />
+            </div>
+            {isLoading ? (
+              <div className="support-loading">
+                {[1, 2, 3].map((item) => (
+                  <Skeleton key={item} className="h-16 w-full bg-[#142431]" />
+                ))}
+              </div>
+            ) : error ? (
+              <div className="support-empty">
+                <AlertCircle />
+                <p>Could not load support tickets.</p>
+              </div>
+            ) : filtered.length === 0 ? (
+              <div className="support-empty">
+                <LifeBuoy />
+                <p>No tickets match your filters.</p>
+              </div>
+            ) : (
+              filtered.map((ticket) => (
+                <TicketRow key={ticket.id} ticket={ticket} />
+              ))
+            )}
+          </section>
+          <footer className="support-dashboard-footer">
+            <span>
+              Showing <b>{filtered.length}</b> of <b>{all.length}</b> tickets
+            </span>
+            <span className="support-system-online">
+              <i /> Systems online
+            </span>
+          </footer>
+        </main>
       </div>
     </div>
   );
